@@ -1,5 +1,5 @@
-import BlogMessage from "components/BlogMessage";
 import LoadRender from "components/LoadRender";
+import { PrimaryMessage, ChildMessage } from "components/BlogMessage";
 import { apiName } from "config/api";
 import { getApiPath } from "utils/path";
 
@@ -13,7 +13,18 @@ let BlogContentMessage = ({ blogId }) => {
             path={getApiPath(apiName.primaryMessage)}
             method="post"
             requestData={{ blogId }}
-            loaded={(data) => data.map((item) => <BlogMessage key={item.modifyDate} {...item} />)}
+            loaded={(data) =>
+              data.map((item) => (
+                <PrimaryMessage key={item.commentId} {...item}>
+                  <LoadRender
+                    path={getApiPath(apiName.childMessage)}
+                    method="post"
+                    requestData={{ primaryCommentId: item.commentId }}
+                    loaded={(data) => data.map((item) => <ChildMessage key={item.commentId} {...item} />)}
+                  />
+                </PrimaryMessage>
+              ))
+            }
           />
         </div>
       </div>

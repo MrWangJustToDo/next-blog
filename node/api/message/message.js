@@ -18,7 +18,9 @@ exports.getPrimaryMessageByBlogId = actionHandler(
 
 exports.getChildMessageByPrimaryId = actionHandler(
   async ({ req, res }) => {
-    const { primaryCommentId } = req.body || {};
+    const body = req.body || {};
+    const { data } = body;
+    const { primaryCommentId } = data || {};
     if (primaryCommentId === undefined) {
       throw new Error("主评论id参数不存在");
     }

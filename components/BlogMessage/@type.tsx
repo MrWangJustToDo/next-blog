@@ -1,21 +1,53 @@
-interface BlogMessageProps {
+interface PrimaryMessageProps {
   blogId: string;
   commentId: number;
-  userId: string;
+  userId?: string;
   ip: string;
   content: string;
   createDate: string;
   modifyState: number;
   modifyDate: string;
+  childIds: string;
   childCount: number;
+
+  // 用户相关
+  avatar?: string;
+  username?: string;
+  address?: string;
+  email?: string;
+  gender?: number;
+  qq?: string;
+  children: JSX.Element;
 }
 
-interface BlogContentPrimary {
-  (props: BlogMessageProps): JSX.Element;
+interface PrimaryMessageType {
+  (props: PrimaryMessageProps): JSX.Element;
 }
 
-interface MessageBodyType {
-  (props: { content: string, className: string }): JSX.Element;
+interface ChildMessageProps {
+  primaryCommentId: number;
+  commentId: number;
+  fromIp: string;
+  fromUserId: string;
+  toIp: string;
+  toUserId: string;
+  content: string;
+  createDate: string;
+  modifyState: number;
+  modifyDate: string;
+
+  // 用户相关
+  avatar?: string;
+  username?: string;
+  address?: string;
+  email?: string;
+  gender?: number;
+  qq?: string;
+  toUserName?: string;
 }
 
-export type { BlogContentPrimary, MessageBodyType };
+interface ChildMessageType {
+  (props: ChildMessageProps): JSX.Element;
+}
+
+export type { PrimaryMessageType, ChildMessageType };

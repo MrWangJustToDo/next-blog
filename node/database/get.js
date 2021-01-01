@@ -53,10 +53,24 @@ exports.getBlogCount = async ({ db }) => {
 
 // 获取主评论
 exports.getPrimaryByBlogId = async ({ db, blogId }) => {
-  return await db.all("SELECT * FROM primaryComment WHERE primaryComment.blogId = ?", blogId);
+  return await db.all(
+    "SELECT * FROM primaryComment LEFT JOIN users WHERE primaryComment.blogId = ? AND primaryComment.userId = users.userId",
+    blogId
+  );
 };
 
 // 获取子评论
 exports.getChildByBlogId = async ({ db, primaryCommentId }) => {
-  return await db.all("SELECT * FROM childComment WHERE childComment.primaryCommentId = ?", primaryCommentId);
+  const childMessage = await db.all(
+    "SELECT * FROM childComment LEFT JOIN users WHERE childComment.primaryCommentId = ? AND childComment.fromUserId = users.userId",
+    primaryCommentId
+  );
+  for (let key in childMessage) {
+    const { toUserId } = childMessage[key];
+    if (toUserId) {
+      const user = await this.getUserById({ db, userId: toUserId });
+      childMessage[key]["toUserName"] = user.username;
+    }
+  }
+  return childMessage;
 };

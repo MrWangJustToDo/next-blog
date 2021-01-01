@@ -15,7 +15,7 @@ export type { MainRightCommendType };
 
 /* mainRightCommendItem */
 interface MainRightCommendItemType {
-  (props: { blogId: number; blogTitle: string }): JSX.Element;
+  (props: { blogId: string; blogTitle: string }): JSX.Element;
 }
 
 export type { MainRightCommendItemType };

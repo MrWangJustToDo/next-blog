@@ -1,7 +1,7 @@
 import { BlogContentProps } from "hook/@type";
 
 interface UserHoverProps extends BlogContentProps {
-  children: JSX.Element;
+  children?: JSX.Element;
 }
 
 /* hoverItem */

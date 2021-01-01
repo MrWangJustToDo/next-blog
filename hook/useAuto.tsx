@@ -33,8 +33,6 @@ useAutoActionHandler = ({ action, timmer, actionState = true, once = true, delay
         addListener(actionCallback);
         return () => removeListener(actionCallback);
       }
-    } else if (once) {
-      actionCallback();
     }
   }, [delayTime, once, actionCallback]);
 };

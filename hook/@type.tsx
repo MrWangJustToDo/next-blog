@@ -28,6 +28,7 @@ interface BlogContentProps {
   tagContent?: string[];
   userId?: string;
   username?: string;
+  nickname?: string;
   address?: string;
   email?: string;
   gender?: number;
@@ -84,7 +85,11 @@ interface UseHomeType {
   };
 }
 
-export type { UseHomeType };
+interface UseCommendType {
+  (): { commendBlogs: BlogContentProps[] };
+}
+
+export type { UseHomeType, UseCommendType };
 
 /* useType */
 interface Type {

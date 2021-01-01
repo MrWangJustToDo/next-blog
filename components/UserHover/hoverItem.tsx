@@ -22,7 +22,7 @@ UserHoverItem = (props) => {
         </div>
         <div className="w-50">
           <i className="ri-user-line" />
-          <span className="ml-2">{username}</span>
+          <span className="ml-2">{username || "oops !"}</span>
         </div>
       </div>
       <div className="card-body text-left py-2">

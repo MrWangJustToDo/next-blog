@@ -4,9 +4,10 @@ import { actionName } from "config/action";
 import { pageContentLength } from "config/hoom";
 import { setDataSucess_client } from "store/reducer/client/action";
 import useCurrentState from "./useCurrentState";
-import { UseHomeType } from "./@type";
+import { UseHomeType, UseCommendType } from "./@type";
 
 let useHome: UseHomeType;
+let useCommend: UseCommendType;
 
 useHome = () => {
   const { state, dispatch } = useCurrentState();
@@ -24,4 +25,11 @@ useHome = () => {
   return { currentPage, allPage, blogs, currentPageBlogs, increaseAble, decreaseAble, increasePage, decreasePage };
 };
 
-export { useHome };
+useCommend = () => {
+  const { state } = useCurrentState();
+  const blogs = state.server[apiName.home]["data"];
+  const commendBlogs = blogs.filter(({ blogState }) => Number(blogState) === 3);
+  return { commendBlogs };
+};
+
+export { useHome, useCommend };
