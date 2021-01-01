@@ -32,3 +32,9 @@ yarn-error.log*
 
 # vercel
 .vercel
+
+# 需求文档目录
+/md
+
+# 数据库文件
+/node/database/server

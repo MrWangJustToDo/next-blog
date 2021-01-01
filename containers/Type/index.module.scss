@@ -1,0 +1,7 @@
+@import "../../styles/basic.module";
+
+.autoHide {
+  @include mobile {
+    display: none;
+  }
+}

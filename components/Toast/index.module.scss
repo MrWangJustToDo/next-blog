@@ -1,0 +1,9 @@
+.toast {
+  opacity: 1;
+}
+
+.close {
+  outline: none !important;
+  transition-property: opacity;
+  transition-duration: 0.2s;
+}

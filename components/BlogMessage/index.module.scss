@@ -1,0 +1,16 @@
+.author {
+  background-color: rgba(200, 200, 200, 0.2);
+}
+
+.messageOverflow {
+  position: relative;
+  padding-right: 8px;
+  &::after {
+    content: "...";
+    position: absolute;
+    background-color: #fff;
+    padding: 0 5px;
+    bottom: 2px;
+    right: 0px;
+  }
+}

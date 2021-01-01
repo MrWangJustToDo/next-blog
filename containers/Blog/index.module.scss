@@ -1,0 +1,12 @@
+.imgHover {
+  & img {
+    position: relative;
+    transition-property: transform;
+    transition-duration: 0.3s;
+  }
+  &:hover {
+    & img {
+      transform: scale(1.1, 1.1);
+    }
+  }
+}
