@@ -2,11 +2,13 @@
 import axios from "axios";
 import getToken from "./token";
 import { transformStringUrl } from "./path";
-import { AutoRequestType } from "./@type";
+import { AutoRequestType, AutoRequestExType } from "./@type";
 
 let autoRequest: AutoRequestType;
 
 let fetcherRequest: AutoRequestType;
+
+let autoRequestEx: AutoRequestExType;
 
 const getConfig = (data, token) => {
   if (token) {
@@ -36,4 +38,21 @@ autoRequest = ({ method, path, query, data, token }) => {
 
 fetcherRequest = ({ method, token, data }) => autoRequest({ method, token, data });
 
-export { autoRequest, fetcherRequest };
+autoRequestEx = ({ method, path, query, data, token }) => {
+  let relativePath = path ? transformStringUrl(path, query) : "";
+  let config = getConfig(data, token);
+  let currentMethod = method || "get";
+  return ({ method, path, query, data, token }) => {
+    relativePath = path ? transformStringUrl(path, query) : relativePath;
+    if (data) {
+      config = { ...config, ...data };
+    }
+    if (token) {
+      config["headers"] = { ...config["headers"], apiToken: getToken(token) };
+    }
+    currentMethod = method ? method : currentMethod;
+    return axios[currentMethod](relativePath, config).then((res) => res.data);
+  };
+};
+
+export { autoRequest, fetcherRequest, autoRequestEx };

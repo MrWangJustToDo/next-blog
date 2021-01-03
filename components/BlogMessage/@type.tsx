@@ -18,6 +18,8 @@ interface PrimaryMessageProps {
   gender?: number;
   qq?: string;
   children: JSX.Element;
+
+  replayHandler: (props: PrimaryMessageProps) => void;
 }
 
 interface PrimaryMessageType {
@@ -44,10 +46,13 @@ interface ChildMessageProps {
   gender?: number;
   qq?: string;
   toUserName?: string;
+  children: JSX.Element;
+
+  replayHandler: (props: ChildMessageProps) => void;
 }
 
 interface ChildMessageType {
   (props: ChildMessageProps): JSX.Element;
 }
 
-export type { PrimaryMessageType, ChildMessageType };
+export type { PrimaryMessageType, ChildMessageType, PrimaryMessageProps, ChildMessageProps };

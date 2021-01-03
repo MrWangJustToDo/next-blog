@@ -13,9 +13,9 @@ let useFailToast: UseContentToastType;
 let useSucessToast: UseContentToastType;
 
 useToastProps = (init = []) => {
-  const [state, setState] = useState<ToastProps[]>(init);
-  const filter = useCallback(() => setState((lastState) => lastState.filter(({ showState }) => showState === true)), []);
-  const update = useCallback(() => setState((lastState) => [...lastState]), []);
+  const [toast, setToast] = useState<ToastProps[]>(init);
+  const filter = useCallback(() => setToast((lastState) => lastState.filter(({ showState }) => showState === true)), []);
+  const update = useCallback(() => setToast((lastState) => [...lastState]), []);
   const push = useCallback<(props: ToastProps) => void>(
     (props) => {
       props.showState = true;
@@ -25,11 +25,11 @@ useToastProps = (init = []) => {
         update();
         delay(15000, filter, "toastFilter");
       };
-      setState((lastState) => [props, ...lastState]);
+      setToast((lastState) => [props, ...lastState]);
     },
     [filter, update]
   );
-  return { state, push };
+  return { toast, push };
 };
 
 useCustomizeToast = () => {
@@ -40,13 +40,16 @@ useCustomizeToast = () => {
 
 useFailToast = () => {
   const push = useContext(ToastPushContext);
-  const failToast = useCallback((content) => push({ title: "message", content, contentState: toastState.fail }), []);
+  const failToast = useCallback((content) => push({ title: "message", content, contentState: toastState.fail, autoCloseSecond: 3000 }), []);
   return failToast;
 };
 
 useSucessToast = () => {
   const push = useContext(ToastPushContext);
-  const failToast = useCallback((content) => push({ title: "message", content, contentState: toastState.success }), []);
+  const failToast = useCallback(
+    (content) => push({ title: "message", content, contentState: toastState.success, autoCloseSecond: 3000 }),
+    []
+  );
   return failToast;
 };
 

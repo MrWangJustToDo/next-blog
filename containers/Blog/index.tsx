@@ -4,6 +4,7 @@ import BlogContentType_Tag from "./blogContentType&Tag";
 import BlogContentBody from "./blogContentBody";
 import BlogContentLike from "./blogContentLike";
 import BlogContentMessage from "./blogContentMessage";
+import BlogContentMessagePut from "./blogContentMessagePut";
 import { BlogContentType } from "./@type";
 
 let Blog: BlogContentType;
@@ -17,8 +18,9 @@ Blog = (props) => {
         <BlogContentImg src={blogImgLink} />
         <BlogContentType_Tag typeContent={typeContent} tagContent={tagContent} />
         <BlogContentBody blogTitle={blogTitle} blogContent={blogContent} />
-        <BlogContentLike />
+        <BlogContentLike blogId={blogId} />
         <BlogContentMessage blogId={blogId} />
+        <BlogContentMessagePut blogId={blogId} />
       </ul>
     </div>
   );

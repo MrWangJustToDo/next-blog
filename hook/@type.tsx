@@ -1,8 +1,10 @@
 import { State } from "store";
-import { RefObject } from "react";
+import { ChangeEvent, RefObject } from "react";
 import { AnyAction } from "redux";
 import { ToastProps } from "components/Toast/@type";
 import { LoadingBarProps } from "components/LoadingBar/@type";
+import { ReplayProps } from "components/Replay/@type";
+import { ChildMessageProps, PrimaryMessageProps } from "components/BlogMessage/@type";
 
 interface BlogContentProps {
   authorId?: string;
@@ -144,7 +146,7 @@ interface UseToastPushType {
   (props: ToastProps): void;
 }
 interface UseToastPropsType {
-  (init: ToastProps[]): { state: ToastProps[]; push: UseToastPushType };
+  (init: ToastProps[]): { toast: ToastProps[]; push: UseToastPushType };
 }
 interface UseContentToastType {
   (): (content: string) => void;
@@ -165,7 +167,6 @@ interface UseAutoActionHandlerProps {
 interface UseAutoActionHandlerType {
   (props: UseAutoActionHandlerProps): void;
 }
-
 interface UseAutoFlushHandlerProps {
   delayTime: number;
   flushAction: () => void;
@@ -173,7 +174,6 @@ interface UseAutoFlushHandlerProps {
 interface UseAutoFlushHandlerType {
   <T>(props: UseAutoFlushHandlerProps): T;
 }
-
 interface UseAutoSetHeaderHeightType {
   <T extends HTMLElement>(breakPoint?: number): { ref: RefObject<T>; height: number };
 }
@@ -192,3 +192,37 @@ interface UseShowAndHideAnimateType {
 }
 
 export type { UseShowAndHideAnimateType };
+
+/* useReplay */
+interface UseReplayOpenType {
+  (props: ReplayProps): void;
+}
+interface UseReplayPropsType {
+  (): { replay: ReplayProps; open: UseReplayOpenType };
+}
+
+export type { UseReplayOpenType, UseReplayPropsType };
+
+/* useMessage */
+interface UseChildMessageType {
+  (props: ChildMessageProps[]): { messageProps: ChildMessageProps[]; more: boolean; loadMore: () => void };
+}
+interface UsePrimaryMessageResult {
+  currentPage: number;
+  increasePage: () => void;
+  decreasePage: () => void;
+  increaseAble: boolean;
+  decreaseAble: boolean;
+  currentMessage: PrimaryMessageProps[];
+}
+interface UsePrimaryMessageType {
+  (props: PrimaryMessageProps[]): UsePrimaryMessageResult;
+}
+
+type MyInputELement = HTMLInputElement | HTMLTextAreaElement;
+
+interface UseInputType {
+  <T extends MyInputELement>(init?: string): { value: string; typeCallback: (e: ChangeEvent<T>) => void };
+}
+
+export type { UseChildMessageType, UsePrimaryMessageType, UseInputType, MyInputELement };

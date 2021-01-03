@@ -8,6 +8,10 @@ enum apiName {
   blog = "blog", // 获取blog详情
   primaryMessage = "primaryMessage", // 获取主要留言信息
   childMessage = "childMessage", // 获取次要留言信息
+  captcha = "captcha", // 获取验证码图片
+  captchaStr = "captchaStr", // 获取验证码文本
+  putPrimaryMessage = "putPrimaryMessage", // 发布主要评论
+  putChildMessage = "putChildMessage", // 发布次要评论
 }
 
 export { apiName };

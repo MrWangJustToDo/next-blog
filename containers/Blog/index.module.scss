@@ -1,3 +1,5 @@
+@import "../../styles/basic.module";
+
 .imgHover {
   & img {
     position: relative;
@@ -8,5 +10,23 @@
     & img {
       transform: scale(1.1, 1.1);
     }
+  }
+}
+
+.loadMore {
+  font-size: 12px;
+  padding: 2px;
+}
+
+.footPage {
+  font-size: 12px;
+  & * {
+    font-size: inherit;
+  }
+}
+
+.imgCheck {
+  @include mobile {
+    width: 360px;
   }
 }

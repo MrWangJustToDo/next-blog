@@ -54,7 +54,7 @@ export type { Cancel, Delay, TimeoutMap, ResolveMap, KeyMap };
 /* fetcher */
 interface Request {
   method?: string;
-  path?: string;
+  path?: string | apiName;
   query?: object;
   token?: boolean | string;
   data?: object;
@@ -64,7 +64,11 @@ interface AutoRequestType {
   (props: Request): (path: string, token?: any) => Promise<object>;
 }
 
-export type { AutoRequestType };
+interface AutoRequestExType {
+  (props: Request): (props: Request) => Promise<object>;
+}
+
+export type { AutoRequestType, AutoRequestExType };
 
 /* path */
 interface TransformStringUrl {
@@ -98,7 +102,14 @@ export type { TimeToString };
 
 /* element */
 interface ActionHandlerType {
-  (element: HTMLElement | undefined, action: (ele: HTMLElement) => void): void;
+  <T extends HTMLElement>(element: T | undefined, action: (ele: T) => void): void;
 }
 
 export type { ActionHandlerType };
+
+/* image */
+interface LoadImgType {
+  (imgUrl: apiName, strUrl: apiName, imgElement: HTMLImageElement): Promise<HTMLImageElement | void>;
+}
+
+export type { LoadImgType };

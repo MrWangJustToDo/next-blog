@@ -15,7 +15,7 @@ Toast = ({ title, currentTime, contentState, content, showState, closeHandler, a
   useAutoActionHandler({ delayTime: autoCloseSecond, action: closeHandler, timmer: autoCloseSecond > 0, once: true });
   const { ref } = useShowAndHideAnimate<HTMLDivElement>({
     state: showState,
-    key: String(currentTime.getTime()),
+    key: 'toast',
     showClassName: "animate__fadeInRight",
     hideClassName: "animate__fadeOutRight",
   });
