@@ -11,7 +11,19 @@ import style from "./index.module.scss";
 let Index: PrimaryMessageType;
 
 Index = (props) => {
-  const { modifyState, modifyDate, content, avatar, gender, username, ip, children, replayHandler } = props;
+  const {
+    modifyState,
+    modifyDate,
+    content,
+    avatar,
+    gender,
+    username,
+    ip,
+    children,
+    replayHandler,
+    withReplay = true,
+    withChildren = true,
+  } = props;
   const replayCallback = useCallback(() => replayHandler(props), []);
   return (
     <div className="media py-2">
@@ -26,10 +38,12 @@ Index = (props) => {
           </span>
         </h5>
         <p className="mb-0 mb-md-3">{content}</p>
-        <button className={getClass("btn btn-outline-info", style.replay)} onClick={replayCallback}>
-          replay
-        </button>
-        {children}
+        {withReplay && (
+          <button className={getClass("btn btn-outline-info", style.replay)} onClick={replayCallback}>
+            replay
+          </button>
+        )}
+        {withChildren && children}
       </div>
     </div>
   );

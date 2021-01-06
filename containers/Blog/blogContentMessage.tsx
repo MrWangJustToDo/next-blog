@@ -1,8 +1,7 @@
 import LoadRender from "components/LoadRender";
 import { apiName } from "config/api";
 import { getApiPath } from "utils/path";
-import BlogContentPrimaryMessage from "./blogContentPrimaryMessage";
-import BlogContentImageCheck from "./blogContentImageCheck";
+import BlogContentPrimaryMessage from "./blogContentMessagePrimary";
 import { BlogContentMessageType } from "./@type";
 
 let BlogContentMessage: BlogContentMessageType;

@@ -19,6 +19,9 @@ interface PrimaryMessageProps {
   qq?: string;
   children: JSX.Element;
 
+  withReplay?: boolean;
+  withChildren?: boolean;
+
   replayHandler: (props: PrimaryMessageProps) => void;
 }
 
@@ -47,6 +50,9 @@ interface ChildMessageProps {
   qq?: string;
   toUserName?: string;
   children: JSX.Element;
+
+  withReplay?: boolean;
+  withChildren?: boolean;
 
   replayHandler: (props: ChildMessageProps) => void;
 }

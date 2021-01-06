@@ -32,23 +32,31 @@ cancel = (key) => {
 };
 
 delay = (time, action, key) => {
-  if (!(key in keyMap)) {
-    keyMap[key] = 1;
-    timeoutMap[key] = [];
-    resolveMap[key] = [];
-    keyLength++;
-  } else {
-    keyMap[key]++;
-  }
-  cancel(key);
-  return new Promise((resolve) => {
-    resolveMap[key].push(resolve);
-    timeoutMap[key].push(
+  if (key === undefined) {
+    return new Promise((resolve) => {
       setTimeout(() => {
         resolve(action());
-      }, time)
-    );
-  });
+      }, time);
+    });
+  } else {
+    if (!(key in keyMap)) {
+      keyMap[key] = 1;
+      timeoutMap[key] = [];
+      resolveMap[key] = [];
+      keyLength++;
+    } else {
+      keyMap[key]++;
+    }
+    cancel(key);
+    return new Promise((resolve) => {
+      resolveMap[key].push(resolve);
+      timeoutMap[key].push(
+        setTimeout(() => {
+          resolve(action());
+        }, time)
+      );
+    });
+  }
 };
 
 export { delay, cancel };

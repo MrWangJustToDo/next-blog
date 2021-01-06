@@ -1,13 +1,15 @@
 import { useCallback, useEffect, useRef, useState } from "react";
+import loadImg from "utils/image";
 import { actionHandler } from "utils/element";
 import debounce from "lodash/debounce";
-import { UseAutoActionHandlerType, UseAutoFlushHandlerType, UseAutoSetHeaderHeightType } from "./@type";
+import { UseAutoActionHandlerType, UseAutoFlushHandlerType, UseAutoSetHeaderHeightType, UseAutoLoadCheckcodeImgType } from "./@type";
 
 let useAutoActionHandler: UseAutoActionHandlerType;
 let useAutoFlushHandler: UseAutoFlushHandlerType;
 let useAutoSetHeaderHeight: UseAutoSetHeaderHeightType;
+let useAutoLoadCheckcodeImg: UseAutoLoadCheckcodeImgType;
 
-useAutoActionHandler = ({ action, timmer, actionState = true, once = true, delayTime, addListener, removeListener }) => {
+useAutoActionHandler = ({ action, timmer, actionState = true, once = true, delayTime, addListener, removeListener, rightNow = false }) => {
   const actionCallback = useCallback(() => {
     if (actionState) {
       action();
@@ -16,7 +18,7 @@ useAutoActionHandler = ({ action, timmer, actionState = true, once = true, delay
   useEffect(() => {
     if (timmer) {
       if (delayTime === undefined) {
-        console.error("timmer delay not set ---> useAutoActionHandler");
+        console.error("timmer delayTime not set ---> useAutoActionHandler");
         delayTime = 0;
       }
       if (once) {
@@ -30,11 +32,14 @@ useAutoActionHandler = ({ action, timmer, actionState = true, once = true, delay
       if (!removeListener) {
         throw new Error("every addListener need a removeListener! ---> useAutoActionHandler");
       } else {
+        if (rightNow) {
+          actionCallback();
+        }
         addListener(actionCallback);
         return () => removeListener(actionCallback);
       }
     }
-  }, [delayTime, once, actionCallback]);
+  }, [delayTime, once, actionCallback, rightNow]);
 };
 
 function autoFlushHandler<T>({ delayTime, flushAction }) {
@@ -47,7 +52,7 @@ function autoFlushHandler<T>({ delayTime, flushAction }) {
 function autoSetHeaderHeight<T extends HTMLElement>(breakPoint) {
   const ref = useRef<T>();
   const [height, setHeight] = useState<number>(0);
-  const setHeightBytyle = useCallback(
+  const setHeightCallback = useCallback(
     () =>
       actionHandler(ref.current, (ele) => {
         ele.style.height = "auto";
@@ -58,28 +63,49 @@ function autoSetHeaderHeight<T extends HTMLElement>(breakPoint) {
   );
   useEffect(() => {
     if (document.body.offsetWidth < breakPoint) {
-      setHeightBytyle;
+      setHeightCallback();
     } else {
       const debounceSetHeightByStyle = debounce((cb) => {
         if (document.body.offsetWidth < breakPoint) {
-          setHeightBytyle();
+          setHeightCallback();
           if (cb && typeof cb === "function") {
             cb();
           }
         }
-      });
+      }, 300);
       window.addEventListener(
         "resize",
         debounceSetHeightByStyle.bind(null, () => window.removeEventListener("resize", debounceSetHeightByStyle))
       );
       return () => window.removeEventListener("resize", debounceSetHeightByStyle);
     }
-  }, [setHeightBytyle]);
+  }, [setHeightCallback]);
   return { ref, height };
+}
+
+function autoLoadCheckcode<T extends HTMLImageElement>(imgUrl, strUrl) {
+  const ref = useRef<T>();
+  const loadActionCallback = useCallback(
+    debounce(
+      () => actionHandler<T>(ref.current, (ele) => loadImg(imgUrl, strUrl, ele)),
+      400,
+      { leading: true } // 立即执行一次
+    ),
+    [imgUrl, strUrl]
+  );
+  useAutoActionHandler({
+    action: loadActionCallback,
+    rightNow: true,
+    addListener: (action) => actionHandler<T>(ref.current, (ele) => ele.addEventListener("click", action)),
+    removeListener: (action) => actionHandler<T>(ref.current, (ele) => ele.removeEventListener("click", action)),
+  });
+  return ref;
 }
 
 useAutoFlushHandler = autoFlushHandler;
 
 useAutoSetHeaderHeight = autoSetHeaderHeight;
 
-export { useAutoActionHandler, useAutoFlushHandler, useAutoSetHeaderHeight };
+useAutoLoadCheckcodeImg = autoLoadCheckcode;
+
+export { useAutoActionHandler, useAutoFlushHandler, useAutoSetHeaderHeight, useAutoLoadCheckcodeImg };

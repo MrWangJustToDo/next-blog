@@ -1,5 +1,6 @@
 import { ChildMessageProps, PrimaryMessageProps } from "components/BlogMessage/@type";
 import { BlogContentProps } from "hook/@type";
+import { AutoRequestExType } from "utils/@type";
 
 interface BlogContentType {
   (props: BlogContentProps): JSX.Element;
@@ -35,9 +36,9 @@ interface BlogContentChildMessageType {
 
 export type { BlogContentChildMessageType };
 
-/* blogContentImageCheck */
+/* blogContentCheckcode */
 interface BlogContentImageCheckType {
-  (props: { request: ({ data: object }) => Promise<any>; closeHandler: () => void }): JSX.Element;
+  (props: { request: AutoRequestExType; closeHandler: () => void }): JSX.Element;
 }
 
 export type { BlogContentImageCheckType };

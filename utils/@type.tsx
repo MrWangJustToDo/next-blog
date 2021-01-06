@@ -1,5 +1,4 @@
 import { apiName } from "config/api";
-import { type } from "os";
 
 /* class */
 type Arguments = string | string[] | (() => string)[] | (() => string) | (() => string[]);
@@ -37,7 +36,7 @@ interface Cancel {
   (key: string): void;
 }
 interface Delay {
-  (time: number, action: Function, key: string): Promise<any>;
+  (time: number, action: Function, key?: string): Promise<any>;
 }
 interface TimeoutMap {
   [props: string]: Array<NodeJS.Timeout | void>;
@@ -65,7 +64,7 @@ interface AutoRequestType {
 }
 
 interface AutoRequestExType {
-  (props: Request): (props: Request) => Promise<object>;
+  (props?: Request): Promise<object> | AutoRequestExType;
 }
 
 export type { AutoRequestType, AutoRequestExType };
@@ -102,7 +101,7 @@ export type { TimeToString };
 
 /* element */
 interface ActionHandlerType {
-  <T extends HTMLElement>(element: T | undefined, action: (ele: T) => void): void;
+  <T extends HTMLElement>(element: T | undefined, action: (ele: T) => void | any): void | any;
 }
 
 export type { ActionHandlerType };

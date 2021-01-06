@@ -5,6 +5,8 @@ import { ToastProps } from "components/Toast/@type";
 import { LoadingBarProps } from "components/LoadingBar/@type";
 import { ReplayProps } from "components/Replay/@type";
 import { ChildMessageProps, PrimaryMessageProps } from "components/BlogMessage/@type";
+import { apiName } from "config/api";
+import { AutoRequestExType } from "utils/@type";
 
 interface BlogContentProps {
   authorId?: string;
@@ -143,13 +145,13 @@ export type { UseTagType };
 
 /* useToast */
 interface UseToastPushType {
-  (props: ToastProps): void;
+  (props: ToastProps): Promise<void>;
 }
 interface UseToastPropsType {
   (init: ToastProps[]): { toast: ToastProps[]; push: UseToastPushType };
 }
 interface UseContentToastType {
-  (): (content: string) => void;
+  (): (content: string) => Promise<void>;
 }
 
 export type { UseToastPropsType, UseToastPushType, UseContentToastType };
@@ -159,10 +161,11 @@ interface UseAutoActionHandlerProps {
   action: () => void;
   actionState?: boolean;
   timmer?: boolean; // 是否使用定时器
-  once?: boolean; // 总会执行一次，有listener时无效
-  delayTime?: number; // 定时器自动执行
+  once?: boolean; // 执行一次，for timmer
+  delayTime?: number; // 定时器执行时间间隔
   addListener?: (props: () => void) => void; // 事件监听自动执行
   removeListener?: (props: () => void) => void;
+  rightNow?: boolean; // 立即执行，for listner
 }
 interface UseAutoActionHandlerType {
   (props: UseAutoActionHandlerProps): void;
@@ -177,13 +180,16 @@ interface UseAutoFlushHandlerType {
 interface UseAutoSetHeaderHeightType {
   <T extends HTMLElement>(breakPoint?: number): { ref: RefObject<T>; height: number };
 }
+interface UseAutoLoadCheckcodeImgType {
+  <T extends HTMLImageElement>(imaUrl: apiName, strUrl: apiName): RefObject<T>;
+}
 
-export type { UseAutoActionHandlerType, UseAutoFlushHandlerType, UseAutoSetHeaderHeightType };
+export type { UseAutoActionHandlerType, UseAutoFlushHandlerType, UseAutoSetHeaderHeightType, UseAutoLoadCheckcodeImgType };
 
 /* useAnimate */
 interface UseShowAndHideAnimateProps {
-  key: string;
   state: boolean;
+  key?: string;
   showClassName?: string;
   hideClassName?: string;
 }
@@ -222,7 +228,35 @@ interface UsePrimaryMessageType {
 type MyInputELement = HTMLInputElement | HTMLTextAreaElement;
 
 interface UseInputType {
-  <T extends MyInputELement>(init?: string): { value: string; typeCallback: (e: ChangeEvent<T>) => void };
+  <T extends MyInputELement>(init?: string): [string, (e: ChangeEvent<T>) => void];
+}
+interface UseSubmitToCheckModuleProps {
+  request: AutoRequestExType;
+  body: (request: AutoRequestExType) => (props: () => void) => JSX.Element;
+  className: string;
+}
+interface UseSubmitToCheckModuleType {
+  <T extends MyInputELement>(props: UseSubmitToCheckModuleProps): {
+    ref: RefObject<T>;
+    submit: () => void;
+  };
+}
+interface UseCheckcodeToSubmitProps {
+  request: AutoRequestExType;
+  closeHandler: () => void;
+}
+interface UseCheckcodeToSubmitType {
+  <T extends MyInputELement>(props: UseCheckcodeToSubmitProps): {
+    ref: RefObject<T>;
+    submit: () => void;
+  };
 }
 
-export type { UseChildMessageType, UsePrimaryMessageType, UseInputType, MyInputELement };
+export type {
+  UseChildMessageType,
+  UsePrimaryMessageType,
+  UseInputType,
+  MyInputELement,
+  UseSubmitToCheckModuleType,
+  UseCheckcodeToSubmitType,
+};

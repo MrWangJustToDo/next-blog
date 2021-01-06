@@ -1,6 +1,7 @@
 // 请求自动参数处理逻辑
 import axios from "axios";
 import getToken from "./token";
+import assign from "lodash/assign";
 import { transformStringUrl } from "./path";
 import { AutoRequestType, AutoRequestExType } from "./@type";
 
@@ -39,19 +40,20 @@ autoRequest = ({ method, path, query, data, token }) => {
 fetcherRequest = ({ method, token, data }) => autoRequest({ method, token, data });
 
 autoRequestEx = ({ method, path, query, data, token }) => {
-  let relativePath = path ? transformStringUrl(path, query) : "";
-  let config = getConfig(data, token);
-  let currentMethod = method || "get";
-  return ({ method, path, query, data, token }) => {
-    relativePath = path ? transformStringUrl(path, query) : relativePath;
-    if (data) {
-      config = { ...config, ...data };
+  return (props) => {
+    if (props) {
+      const newMethod = props.method ? props.method : method;
+      const newPath = props.path ? props.path : path;
+      const newQuery = assign(props.query, query);
+      const newData = assign(data, props.data);
+      const newToken = props.token ? props.token : token;
+      return autoRequestEx({ method: newMethod, path: newPath, query: newQuery, data: newData, token: newToken });
+    } else {
+      const relativePath = transformStringUrl(path, query);
+      const config = getConfig(data, token);
+      const currentMethod = method || "get";
+      return axios[currentMethod](relativePath, config).then((res) => res.data);
     }
-    if (token) {
-      config["headers"] = { ...config["headers"], apiToken: getToken(token) };
-    }
-    currentMethod = method ? method : currentMethod;
-    return axios[currentMethod](relativePath, config).then((res) => res.data);
   };
 };
 

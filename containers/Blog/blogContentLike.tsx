@@ -1,7 +1,10 @@
 import { useFailToast } from "hook/useToast";
 import { flexCenter, getClass } from "utils/class";
+import { BlogContentType } from "./@type";
 
-let BlogContentLike = () => {
+let BlogContentLike: BlogContentType;
+
+BlogContentLike = ({ blogId }) => {
   const fail = useFailToast();
   return (
     <li className="list-group-item">

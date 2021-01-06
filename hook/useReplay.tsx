@@ -26,7 +26,7 @@ useReplayProps = () => {
       props.closeHandler = () => {
         props.showState = false;
         update();
-        delay(1200, clear, "replayModule");
+        delay(1000, clear, "replayModule");
       };
       setReplay(props);
     },

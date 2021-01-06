@@ -5,7 +5,7 @@ let actionHandler: ActionHandlerType;
 
 function handler(element, action) {
   if (element) {
-    action(element);
+    return action(element);
   }
 }
 

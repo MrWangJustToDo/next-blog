@@ -19,7 +19,7 @@ function showAndHideAnimate<T extends HTMLElement>({ state, key, showClassName =
         .then(() => actionHandler(ref.current, (element) => element.classList.add(showClassName)))
         .then(() => delay(450, () => actionHandler(ref.current, (element) => element.classList.remove(showClassName)), key));
     }
-    return () => cancel(key);
+    return () => key && cancel(key);
   }, [state]);
   return { ref };
 }
