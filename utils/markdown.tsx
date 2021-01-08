@@ -15,4 +15,4 @@ const mark = new Mark({
   },
 });
 
-export default mark;
+export { mark };

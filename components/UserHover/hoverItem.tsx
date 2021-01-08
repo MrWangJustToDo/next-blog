@@ -3,8 +3,7 @@ import Image from "next/image";
 import LoadRender from "components/LoadRender";
 import { apiName } from "config/api";
 import { getUserProps, getUserState } from "config/hover";
-import { getApiPath } from "utils/path";
-import { autoTransformImage } from "utils/data";
+import { getCurrentAvatar } from "utils/data";
 import { getClass, flexAround, flexBetween, flexCenter } from "utils/class";
 import { UserHoverItemType } from "./@type";
 
@@ -18,7 +17,7 @@ UserHoverItem = (props) => {
     <div className="card border-0">
       <div className={getClass(flexAround, "card-body p-2")}>
         <div className={getClass("rounded-circle overflow-hidden", style.imgHover)}>
-          <Image src={autoTransformImage(avatar, gender)} layout="responsive" width="100%" height="100%" alt={username} />
+          <Image src={getCurrentAvatar(avatar, gender)} layout="responsive" width="100%" height="100%" alt={username} />
         </div>
         <div className="w-50">
           <i className="ri-user-line" />
@@ -26,7 +25,7 @@ UserHoverItem = (props) => {
         </div>
       </div>
       <div className="card-body text-left py-2">
-        <LoadRender path={getApiPath(apiName.userEx)} token query={{ userId }} loaded={Loaded} />
+        <LoadRender path={apiName.userEx} token query={{ userId }} loaded={Loaded} />
         {getUserProps(props).map(({ key, icon, value }) => (
           <div key={key}>
             <i className={icon} />

@@ -1,11 +1,11 @@
+import { wrapper } from "store";
 import { END } from "redux-saga";
 import isEqual from "lodash/isEqual";
 import Main from "containers/Main";
 import { apiName } from "config/api";
-import { wrapper } from "store";
 import { autoDispatchTockenHandler } from "config/ssr";
-import { getDataAction_Server, getDataSucess_Server } from "store/reducer/server/action";
 import { animateFadein, getClass } from "utils/class";
+import { getDataAction_Server, getDataSucess_Server } from "store/reducer/server/action";
 
 interface HomeComponent {
   (): JSX.Element;

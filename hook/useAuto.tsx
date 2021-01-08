@@ -1,8 +1,15 @@
-import { useCallback, useEffect, useRef, useState } from "react";
-import loadImg from "utils/image";
+import { RefObject, useCallback, useEffect, useRef, useState } from "react";
+import { loadImg } from "utils/image";
 import { actionHandler } from "utils/element";
 import debounce from "lodash/debounce";
-import { UseAutoActionHandlerType, UseAutoFlushHandlerType, UseAutoSetHeaderHeightType, UseAutoLoadCheckcodeImgType } from "./@type";
+import {
+  UseAutoActionHandlerType,
+  UseAutoFlushHandlerProps,
+  UseAutoFlushHandlerType,
+  UseAutoSetHeaderHeightType,
+  UseAutoLoadCheckcodeImgProps,
+  UseAutoLoadCheckcodeImgType,
+} from "./@type";
 
 let useAutoActionHandler: UseAutoActionHandlerType;
 let useAutoFlushHandler: UseAutoFlushHandlerType;
@@ -42,19 +49,19 @@ useAutoActionHandler = ({ action, timmer, actionState = true, once = true, delay
   }, [delayTime, once, actionCallback, rightNow]);
 };
 
-function autoFlushHandler<T>({ delayTime, flushAction }) {
-  const [state, setState] = useState<T>(flushAction());
+function autoFlushHandler<T>({ delayTime, flushAction }: UseAutoFlushHandlerProps): T {
+  const [state, setState] = useState<T>(flushAction<T>());
   const flushActionCallback = useCallback(() => setState(flushAction()), [flushAction]);
   useAutoActionHandler({ delayTime, action: flushActionCallback, timmer: true, once: false });
   return state;
 }
 
-function autoSetHeaderHeight<T extends HTMLElement>(breakPoint) {
+function autoSetHeaderHeight<T extends HTMLElement>(breakPoint: number): { ref: RefObject<T>; height: number } {
   const ref = useRef<T>();
   const [height, setHeight] = useState<number>(0);
   const setHeightCallback = useCallback(
     () =>
-      actionHandler(ref.current, (ele) => {
+      actionHandler<T>(ref.current, (ele) => {
         ele.style.height = "auto";
         setHeight(ele.offsetHeight);
         ele.style.height = "0px";
@@ -83,11 +90,11 @@ function autoSetHeaderHeight<T extends HTMLElement>(breakPoint) {
   return { ref, height };
 }
 
-function autoLoadCheckcode<T extends HTMLImageElement>(imgUrl, strUrl) {
+function autoLoadCheckcode<T extends HTMLImageElement>({ imgUrl, strUrl }: UseAutoLoadCheckcodeImgProps): RefObject<T> {
   const ref = useRef<T>();
   const loadActionCallback = useCallback(
     debounce(
-      () => actionHandler<T>(ref.current, (ele) => loadImg(imgUrl, strUrl, ele)),
+      () => actionHandler<T>(ref.current, (ele) => loadImg({ imgUrl, strUrl, imgElement: ele })),
       400,
       { leading: true } // 立即执行一次
     ),

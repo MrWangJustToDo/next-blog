@@ -2,7 +2,6 @@ import MainRightHead from "components/CardHead";
 import MainRightTagItem from "./mainRightTagItem";
 import { mainRightHeader } from "config/hoom";
 import { apiName } from "config/api";
-import { getApiPath } from "utils/path";
 import LoadRender from "components/LoadRender";
 import useTag from "hook/useTag";
 import { MainRightTagType } from "./@type";
@@ -17,7 +16,7 @@ MainRightTag = ({ index }) => {
       <MainRightHead icon={icon} content={content} hrefTo={hrefTo} />
       <div className="card-body">
         <LoadRender
-          path={getApiPath(apiName.tag)}
+          path={apiName.tag}
           initialData={tag}
           loaded={(data) =>
             data.map(({ tagId, tagContent, tagCount }) => (

@@ -1,7 +1,7 @@
 import Image from "next/image";
 import dynamic from "next/dynamic";
 import { blogContentArray } from "config/blogItem";
-import { autoTransformImage } from "utils/data";
+import { getCurrentAvatar } from "utils/data";
 import { getClass, flexEnd, flexStart } from "utils/class";
 import { BlogItemType } from "./@type";
 
@@ -19,7 +19,7 @@ BlogItemLeftUl = (props) => {
       <li className="d-table-cell align-middle">
         <UserHover {...props}>
           <div className={getClass("small text-secondary", flexStart)}>
-            <Image className="rounded-circle" src={autoTransformImage(avatar, gender)} alt="头像" width="28" height="28" />
+            <Image className="rounded-circle" src={getCurrentAvatar(avatar, gender)} alt="头像" width="28" height="28" />
             <div className="ml-2 text-truncate">{username}</div>
           </div>
         </UserHover>

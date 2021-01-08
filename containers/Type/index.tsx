@@ -4,7 +4,6 @@ import TypeFoot from "./typeFoot";
 import LoadRender from "components/LoadRender";
 import { useHome } from "hook/useHome";
 import { apiName } from "config/api";
-import { getApiPath } from "utils/path";
 import { Element } from "./@type";
 
 let Index: Element;
@@ -16,7 +15,7 @@ Index = () => {
       <TypeHead />
       <div className="card m-4">
         <LoadRender
-          path={getApiPath(apiName.home)}
+          path={apiName.home}
           initialData={blogs}
           loaded={(data) => {
             return (

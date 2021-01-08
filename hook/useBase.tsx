@@ -9,4 +9,4 @@ useCurrentState = () => {
   return { state, dispatch };
 };
 
-export default useCurrentState;
+export { useCurrentState };

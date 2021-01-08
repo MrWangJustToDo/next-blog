@@ -1,29 +1,18 @@
 import { apiName } from "config/api";
-import { getApiPath } from "utils/path";
-import { autoRequestEx } from "utils/fetcher";
 import { useAutoLoadCheckcodeImg } from "hook/useAuto";
-import { useInput, useSubmitToCheckModule } from "hook/useMessage";
-import { BlogContentMessagePutType } from "./@type";
-import { AutoRequestExType } from "utils/@type";
+import { useInput, useReplayModuleToSubmit } from "hook/useMessage";
+import { BlogContentMessageReplayModuleType } from "./@type";
 
-import style from "./index.module.scss";
+let Index: BlogContentMessageReplayModuleType;
 
-let Index: BlogContentMessagePutType;
-
-Index = (props) => {
-  console.log(props);
-  const [value, typeCallback] = useInput<HTMLTextAreaElement>();
+Index = ({ request, closeHandler }) => {
   const [code, typeCode] = useInput<HTMLInputElement>();
-  const ref = useAutoLoadCheckcodeImg(apiName.captcha, apiName.captchaStr);
+  const [value, typeCallback] = useInput<HTMLTextAreaElement>();
+  const ref = useAutoLoadCheckcodeImg({ imgUrl: apiName.captcha, strUrl: apiName.captchaStr });
+  const submit = useReplayModuleToSubmit({ request, closeHandler, checkCode: code, content: value });
   return (
     <>
-      <textarea
-        className="w-100 my-2 border rounded"
-        placeholder="请输入留言"
-        style={{ minHeight: "100px" }}
-        value={value}
-        onChange={typeCallback}
-      />
+      <textarea className="w-100 my-2 border rounded" placeholder="请输入留言" style={{ minHeight: "100px" }} value={value} onChange={typeCallback} />
       <div className="row">
         <label htmlFor="putcheck" className="col-2 col-form-label text-center text-truncate" title="验证码">
           验证码:
@@ -32,7 +21,7 @@ Index = (props) => {
         <div className="col-4">
           <input className="form-control" id="putcheck" value={code} onChange={typeCode} />
         </div>
-        <button className="btn btn-sm btn-primary" disabled={!!!value.length || !!!code.length}>
+        <button className="btn btn-sm btn-primary" disabled={!!!value.length || !!!code.length} onClick={submit}>
           新留言
         </button>
       </div>

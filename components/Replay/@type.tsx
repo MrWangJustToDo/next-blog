@@ -1,6 +1,6 @@
 interface ReplayProps {
   head: JSX.Element | string;
-  body: (props: () => void) => JSX.Element;
+  body: (closeHandler: () => void) => JSX.Element;
   foot?: JSX.Element;
   className?: string;
   showState?: boolean;

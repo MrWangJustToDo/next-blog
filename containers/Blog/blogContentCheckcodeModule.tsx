@@ -1,15 +1,15 @@
 import { apiName } from "config/api";
 import { flexCenter, getClass } from "utils/class";
-import { useCheckcodeToSubmit, useInput } from "hook/useMessage";
+import { useCheckcodeModuleToSubmit, useInput } from "hook/useMessage";
 import { useAutoLoadCheckcodeImg } from "hook/useAuto";
-import { BlogContentImageCheckType } from "./@type";
+import { BlogContentCheckcodeModuleType } from "./@type";
 
-let Index: BlogContentImageCheckType;
+let Index: BlogContentCheckcodeModuleType;
 
 Index = ({ request, closeHandler }) => {
   const [value, typeCallback] = useInput<HTMLInputElement>();
-  const img = useAutoLoadCheckcodeImg(apiName.captcha, apiName.captchaStr);
-  const { ref, submit } = useCheckcodeToSubmit<HTMLInputElement>({ request, closeHandler });
+  const img = useAutoLoadCheckcodeImg({ imgUrl: apiName.captcha, strUrl: apiName.captchaStr });
+  const { ref, submit } = useCheckcodeModuleToSubmit<HTMLInputElement>({ request, closeHandler });
   return (
     <div className={getClass("row", flexCenter)}>
       <label htmlFor="putcheck" className="col-2 col-form-label text-center text-truncate" title="验证码">

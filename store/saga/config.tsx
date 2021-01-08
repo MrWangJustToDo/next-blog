@@ -4,7 +4,6 @@ import { getTypeData } from "./type";
 import { getTagData } from "./tag";
 import { getBlogData } from "./blog";
 
-// action type 对应的 saga 函数
 interface SagaConfig {
   [props: string]: any;
 }

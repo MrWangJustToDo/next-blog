@@ -1,17 +1,20 @@
 import { useCallback, useState } from "react";
-import { delay } from "utils/delay";
+import debounce from "lodash/debounce";
+import throttle from "lodash/throttle";
 import { UseHoverItemType } from "./@type";
 
 let useHoverItem: UseHoverItemType;
 
 useHoverItem = (init = false) => {
   const [showState, setShowState] = useState(init);
-  const show = () => {
-    if (!showState) {
-      delay(300, () => setShowState(true), "userHover");
-    }
-  };
-  const hide = useCallback(() => delay(300, () => setShowState(false), "userHover"), []);
+  const show = useCallback(
+    throttle(() => setShowState(true), 800, { leading: true }),
+    []
+  );
+  const hide = useCallback(
+    debounce(() => setShowState(false), 300),
+    []
+  );
   return { showState, show, hide };
 };
 

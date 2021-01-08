@@ -1,5 +1,5 @@
 import { useMemo } from "react";
-import mark from "utils/markdown";
+import { mark } from "utils/markdown";
 import { BlogContentType } from "./@type";
 
 let BlogContentBody: BlogContentType;

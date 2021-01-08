@@ -1,6 +1,6 @@
 import Image from "next/image";
 import { calendar } from "utils/time";
-import { autoTransformImage } from "utils/data";
+import { getCurrentAvatar } from "utils/data";
 import { flexBetween, flexCenter, getClass } from "utils/class";
 import { BlogContentType } from "containers/Blog/@type";
 
@@ -11,7 +11,7 @@ BlogHeadLeft = ({ gender, avatar, username, blogModifyState, blogModifyDate, blo
     <ul className={getClass("list-unstyled text-truncate w-50 small overflow-auto m-0", flexBetween)} style={{ maxWidth: "240px" }}>
       <li className="small">
         <div className={getClass("text-secondary", flexCenter)}>
-          <Image className="rounded-circle" src={autoTransformImage(avatar, gender)} alt={username} width="30" height="30" />
+          <Image className="rounded-circle" src={getCurrentAvatar(avatar, gender)} alt={username} width="30" height="30" />
           <span className="ml-2 text-info">{username}</span>
         </div>
       </li>

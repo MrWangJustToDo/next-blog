@@ -1,8 +1,11 @@
+import { apiName } from "config/api";
+import { QueryProps } from "utils/@type";
+
 /* index */
 interface LoadRenderProps {
   method?: string;
-  path: string;
-  query?: object;
+  path: apiName | string;
+  query?: QueryProps;
   requestData?: object;
   token?: boolean;
   loading?: (props: LoadingProps) => JSX.Element;

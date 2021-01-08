@@ -3,7 +3,7 @@ import { useCallback } from "react";
 import UserHover from "components/UserHover";
 import { momentTo } from "utils/time";
 import { getClass } from "utils/class";
-import { autoTransformImage } from "utils/data";
+import { getCurrentAvatar } from "utils/data";
 import { PrimaryMessageType } from "./@type";
 
 import style from "./index.module.scss";
@@ -28,7 +28,7 @@ Index = (props) => {
   return (
     <div className="media py-2">
       <UserHover {...props}>
-        <Image src={autoTransformImage(avatar, gender)} className="rounded" alt="头像" width="38" height="38" />
+        <Image src={getCurrentAvatar(avatar, gender)} className="rounded" alt="头像" width="38" height="38" />
       </UserHover>
       <div className="media-body ml-2 ml-md-3">
         <h5 className="small">

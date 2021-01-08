@@ -56,7 +56,7 @@ const detectionToken = actionHandler(
       fail(res, 401, ["拒绝访问", "当前没有权限"], "token检测失败");
     } else {
       // 未配置api访问检测
-      log(`未配置的api访问: ${path}`);
+      log(`this api request not set yet: ${path}`);
       next();
     }
   },

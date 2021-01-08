@@ -2,7 +2,6 @@ import MainRightHead from "components/CardHead";
 import MainRightTypeItem from "./mainRightTypeItem";
 import { mainRightHeader } from "config/hoom";
 import { apiName } from "config/api";
-import { getApiPath } from "utils/path";
 import LoadRender from "components/LoadRender";
 import useType from "hook/useType";
 import { MainRightTypeType } from "./@type";
@@ -18,7 +17,7 @@ MainRightType = ({ index }) => {
       <div className="card-body">
         <div className="list-group">
           <LoadRender
-            path={getApiPath(apiName.type)}
+            path={apiName.type}
             initialData={type}
             loaded={(data) =>
               data.map(({ typeId, typeContent, typeCount }) => (

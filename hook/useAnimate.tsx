@@ -1,23 +1,31 @@
-import { useEffect, useRef } from "react";
+import { RefObject, useEffect, useRef } from "react";
 import { cancel, delay } from "utils/delay";
 import { actionHandler } from "utils/element";
-import { UseShowAndHideAnimateType } from "./@type";
+import { UseShowAndHideAnimateProps, UseShowAndHideAnimateType } from "./@type";
 
+let delayTime: number;
 let useShowAndHideAnimate: UseShowAndHideAnimateType;
 
-function showAndHideAnimate<T extends HTMLElement>({ state, key, showClassName = "animate__fadeIn", hideClassName = "animate__fadeOut" }) {
+delayTime = 450;
+
+function showAndHideAnimate<T extends HTMLElement>({
+  state,
+  key,
+  showClassName = "animate__fadeIn",
+  hideClassName = "animate__fadeOut",
+}: UseShowAndHideAnimateProps): { ref: RefObject<T> } {
   const ref = useRef<T>();
   useEffect(() => {
     // init
-    actionHandler(ref.current, (element) => element.classList.add("animate__animated", "animate__faster"));
+    actionHandler<T>(ref.current, (ele) => ele.classList.add("animate__animated", "animate__faster"));
     if (!state) {
-      delay(0, () => actionHandler(ref.current, (element) => element.classList.add(hideClassName)), key)
-        .then(() => delay(450, () => actionHandler(ref.current, (element) => (element.style.display = "none")), key))
-        .then(() => actionHandler(ref.current, (element) => element.classList.remove(hideClassName)));
+      delay(0, () => actionHandler(ref.current, (ele) => ele.classList.add(hideClassName)), key)
+        .then(() => delay(delayTime, () => actionHandler(ref.current, (ele) => (ele.style.display = "none")), key))
+        .then(() => actionHandler(ref.current, (ele) => ele.classList.remove(hideClassName)));
     } else {
-      delay(0, () => actionHandler(ref.current, (element) => (element.style.display = "block")), key)
-        .then(() => actionHandler(ref.current, (element) => element.classList.add(showClassName)))
-        .then(() => delay(450, () => actionHandler(ref.current, (element) => element.classList.remove(showClassName)), key));
+      delay(0, () => actionHandler(ref.current, (ele) => (ele.style.display = "block")), key)
+        .then(() => actionHandler(ref.current, (ele) => ele.classList.add(showClassName)))
+        .then(() => delay(delayTime, () => actionHandler(ref.current, (ele) => ele.classList.remove(showClassName)), key));
     }
     return () => key && cancel(key);
   }, [state]);

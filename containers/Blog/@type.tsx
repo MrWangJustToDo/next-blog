@@ -1,6 +1,6 @@
 import { ChildMessageProps, PrimaryMessageProps } from "components/BlogMessage/@type";
 import { BlogContentProps } from "hook/@type";
-import { AutoRequestExType } from "utils/@type";
+import { AutoRequestType } from "utils/@type";
 
 interface BlogContentType {
   (props: BlogContentProps): JSX.Element;
@@ -37,11 +37,11 @@ interface BlogContentChildMessageType {
 export type { BlogContentChildMessageType };
 
 /* blogContentCheckcode */
-interface BlogContentImageCheckType {
-  (props: { request: AutoRequestExType; closeHandler: () => void }): JSX.Element;
+interface BlogContentCheckcodeModuleType {
+  (props: { request: AutoRequestType; closeHandler: () => void }): JSX.Element;
 }
 
-export type { BlogContentImageCheckType };
+export type { BlogContentCheckcodeModuleType };
 
 /* blogContentMessagePut */
 interface BlogContentMessagePutType {
@@ -49,3 +49,14 @@ interface BlogContentMessagePutType {
 }
 
 export type { BlogContentMessagePutType };
+
+/* blogContentMessageReplayModule */
+interface BlogContentMessageReplayModuleProps {
+  request: AutoRequestType;
+  closeHandler: () => void;
+}
+interface BlogContentMessageReplayModuleType {
+  (props: BlogContentMessageReplayModuleProps): JSX.Element;
+}
+
+export type { BlogContentMessageReplayModuleType };

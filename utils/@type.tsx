@@ -19,17 +19,15 @@ interface GetItem<T> {
 export type { TransformArray, GetClass, GetArray, GetItem };
 
 /* data */
-type data = { code: number; state: string; data: object | object[] } | any;
-
+type ResultProps = ApiRequestResult | any;
 interface AutoTransformDataType {
-  (props: data): any;
+  (props: ResultProps): any;
 }
-
-interface AutoTransformImageType {
+interface GetCurrentAvatar {
   (avatar: string, gender: number): string;
 }
 
-export type { AutoTransformDataType, AutoTransformImageType };
+export type { AutoTransformDataType, GetCurrentAvatar };
 
 /* delay */
 interface Cancel {
@@ -51,39 +49,41 @@ interface KeyMap {
 export type { Cancel, Delay, TimeoutMap, ResolveMap, KeyMap };
 
 /* fetcher */
-interface Request {
+interface RequestProps {
   method?: string;
   path?: string | apiName;
-  query?: object;
+  query?: QueryProps;
   token?: boolean | string;
   data?: object;
 }
-
+interface ApiRequestResult {
+  code: number;
+  data: object | object[];
+  state: string;
+  res: any;
+}
 interface AutoRequestType {
-  (props: Request): (path: string, token?: any) => Promise<object>;
+  run?: <T>(path?: string, query?: QueryProps) => Promise<T>;
+  (props?: RequestProps): AutoRequestType;
 }
 
-interface AutoRequestExType {
-  (props?: Request): Promise<object> | AutoRequestExType;
-}
-
-export type { AutoRequestType, AutoRequestExType };
+export type { AutoRequestType, ApiRequestResult };
 
 /* path */
+interface QueryProps {
+  [props: string]: string;
+}
 interface TransformStringUrl {
-  (path: string, query?: object): string;
+  (path: string, query?: QueryProps): string;
 }
 interface TransformObjectUrl {
-  (props: { path: string; query?: object }): string;
-}
-interface GetApiPathType {
-  (props: apiName): string;
+  (props: { path: string; query?: QueryProps }): string;
 }
 interface GetRelativeApiPathType {
-  (name: apiName, query?: object): string;
+  (name: apiName, query?: QueryProps): string;
 }
 
-export type { TransformStringUrl, TransformObjectUrl, GetApiPathType, GetRelativeApiPathType };
+export type { TransformStringUrl, TransformObjectUrl, GetRelativeApiPathType, QueryProps };
 
 /* token */
 interface GetToken {
@@ -107,8 +107,13 @@ interface ActionHandlerType {
 export type { ActionHandlerType };
 
 /* image */
+interface LoadImgProps {
+  imgUrl: apiName;
+  strUrl: apiName;
+  imgElement: HTMLImageElement;
+}
 interface LoadImgType {
-  (imgUrl: apiName, strUrl: apiName, imgElement: HTMLImageElement): Promise<HTMLImageElement | void>;
+  (props: LoadImgProps): Promise<HTMLImageElement | void>;
 }
 
 export type { LoadImgType };

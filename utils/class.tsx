@@ -15,8 +15,8 @@ let flexAround: GetItem<string>;
 let flexBottom: GetItem<string>;
 
 // 自动处理数组
-transformArray = (arr) => {
-  return arr.reduce<string[]>((pre, current) => {
+transformArray = (arr) =>
+  arr.reduce<string[]>((pre, current) => {
     if (Array.isArray(current)) {
       return pre.concat(transformArray(current));
     }
@@ -37,7 +37,6 @@ transformArray = (arr) => {
     console.error("type error: ", current);
     return pre;
   }, []);
-};
 
 // 自动处理类名
 getClass = (...res) => transformArray(res).join(" ");
@@ -50,15 +49,10 @@ animateZoomout = () => ["animate__animated", "animate__zoomOut", "animate__faste
 
 // flex
 flexCenter = () => "d-flex justify-content-center align-items-center";
-
 flexStart = () => "d-flex justify-content-start align-items-center";
-
 flexEnd = () => "d-flex justify-content-end align-items-center";
-
 flexBetween = () => "d-flex justify-content-between align-items-center";
-
 flexAround = () => "d-flex justify-content-around align-items-center";
-
 flexBottom = () => "d-flex justify-content-center align-items-end";
 
 export {

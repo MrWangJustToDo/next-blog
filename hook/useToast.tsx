@@ -1,4 +1,3 @@
-// Toast相关的hook
 import { createContext, useCallback, useContext, useState } from "react";
 import { delay } from "utils/delay";
 import { toastState } from "config/toast";
@@ -26,11 +25,6 @@ useToastProps = (init = []) => {
         delay(15000, filter, "toastFilter");
       };
       setToast((lastState) => [props, ...lastState]);
-      if (props.contentState === toastState.success) {
-        return Promise.resolve();
-      } else {
-        return Promise.reject();
-      }
     },
     [filter, update]
   );

@@ -1,4 +1,3 @@
-// 事件处理的工具
 import moment from "moment";
 import "moment/locale/zh-cn";
 import { TimeToString } from "./@type";
@@ -13,7 +12,9 @@ momentTo = (time) => {
   if (time instanceof Date) {
     return moment(new Date()).to(moment(time));
   } else {
-    console.warn(`时间参数错误${time}`);
+    console.warn(`time parameter error d${time}`);
+    const now = new Date();
+    return moment(now).to(now);
   }
 };
 

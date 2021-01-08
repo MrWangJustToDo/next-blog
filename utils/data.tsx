@@ -1,16 +1,17 @@
-import { AutoTransformDataType, AutoTransformImageType } from "./@type";
+import { AutoTransformDataType, GetCurrentAvatar } from "./@type";
 
 let autoTransformData: AutoTransformDataType;
-let autoTransformImage: AutoTransformImageType;
+let getCurrentAvatar: GetCurrentAvatar;
+
 autoTransformData = (data) => {
-  if (data.code === 0 && data.state && data.data) {
+  if (data.code !== undefined && data.state && data.data) {
     return data.data;
   } else {
     return data;
   }
 };
 
-autoTransformImage = (avatar, gender) => {
+getCurrentAvatar = (avatar, gender) => {
   if (avatar && avatar.length > 0) {
     return avatar;
   } else {
@@ -25,4 +26,4 @@ autoTransformImage = (avatar, gender) => {
   }
 };
 
-export { autoTransformData, autoTransformImage };
+export { autoTransformData, getCurrentAvatar };

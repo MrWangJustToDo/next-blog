@@ -1,10 +1,8 @@
 import { apiName } from "config/api";
-import { getApiPath } from "utils/path";
-import { autoRequestEx } from "utils/fetcher";
-import { useInput, useSubmitToCheckModule } from "hook/useMessage";
-import BlogContentImageCheck from "./blogContentCheckcodeModule";
+import { autoRequest } from "utils/fetcher";
+import { useInput, usePutToCheckcodeModule } from "hook/useMessage";
+import BlogContentCheckcodeModule from "./blogContentCheckcodeModule";
 import { BlogContentMessagePutType } from "./@type";
-import { AutoRequestExType } from "utils/@type";
 
 import style from "./index.module.scss";
 
@@ -12,10 +10,10 @@ let Index: BlogContentMessagePutType;
 
 Index = ({ blogId }) => {
   const [value, typeCallback] = useInput<HTMLTextAreaElement>();
-  const putRequest = autoRequestEx({ method: "post", path: getApiPath(apiName.putPrimaryMessage), data: { blogId } }) as AutoRequestExType;
-  const { ref, submit } = useSubmitToCheckModule<HTMLTextAreaElement>({
+  const putRequest = autoRequest({ method: "post", path: apiName.putPrimaryMessage, data: { blogId } });
+  const { ref, submit } = usePutToCheckcodeModule<HTMLTextAreaElement>({
     request: putRequest,
-    body: (request) => (close) => <BlogContentImageCheck request={request} closeHandler={close} />,
+    body: (request) => (close) => <BlogContentCheckcodeModule request={request} closeHandler={close} />,
     className: style.imgCheck,
   });
   return (

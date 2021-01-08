@@ -2,7 +2,7 @@ import { useCallback, useEffect } from "react";
 import { apiName } from "config/api";
 import { actionName } from "config/action";
 import { pageContentLength } from "config/type&tag";
-import useCurrentState from "./useCurrentState";
+import { useCurrentState } from "./useBase";
 import { setDataSucess_client } from "store/reducer/client/action";
 import { UseTagType } from "./@type";
 
@@ -28,6 +28,7 @@ useTag = (blogs) => {
   const currentPage = state.client[actionName.currentTagPage]["data"];
   // 更改当前选中的tag
   const changeCurrentTag = useCallback((nextTag) => dispatch(setDataSucess_client(actionName.currentTag, nextTag)), []);
+  // 自动设置初始选中tag
   autoChangeTag(tag, currentTag, changeCurrentTag);
   // 根据当前选中的tag获取blog
   const currentBlogs = blogs.filter(({ tagContent }) => tagContent.includes(currentTag));

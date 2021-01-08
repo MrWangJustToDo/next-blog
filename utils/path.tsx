@@ -1,8 +1,7 @@
-import { TransformStringUrl, TransformObjectUrl, GetApiPathType, GetRelativeApiPathType } from "./@type";
+import { TransformStringUrl, TransformObjectUrl, GetRelativeApiPathType } from "./@type";
 
 let transformObjectUrl: TransformObjectUrl;
 let transformStringUrl: TransformStringUrl;
-let getApiPath: GetApiPathType;
 let getRelativeApiPath: GetRelativeApiPathType;
 
 transformObjectUrl = ({ path, query }) => {
@@ -11,7 +10,7 @@ transformObjectUrl = ({ path, query }) => {
   }
   if (path.startsWith("http")) {
     if (!path.includes("/api")) {
-      console.log("外部链接访问：", path);
+      console.log("third part link：", path);
     }
     return path;
   }
@@ -19,8 +18,8 @@ transformObjectUrl = ({ path, query }) => {
     path = "/" + path;
   }
   if (path.startsWith("/api")) {
-    let protocal = JSON.parse(process.env.NEXT_PUBLIC_HTTPS) ? "https://" : "http://";
-    let url = process.env.NEXT_PUBLIC_APIHOST + path;
+    const protocal = JSON.parse(process.env.NEXT_PUBLIC_HTTPS) ? "https://" : "http://";
+    const url = process.env.NEXT_PUBLIC_APIHOST + path;
     let relativeUrl = protocal + url;
     if (query) {
       relativeUrl += "?";
@@ -31,15 +30,13 @@ transformObjectUrl = ({ path, query }) => {
     }
     return relativeUrl;
   } else {
-    console.error("非法链接访问：", path);
+    console.error("error path request：", path);
     return path;
   }
 };
 
 transformStringUrl = (path, query) => transformObjectUrl({ path, query });
 
-getApiPath = (apiName) => `/api/${apiName}`;
+getRelativeApiPath = (apiName, query) => transformStringUrl(`/api/${apiName}`, query);
 
-getRelativeApiPath = (apiName, query) => transformStringUrl(getApiPath(apiName), query);
-
-export { transformStringUrl, transformObjectUrl, getApiPath, getRelativeApiPath };
+export { transformStringUrl, transformObjectUrl, getRelativeApiPath };

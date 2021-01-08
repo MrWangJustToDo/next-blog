@@ -1,5 +1,5 @@
 import { getClass, flexCenter } from "utils/class";
-import LoadRender from "../LoadRender";
+import LoadRender from "components/LoadRender";
 import { YiYanComponent, Element } from "./@type";
 
 import style from "./index.module.scss";

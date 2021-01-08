@@ -2,8 +2,8 @@ import { useCallback, useEffect } from "react";
 import { apiName } from "config/api";
 import { actionName } from "config/action";
 import { pageContentLength } from "config/type&tag";
+import { useCurrentState } from "./useBase";
 import { setDataSucess_client } from "store/reducer/client/action";
-import useCurrentState from "./useCurrentState";
 import { UseTypeType } from "./@type";
 
 let useType: UseTypeType;

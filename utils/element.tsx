@@ -3,12 +3,12 @@ import { ActionHandlerType } from "./@type";
 
 let actionHandler: ActionHandlerType;
 
-function handler(element, action) {
+actionHandler = (element, action) => {
   if (element) {
     return action(element);
+  } else {
+    console.warn("element not exist to action");
   }
-}
-
-actionHandler = handler;
+};
 
 export { actionHandler };

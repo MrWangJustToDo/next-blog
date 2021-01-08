@@ -1,8 +1,8 @@
-import { useCallback, useEffect, useState } from "react";
+import { useCallback, useEffect } from "react";
 import { actionName } from "config/action";
 import { useRouter } from "next/dist/client/router";
+import { useCurrentState } from "./useBase";
 import { setDataSucess_client } from "store/reducer/client/action";
-import useCurrentState from "./useCurrentState";
 import { UseHeaderItemType } from "./@type";
 
 let useHeaderItem: UseHeaderItemType;

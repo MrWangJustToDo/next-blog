@@ -1,7 +1,7 @@
 import React from "react";
-import useHoverItem from "hook/useHoverItem";
 import { getClass } from "utils/class";
 import Animate from "./animate";
+import useHoverItem from "hook/useHoverItem";
 import { HoverType } from "./@type";
 
 let Hover: HoverType;
