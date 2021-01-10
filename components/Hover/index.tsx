@@ -1,17 +1,17 @@
 import React from "react";
 import { getClass } from "utils/class";
+import { useBool } from "hook/useBool";
 import Animate from "./animate";
-import useHoverItem from "hook/useHoverItem";
 import { HoverType } from "./@type";
 
 let Hover: HoverType;
 
 Hover = React.memo(({ className = "", children, hoverItem }) => {
-  const { showState, show, hide } = useHoverItem();
+  const { bool, showThrottleState, hideDebounce } = useBool();
   return (
-    <div onMouseEnter={show} onMouseLeave={hide} className={getClass("position-relative", className)}>
+    <div onMouseEnter={showThrottleState} onMouseLeave={hideDebounce} className={getClass("position-relative", className)}>
       {children}
-      <Animate show={showState}>{hoverItem}</Animate>
+      <Animate show={bool}>{hoverItem}</Animate>
     </div>
   );
 });

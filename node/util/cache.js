@@ -1,5 +1,4 @@
 const { delay } = require("./delay");
-const { log } = require("./index");
 
 // 可缓存工具对象
 class Cache {
@@ -13,7 +12,7 @@ class Cache {
 
   set(key, value, time = this.maxTime) {
     if (this.store.has(key)) {
-      log(`already cache, should not cache again! key: ${key} oldValue: ${this.store.get(key)} newValue: ${value}`);
+      console.warn(`already cache, should not cache again! key: ${key} oldValue: ${this.store.get(key)} newValue: ${value}`);
     }
     this.store.set(key, value);
     this.delete(key, time);
@@ -24,10 +23,10 @@ class Cache {
       time,
       () => {
         if (this.store.has(key)) {
-          log(`start delete data from cache, next request will update this data. key: ${key}`);
+          console.log(`start delete data from cache, next request will update this data. key: ${key}`);
           this.store.delete(key);
         } else {
-          log(`nothing need to delete. key: ${key}`);
+          console.error(`nothing need to delete. key: ${key}`);
         }
       },
       key
@@ -38,7 +37,7 @@ class Cache {
     if (this.store.has(key)) {
       return this.store.get(key);
     } else {
-      log(`not cache yet, nothing to return. key: ${key}`);
+      console.warn(`not cache yet, nothing to return. key: ${key}`);
       return false;
     }
   }

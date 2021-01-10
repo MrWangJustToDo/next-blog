@@ -1,5 +1,6 @@
 import Mark from "markdown-it";
 import hljs from "config/highLight";
+import { AddIdForHeadsType } from "./@type";
 
 const mark = new Mark({
   html: true,
@@ -15,4 +16,31 @@ const mark = new Mark({
   },
 });
 
-export { mark };
+let addIdForHeads: AddIdForHeadsType;
+
+addIdForHeads = (className) => {
+  if (className) {
+    const headings = document.querySelector(className).querySelectorAll("h1, h2, h3, h4, h5, h6, h7");
+    const headingMap = {};
+    Array.prototype.forEach.call(headings, function (heading) {
+      const id = heading.id
+        ? heading.id
+        : heading.textContent
+            .trim()
+            .toLowerCase()
+            .split(" ")
+            .join("-")
+            .replace(/[!@#$%^&*():]/gi, "")
+            .replace(/\//gi, "-");
+      headingMap[id] = !isNaN(headingMap[id]) ? ++headingMap[id] : 0;
+      if (headingMap[id]) {
+        heading.id = id + "-" + headingMap[id];
+      } else {
+        heading.id = id;
+      }
+    });
+    return !!headings.length;
+  }
+};
+
+export { mark, addIdForHeads };

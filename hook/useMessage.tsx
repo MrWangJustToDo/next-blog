@@ -1,14 +1,13 @@
-import { ChangeEvent, useCallback, useMemo, useRef, useState } from "react";
+import { useCallback, useMemo, useRef, useState } from "react";
 import { childMessageLength, primaryMessageLength } from "config/message";
-import { actionHandler } from "utils/element";
+import { actionHandler } from "utils/action";
 import { useReplayOpen } from "./useReplay";
 import { useFailToast, useSucessToast } from "./useToast";
 import {
   UseChildMessageType,
   UsePrimaryMessageType,
-  UseInputType,
   MyInputELement,
-  UsePutToCheckcodeModuleProps,
+  UseJudgeInputValueType,
   UsePutToCheckcodeModuleType,
   UseCheckcodeModuleToSubmitProps,
   UseCheckcodeModuleToSubmitType,
@@ -18,10 +17,11 @@ import {
   UseReplayModuleToSubmitType,
 } from "./@type";
 import { ApiRequestResult } from "utils/@type";
+import { useAutoActionHandler } from "./useAuto";
 
 let useChildMessage: UseChildMessageType;
 let usePrimaryMessage: UsePrimaryMessageType;
-let useInput: UseInputType;
+let useJudgeInputValue: UseJudgeInputValueType;
 let usePutToCheckcodeModule: UsePutToCheckcodeModuleType;
 let useCheckcodeModuleToSubmit: UseCheckcodeModuleToSubmitType;
 let useMessageToReplayModule: UseMessageToReplayModuleType;
@@ -45,15 +45,21 @@ usePrimaryMessage = (props) => {
   return { currentPage, increasePage, decreasePage, increaseAble, decreaseAble, currentMessage };
 };
 
-function input<T extends MyInputELement>(init = ""): [string, (e: ChangeEvent<T>) => void] {
-  const [value, setValue] = useState<string>(init);
-  const typeCallback = useCallback<(e: ChangeEvent<T>) => void>((e) => setValue(e.target.value), []);
-  return [value, typeCallback];
-}
+useJudgeInputValue = <T extends MyInputELement>(ref) => {
+  const [bool, setBool] = useState<boolean>(false);
+  const judgeValue = useCallback<() => void>(
+    () => actionHandler<T>(ref.current, (ele) => (!!ele.value.length ? setBool(true) : setBool(false))),
+    []
+  );
+  useAutoActionHandler({
+    action: judgeValue,
+    addListener: (action) => actionHandler<T>(ref.current, (ele) => ele.addEventListener("input", action)),
+    removeListener: (action) => actionHandler<T>(ref.current, (ele) => ele.removeEventListener("input", action)),
+  });
+  return bool;
+};
 
-useInput = input;
-
-function putToCheckcodeModule<T extends MyInputELement>({ request, body, className = "" }: UsePutToCheckcodeModuleProps) {
+usePutToCheckcodeModule = <T extends MyInputELement>({ request, body, className = "" }) => {
   const ref = useRef<T>();
   const open = useReplayOpen();
   const submit = useCallback(() => {
@@ -67,12 +73,11 @@ function putToCheckcodeModule<T extends MyInputELement>({ request, body, classNa
       }
     });
   }, [open]);
-  return { ref, submit };
-}
+  const canSubmit = useJudgeInputValue<T>(ref);
+  return { ref, submit, canSubmit };
+};
 
-usePutToCheckcodeModule = putToCheckcodeModule;
-
-function checkcodeModuleToSubmit<T extends MyInputELement>({ request, closeHandler }: UseCheckcodeModuleToSubmitProps) {
+useCheckcodeModuleToSubmit = <T extends MyInputELement>({ request, closeHandler }: UseCheckcodeModuleToSubmitProps) => {
   const ref = useRef<T>();
   const pushFail = useFailToast();
   const pushSucess = useSucessToast();
@@ -93,26 +98,25 @@ function checkcodeModuleToSubmit<T extends MyInputELement>({ request, closeHandl
       }
     });
   }, [request, closeHandler, pushFail, pushSucess]);
-  return { ref, submit };
-}
+  const canSubmit = useJudgeInputValue<T>(ref);
+  return { ref, submit, canSubmit };
+};
 
-useCheckcodeModuleToSubmit = checkcodeModuleToSubmit;
-
-function messageToReplayModule<T>({ request, body, className }: UseMessageToReplayModuleProps<T>) {
+useMessageToReplayModule = <T extends {}>({ request, body, className }: UseMessageToReplayModuleProps<T>) => {
   const open = useReplayOpen();
   const replay = useCallback<(props: T) => void>((props) => {
     open({ head: "回复", body: body(request)(props), className });
   }, []);
   return replay;
-}
+};
 
-useMessageToReplayModule = messageToReplayModule;
-
-function replayModuleToSubmit({ request, closeHandler, checkCode, content }: UseReplayModuleToSubmitProps) {
+useReplayModuleToSubmit = <T extends MyInputELement, F extends MyInputELement>({ request, closeHandler }: UseReplayModuleToSubmitProps) => {
+  const input1 = useRef<T>();
+  const input2 = useRef<F>();
   const pushFail = useFailToast();
   const pushSucess = useSucessToast();
   const submit = useCallback(() => {
-    request({ data: { checkCode, content } })
+    request({ data: { content: input1.current, checkCode: input2.current } })
       .run<ApiRequestResult>()
       .then(({ code, data }) => {
         if (code === 0) {
@@ -123,10 +127,10 @@ function replayModuleToSubmit({ request, closeHandler, checkCode, content }: Use
         }
       })
       .catch((e) => pushFail(`发生错误: ${e}`));
-  }, [checkCode, content, pushFail, pushSucess, request]);
-  return submit;
-}
+  }, [pushFail, pushSucess, request]);
+  const canSubmit1 = useJudgeInputValue(input1);
+  const canSubmit2 = useJudgeInputValue(input2);
+  return { input1, input2, submit, canSubmit: canSubmit1 && canSubmit2 };
+};
 
-useReplayModuleToSubmit = replayModuleToSubmit;
-
-export { useChildMessage, usePrimaryMessage, useInput, usePutToCheckcodeModule, useCheckcodeModuleToSubmit, useMessageToReplayModule, useReplayModuleToSubmit };
+export { useChildMessage, usePrimaryMessage, usePutToCheckcodeModule, useCheckcodeModuleToSubmit, useMessageToReplayModule, useReplayModuleToSubmit };

@@ -1,12 +1,12 @@
 import { State } from "store";
-import { ChangeEvent, RefObject } from "react";
+import { RefObject } from "react";
 import { AnyAction } from "redux";
-import { ToastProps } from "components/Toast/@type";
-import { LoadingBarProps } from "components/LoadingBar/@type";
-import { ReplayProps } from "components/Replay/@type";
-import { ChildMessageProps, PrimaryMessageProps } from "components/BlogMessage/@type";
 import { apiName } from "config/api";
 import { AutoRequestType } from "utils/@type";
+import { ToastProps } from "components/Toast/@type";
+import { ReplayProps } from "components/Replay/@type";
+import { LoadingBarProps } from "components/LoadingBar/@type";
+import { ChildMessageProps, PrimaryMessageProps } from "components/BlogMessage/@type";
 
 interface BlogContentProps {
   authorId?: string;
@@ -50,17 +50,29 @@ export type { UseCurrentStateType };
 
 /* useHeader */
 interface UseHeaderItemType {
-  (appendHandler?: () => void): { currentHeader: string; changeCurrentHeader: (headItem: string) => void };
+  (): { currentHeader: string; changeCurrentHeader: (headItem: string) => void };
 }
 
 export type { UseHeaderItemType };
 
-/* useHoverItem */
-interface UseHoverItemType {
-  (init?: boolean): { showState: boolean; show: () => void; hide: () => void };
+/* useBool */
+interface UseBoolResult {
+  bool: boolean;
+  switchBool: () => void;
+  switchBoolThrottle: () => void;
+  switchBoolThrottleState: () => void;
+  show: () => void;
+  showThrottle: () => void;
+  showThrottleState: () => void;
+  hide: () => void;
+  hideDebounce: () => void;
+  hideDebounceState: () => void;
+}
+interface UseBoolType {
+  (init?: boolean): UseBoolResult;
 }
 
-export type { UseHoverItemType };
+export type { UseBoolType };
 
 /* useLoadingBar */
 interface UseLoadReturn {
@@ -169,13 +181,6 @@ interface UseAutoActionHandlerProps {
 interface UseAutoActionHandlerType {
   (props: UseAutoActionHandlerProps): void;
 }
-interface UseAutoFlushHandlerProps {
-  delayTime: number;
-  flushAction: <T>() => T;
-}
-interface UseAutoFlushHandlerType {
-  <T>(props: UseAutoFlushHandlerProps): T;
-}
 interface UseAutoSetHeaderHeightType {
   <T extends HTMLElement>(breakPoint?: number): { ref: RefObject<T>; height: number };
 }
@@ -186,25 +191,22 @@ interface UseAutoLoadCheckcodeImgProps {
 interface UseAutoLoadCheckcodeImgType {
   <T extends HTMLImageElement>(props: UseAutoLoadCheckcodeImgProps): RefObject<T>;
 }
+interface UseAutoShowAndHideType {
+  <T extends HTMLElement>(breakPoint: number): RefObject<T>;
+}
 
-export type {
-  UseAutoActionHandlerType,
-  UseAutoFlushHandlerProps,
-  UseAutoFlushHandlerType,
-  UseAutoSetHeaderHeightType,
-  UseAutoLoadCheckcodeImgProps,
-  UseAutoLoadCheckcodeImgType,
-};
+export type { UseAutoActionHandlerType, UseAutoSetHeaderHeightType, UseAutoLoadCheckcodeImgProps, UseAutoLoadCheckcodeImgType, UseAutoShowAndHideType };
 
 /* useAnimate */
-interface UseShowAndHideAnimateProps {
+interface UseShowAndHideAnimateProps<T> {
   state: boolean;
   key?: string;
+  ref?: RefObject<T>;
   showClassName?: string;
   hideClassName?: string;
 }
 interface UseShowAndHideAnimateType {
-  <T extends HTMLElement>(props: UseShowAndHideAnimateProps): { ref: RefObject<T> };
+  <T extends HTMLElement>(props: UseShowAndHideAnimateProps<T>): { ref: RefObject<T> };
 }
 
 export type { UseShowAndHideAnimateProps, UseShowAndHideAnimateType };
@@ -235,8 +237,8 @@ interface UsePrimaryMessageType {
   (props: PrimaryMessageProps[]): UsePrimaryMessageResult;
 }
 type MyInputELement = HTMLInputElement | HTMLTextAreaElement;
-interface UseInputType {
-  <T extends MyInputELement>(init?: string): [string, (e: ChangeEvent<T>) => void];
+interface UseJudgeInputValueType {
+  <T extends MyInputELement>(ref: RefObject<T>): boolean;
 }
 interface UsePutToCheckcodeModuleProps {
   request: AutoRequestType;
@@ -246,6 +248,7 @@ interface UsePutToCheckcodeModuleProps {
 interface UsePutToCheckcodeModuleType {
   <T extends MyInputELement>(props: UsePutToCheckcodeModuleProps): {
     ref: RefObject<T>;
+    canSubmit: boolean;
     submit: () => void;
   };
 }
@@ -256,6 +259,7 @@ interface UseCheckcodeModuleToSubmitProps {
 interface UseCheckcodeModuleToSubmitType {
   <T extends MyInputELement>(props: UseCheckcodeModuleToSubmitProps): {
     ref: RefObject<T>;
+    canSubmit: boolean;
     submit: () => void;
   };
 }
@@ -270,18 +274,21 @@ interface UseMessageToReplayModuleType {
 interface UseReplayModuleToSubmitProps {
   request: AutoRequestType;
   closeHandler: () => void;
-  checkCode: string;
-  content: string;
 }
 interface UseReplayModuleToSubmitType {
-  (props: UseReplayModuleToSubmitProps): () => void;
+  <T extends MyInputELement, F extends MyInputELement>(props: UseReplayModuleToSubmitProps): {
+    input1: RefObject<T>;
+    input2: RefObject<F>;
+    submit: () => void;
+    canSubmit: boolean;
+  };
 }
 
 export type {
   UseChildMessageType,
   UsePrimaryMessageType,
-  UseInputType,
   MyInputELement,
+  UseJudgeInputValueType,
   UsePutToCheckcodeModuleProps,
   UsePutToCheckcodeModuleType,
   UseCheckcodeModuleToSubmitProps,

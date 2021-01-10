@@ -10,7 +10,6 @@ interface HeadContainerProps {
   value?: string;
   icon?: string;
   hrefTo?: string;
-  handler?: () => void;
 }
 
 interface HeadContainerItemType {
@@ -21,7 +20,7 @@ export type { HeadContainerItemType };
 
 /* headContainerList */
 interface HeadContainerListType {
-  (props: { show: boolean; hide: () => void }): JSX.Element;
+  (props: { show: boolean }): JSX.Element;
 }
 
 export type { HeadContainerListType };

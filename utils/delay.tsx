@@ -21,7 +21,7 @@ cancel = (key) => {
     timeoutMap[key] = timeoutMap[key].map((id) => id && clearTimeout(id)).slice(length);
     resolveMap[key] = resolveMap[key].map((resolve) => resolve()).slice(length);
   }
-  if (keyLength > 100) {
+  if (keyLength > 300) {
     // 按照使用次数从小到大排序
     const keys = Object.keys(keyMap).sort((key1, key2) => (keyMap[key1] > keyMap[key2] ? 1 : -1));
     // 删除一半

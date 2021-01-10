@@ -1,20 +1,16 @@
-import { RefObject, useEffect, useRef } from "react";
+import { useEffect, useRef } from "react";
 import { cancel, delay } from "utils/delay";
-import { actionHandler } from "utils/element";
-import { UseShowAndHideAnimateProps, UseShowAndHideAnimateType } from "./@type";
+import { actionHandler } from "utils/action";
+import { UseShowAndHideAnimateType } from "./@type";
 
 let delayTime: number;
 let useShowAndHideAnimate: UseShowAndHideAnimateType;
 
-delayTime = 450;
+delayTime = 460;
 
-function showAndHideAnimate<T extends HTMLElement>({
-  state,
-  key,
-  showClassName = "animate__fadeIn",
-  hideClassName = "animate__fadeOut",
-}: UseShowAndHideAnimateProps): { ref: RefObject<T> } {
-  const ref = useRef<T>();
+useShowAndHideAnimate = <T extends HTMLElement>({ state, ref, key, showClassName = "animate__fadeIn", hideClassName = "animate__fadeOut" }) => {
+  const current = useRef<T>();
+  ref = ref || current;
   useEffect(() => {
     // init
     actionHandler<T>(ref.current, (ele) => ele.classList.add("animate__animated", "animate__faster"));
@@ -30,8 +26,6 @@ function showAndHideAnimate<T extends HTMLElement>({
     return () => key && cancel(key);
   }, [state]);
   return { ref };
-}
-
-useShowAndHideAnimate = showAndHideAnimate;
+};
 
 export { useShowAndHideAnimate };

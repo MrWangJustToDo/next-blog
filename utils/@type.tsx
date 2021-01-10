@@ -101,7 +101,7 @@ export type { TimeToString };
 
 /* element */
 interface ActionHandlerType {
-  <T extends HTMLElement>(element: T | undefined, action: (ele: T) => void | any): void | any;
+  <T>(element: T | undefined, action: (ele: T) => void | any): void | any;
 }
 
 export type { ActionHandlerType };
@@ -117,3 +117,10 @@ interface LoadImgType {
 }
 
 export type { LoadImgType };
+
+/* markdown */
+interface AddIdForHeadsType {
+  (className: string): void | boolean;
+}
+
+export type { AddIdForHeadsType };

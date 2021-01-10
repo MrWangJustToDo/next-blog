@@ -13,7 +13,7 @@ Index = () => {
   return (
     <>
       <TypeHead />
-      <div className="card m-4">
+      <div className="card mx-lg-4 mt-4">
         <LoadRender
           path={apiName.home}
           initialData={blogs}

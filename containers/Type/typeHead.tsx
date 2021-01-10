@@ -8,7 +8,7 @@ let TypeHead: Element;
 TypeHead = () => {
   const { type } = useType();
   return (
-    <div className="card mx-4">
+    <div className="card mx-lg-4">
       <h5 className={getClass("card-header text-info user-select-none", flexBetween)}>
         <span className="small">分类</span>
         <div className="text-black-50 small">

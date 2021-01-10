@@ -18,14 +18,9 @@ let ModuleManager = ({ children }) => {
       </div>
       <ToastPushContext.Provider value={push}>
         <ReplayOpenContext.Provider value={open}>{children}</ReplayOpenContext.Provider>
-        <div className={getClass("position-fixed")} style={{ left: 0, top: 0, zIndex: 50, pointerEvents: "none" }}>
+        <div className={getClass("position-fixed")} style={{ left: 0, top: 0, zIndex: 200, pointerEvents: "none" }}>
           <div
-            className={getClass(
-              "vw-100 vh-100 overflow-auto py-5",
-              flexCenter,
-              style.cover,
-              replay && replay.showState ? style.cover_active : ""
-            )}
+            className={getClass("vw-100 vh-100 overflow-auto py-5", flexCenter, style.cover, replay && replay.showState ? style.cover_active : "")}
             style={{ pointerEvents: replay && replay.showState ? "auto" : "none" }}
           >
             {replay && <Replay {...replay} />}

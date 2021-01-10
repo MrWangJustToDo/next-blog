@@ -13,17 +13,11 @@ let autoChangeHeader = (item, changeCurrentItem) => {
   }, [item, changeCurrentItem]);
 };
 
-useHeaderItem = (appendHandler = () => {}) => {
+useHeaderItem = () => {
   const { route } = useRouter();
   const { state, dispatch } = useCurrentState();
   const currentHeader = state.client[actionName.currentHeader]["data"];
-  const changeCurrentHeader = useCallback(
-    (headItem) => {
-      dispatch(setDataSucess_client(actionName.currentHeader, headItem));
-      appendHandler();
-    },
-    [appendHandler]
-  );
+  const changeCurrentHeader = useCallback((headItem) => dispatch(setDataSucess_client(actionName.currentHeader, headItem)), []);
   autoChangeHeader(route, changeCurrentHeader);
   return { currentHeader, changeCurrentHeader };
 };

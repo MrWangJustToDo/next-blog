@@ -1,22 +1,17 @@
-import { RefObject, useCallback, useEffect, useRef, useState } from "react";
-import { loadImg } from "utils/image";
-import { actionHandler } from "utils/element";
+import { useCallback, useEffect, useRef, useState } from "react";
 import debounce from "lodash/debounce";
-import {
-  UseAutoActionHandlerType,
-  UseAutoFlushHandlerProps,
-  UseAutoFlushHandlerType,
-  UseAutoSetHeaderHeightType,
-  UseAutoLoadCheckcodeImgProps,
-  UseAutoLoadCheckcodeImgType,
-} from "./@type";
+import throttle from "lodash/throttle";
+import { loadImg } from "utils/image";
+import { actionHandler } from "utils/action";
+import { useShowAndHideAnimate } from "./useAnimate";
+import { UseAutoActionHandlerType, UseAutoSetHeaderHeightType, UseAutoLoadCheckcodeImgType, UseAutoShowAndHideType } from "./@type";
 
 let useAutoActionHandler: UseAutoActionHandlerType;
-let useAutoFlushHandler: UseAutoFlushHandlerType;
 let useAutoSetHeaderHeight: UseAutoSetHeaderHeightType;
 let useAutoLoadCheckcodeImg: UseAutoLoadCheckcodeImgType;
+let useAutoShowAndHide: UseAutoShowAndHideType;
 
-useAutoActionHandler = ({ action, timmer, actionState = true, once = true, delayTime, addListener, removeListener, rightNow = false }) => {
+useAutoActionHandler = ({ action, timmer, actionState = true, once = true, delayTime, rightNow = false, addListener, removeListener }) => {
   const actionCallback = useCallback(() => {
     if (actionState) {
       action();
@@ -46,51 +41,43 @@ useAutoActionHandler = ({ action, timmer, actionState = true, once = true, delay
         return () => removeListener(actionCallback);
       }
     }
-  }, [delayTime, once, actionCallback, rightNow]);
+  }, [delayTime, once, actionCallback, rightNow, addListener, removeListener]);
 };
 
-function autoFlushHandler<T>({ delayTime, flushAction }: UseAutoFlushHandlerProps): T {
-  const [state, setState] = useState<T>(flushAction<T>());
-  const flushActionCallback = useCallback(() => setState(flushAction()), [flushAction]);
-  useAutoActionHandler({ delayTime, action: flushActionCallback, timmer: true, once: false });
-  return state;
-}
-
-function autoSetHeaderHeight<T extends HTMLElement>(breakPoint: number): { ref: RefObject<T>; height: number } {
+useAutoSetHeaderHeight = <T extends HTMLElement>(breakPoint) => {
   const ref = useRef<T>();
+  const [bool, setBool] = useState<boolean>(true);
   const [height, setHeight] = useState<number>(0);
   const setHeightCallback = useCallback(
-    () =>
-      actionHandler<T>(ref.current, (ele) => {
-        ele.style.height = "auto";
-        setHeight(ele.offsetHeight);
-        ele.style.height = "0px";
-      }),
-    []
-  );
-  useEffect(() => {
-    if (document.body.offsetWidth < breakPoint) {
-      setHeightCallback();
-    } else {
-      const debounceSetHeightByStyle = debounce((cb) => {
-        if (document.body.offsetWidth < breakPoint) {
-          setHeightCallback();
-          if (cb && typeof cb === "function") {
-            cb();
+    debounce(
+      (cb) =>
+        actionHandler<T>(ref.current, (ele) => {
+          if (bool && document.body.offsetWidth < breakPoint) {
+            setBool(false);
+            ele.style.height = "auto";
+            setHeight(ele.offsetHeight);
+            ele.style.height = "0px";
+            if (cb && typeof cb === "function") {
+              cb();
+            }
           }
-        }
-      }, 300);
-      window.addEventListener(
-        "resize",
-        debounceSetHeightByStyle.bind(null, () => window.removeEventListener("resize", debounceSetHeightByStyle))
-      );
-      return () => window.removeEventListener("resize", debounceSetHeightByStyle);
-    }
-  }, [setHeightCallback]);
+        }),
+      400,
+      { leading: true }
+    ),
+    [breakPoint, bool]
+  );
+  setHeightCallback.bind(null, () => actionHandler<Window>(window, (ele) => ele.removeEventListener("resize", setHeightCallback)));
+  useAutoActionHandler({
+    action: setHeightCallback,
+    rightNow: true,
+    addListener: (action) => actionHandler<Window>(window, (ele) => ele.addEventListener("resize", action)),
+    removeListener: (action) => actionHandler<Window>(window, (ele) => ele.removeEventListener("resize", action)),
+  });
   return { ref, height };
-}
+};
 
-function autoLoadCheckcode<T extends HTMLImageElement>({ imgUrl, strUrl }: UseAutoLoadCheckcodeImgProps): RefObject<T> {
+useAutoLoadCheckcodeImg = <T extends HTMLImageElement>({ imgUrl, strUrl }) => {
   const ref = useRef<T>();
   const loadActionCallback = useCallback(
     debounce(
@@ -98,7 +85,7 @@ function autoLoadCheckcode<T extends HTMLImageElement>({ imgUrl, strUrl }: UseAu
       400,
       { leading: true } // 立即执行一次
     ),
-    [imgUrl, strUrl]
+    []
   );
   useAutoActionHandler({
     action: loadActionCallback,
@@ -107,12 +94,28 @@ function autoLoadCheckcode<T extends HTMLImageElement>({ imgUrl, strUrl }: UseAu
     removeListener: (action) => actionHandler<T>(ref.current, (ele) => ele.removeEventListener("click", action)),
   });
   return ref;
-}
+};
 
-useAutoFlushHandler = autoFlushHandler;
+useAutoShowAndHide = <T extends HTMLElement>(breakPoint) => {
+  const [value, setValue] = useState<boolean>(false);
+  const autoSetValueHandler = useCallback(
+    throttle(() => {
+      if (document.documentElement.scrollTop < breakPoint) {
+        setValue(false);
+      } else {
+        setValue(true);
+      }
+    }, 400),
+    [breakPoint]
+  );
+  useAutoActionHandler({
+    action: autoSetValueHandler,
+    rightNow: true,
+    addListener: (action) => actionHandler<Window>(window, (ele) => ele.addEventListener("scroll", action)),
+    removeListener: (action) => actionHandler<Window>(window, (ele) => ele.removeEventListener("scroll", action)),
+  });
+  const { ref } = useShowAndHideAnimate<T>({ state: value, key: "blogUtil", showClassName: "animate__slideInRight", hideClassName: "animate__slideOutRight" });
+  return ref;
+};
 
-useAutoSetHeaderHeight = autoSetHeaderHeight;
-
-useAutoLoadCheckcodeImg = autoLoadCheckcode;
-
-export { useAutoActionHandler, useAutoFlushHandler, useAutoSetHeaderHeight, useAutoLoadCheckcodeImg };
+export { useAutoActionHandler, useAutoSetHeaderHeight, useAutoLoadCheckcodeImg, useAutoShowAndHide };

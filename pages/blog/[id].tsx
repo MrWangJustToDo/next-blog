@@ -2,9 +2,11 @@ import { wrapper } from "store";
 import { END } from "redux-saga";
 import isEqual from "lodash/isEqual";
 import Blog from "containers/Blog";
+import BlogUtils from "components/BlogUtils";
 import { apiName } from "config/api";
 import { actionName } from "config/action";
 import { autoDispatchTockenHandler } from "config/ssr";
+import { animateFadein, getClass } from "utils/class";
 import { setDataSucess_client } from "store/reducer/client/action";
 import { getDataAction_Server, getDataSucess_Server } from "store/reducer/server/action";
 import { BlogContentType } from "containers/Blog/@type";
@@ -13,9 +15,12 @@ let BlogContent: BlogContentType;
 
 BlogContent = (props) => {
   return (
-    <div className="container-md my-5">
-      <Blog {...props} />
-    </div>
+    <>
+      <div className={getClass(animateFadein, "container-md my-5")}>
+        <Blog {...props} />
+      </div>
+      <BlogUtils />
+    </>
   );
 };
 

@@ -8,8 +8,8 @@ import style from "./index.module.scss";
 
 let HeadContainerItem: HeadContainerItemType;
 
-HeadContainerItem = ({ value = "head", hrefTo = "/", icon = "ri-home-heart-fill", handler = () => {} }) => {
-  const { currentHeader, changeCurrentHeader } = useHeaderItem(handler);
+HeadContainerItem = ({ value = "head", hrefTo = "/", icon = "ri-home-heart-fill" }) => {
+  const { currentHeader, changeCurrentHeader } = useHeaderItem();
   const clickHandler = useCallback(() => {
     changeCurrentHeader(hrefTo);
   }, [hrefTo]);

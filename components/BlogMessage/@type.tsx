@@ -21,6 +21,7 @@ interface PrimaryMessageProps {
 
   withReplay?: boolean;
   withChildren?: boolean;
+  withHover?: boolean;
 
   replayHandler: (props: PrimaryMessageProps) => void;
 }
@@ -53,6 +54,7 @@ interface ChildMessageProps {
 
   withReplay?: boolean;
   withChildren?: boolean;
+  withHover?: boolean;
 
   replayHandler: (props: ChildMessageProps) => void;
 }

@@ -22,6 +22,7 @@
     "moment": "^2.29.1",
     "next": "10.0.4",
     "next-redux-wrapper": "^6.0.2",
+    "qrcode": "^1.4.4",
     "react": "17.0.1",
     "react-dom": "17.0.1",
     "react-redux": "^7.2.2",
@@ -31,7 +32,8 @@
     "sqlite": "^4.0.19",
     "sqlite3": "^5.0.0",
     "svg-captcha": "^1.4.0",
-    "swr": "^0.3.11"
+    "swr": "^0.3.11",
+    "tocbot": "^4.12.1"
   },
   "devDependencies": {
     "@types/node": "^14.14.17",

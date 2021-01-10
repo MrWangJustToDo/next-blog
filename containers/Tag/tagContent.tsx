@@ -1,5 +1,8 @@
+import LoadRender from "components/LoadRender";
 import TagContentItem from "components/BlogItem";
+import { PrimaryMessage } from "components/BlogMessage";
 import useTag from "hook/useTag";
+import { apiName } from "config/api";
 import { getClass } from "utils/class";
 import { TagContentType } from "./@type";
 
@@ -16,7 +19,16 @@ TagContent = ({ blogs }) => {
           <div className="col-lg-8 px-0">
             <TagContentItem {...props} />
           </div>
-          <div className={getClass("col-lg-4 card", style.autoHide)}>显示评论。。。</div>
+          <div className={getClass("col-lg-4 border-left py-2", style.autoHide)}>
+            <LoadRender
+              path={apiName.primaryMessage}
+              method="post"
+              requestData={{ blogId: props.blogId }}
+              loaded={(data) =>
+                data.map((props) => <PrimaryMessage key={props.modifyDate} {...props} withReplay={false} withChildren={false} withHover={false} />)
+              }
+            />
+          </div>
         </div>
       ))}
     </ul>
