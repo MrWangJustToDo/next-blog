@@ -25,7 +25,7 @@ export type { LoadRenderType };
 
 /* loading */
 interface LoadingProps {
-  placeholder: { width?: string; height?: string };
+  placeholder?: { width?: string; height?: string };
 }
 
 interface LoadingType {

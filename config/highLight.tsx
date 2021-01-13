@@ -9,8 +9,8 @@ import less from "highlight.js/lib/languages/less";
 import scss from "highlight.js/lib/languages/scss";
 import shell from "highlight.js/lib/languages/shell";
 import xml from "highlight.js/lib/languages/xml";
-import "highlight.js/styles/monokai-sublime.css";
-// import "highlight.js/styles/dracula.css";
+// import "highlight.js/styles/monokai-sublime.css";
+import "highlight.js/styles/dracula.css";
 
 Hljs.registerLanguage("css", css);
 Hljs.registerLanguage("json", json);

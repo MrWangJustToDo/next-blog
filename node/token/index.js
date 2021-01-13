@@ -57,7 +57,11 @@ const detectionToken = actionHandler(
     } else {
       // 未配置api访问检测
       log(`this api request not set yet: ${path}`);
-      next();
+      if (global.dev) {
+        next();
+      } else {
+        fail(res, 404, ["访问失败", "访问路径不存在"], "api路径没有配置");
+      }
     }
   },
   ({ res, e }) => fail(res, 500, ["服务器错误", e.toString()], "detectionToken方法出现异常")

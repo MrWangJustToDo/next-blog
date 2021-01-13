@@ -192,7 +192,7 @@ export default class Demo extends React.Component {
       <div className="card-body typo">
         <h1 className="font-weight-bold text-center">{blogTitle}</h1>
         <br />
-        <div className="blog-content" dangerouslySetInnerHTML={{ __html: html }} />
+        <div className="blog-content" dangerouslySetInnerHTML={{ __html: content }} />
       </div>
     </li>
   );

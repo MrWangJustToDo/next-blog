@@ -8,6 +8,7 @@ enum actionName {
   currentTypePage = "currentTypePage",
   currentTagPage = "currentTagPage",
   currentBlogId = "currentBlogId",
+  currentArchive = "currentArchive",
 }
 
 export { actionName };

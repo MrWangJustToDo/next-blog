@@ -50,6 +50,8 @@ exports.insertHome = async ({
   blogId,
   blogState,
   blogTitle,
+  blogCreateDate,
+  blogCreateYear,
   blogImgLink,
   blogPreview,
   blogAssentCount,
@@ -59,11 +61,13 @@ exports.insertHome = async ({
   tagId,
 }) => {
   return await db.run(
-    "INSERT INTO home VALUES(?,?,?,?,?,?,?,?,?,?,?)",
+    "INSERT INTO home VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?)",
     authorId,
     blogId,
     blogState,
     blogTitle,
+    blogCreateDate,
+    blogCreateYear,
     blogImgLink,
     blogPreview,
     blogAssentCount,

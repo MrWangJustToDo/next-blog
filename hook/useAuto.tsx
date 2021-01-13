@@ -34,14 +34,16 @@ useAutoActionHandler = ({ action, timmer, actionState = true, once = true, delay
       if (!removeListener) {
         throw new Error("every addListener need a removeListener! ---> useAutoActionHandler");
       } else {
-        if (rightNow) {
-          actionCallback();
+        if (rightNow && actionState) {
+          action();
         }
-        addListener(actionCallback);
-        return () => removeListener(actionCallback);
+        if (actionState) {
+          addListener(action);
+          return () => removeListener(action);
+        }
       }
     }
-  }, [delayTime, once, actionCallback, rightNow, addListener, removeListener]);
+  }, [delayTime, once, actionCallback, rightNow, addListener, removeListener, action]);
 };
 
 useAutoSetHeaderHeight = <T extends HTMLElement>(breakPoint) => {
@@ -50,26 +52,23 @@ useAutoSetHeaderHeight = <T extends HTMLElement>(breakPoint) => {
   const [height, setHeight] = useState<number>(0);
   const setHeightCallback = useCallback(
     debounce(
-      (cb) =>
+      () =>
         actionHandler<T>(ref.current, (ele) => {
-          if (bool && document.body.offsetWidth < breakPoint) {
+          if (document.body.offsetWidth < breakPoint) {
             setBool(false);
             ele.style.height = "auto";
             setHeight(ele.offsetHeight);
             ele.style.height = "0px";
-            if (cb && typeof cb === "function") {
-              cb();
-            }
           }
         }),
-      400,
+      300,
       { leading: true }
     ),
-    [breakPoint, bool]
+    [breakPoint]
   );
-  setHeightCallback.bind(null, () => actionHandler<Window>(window, (ele) => ele.removeEventListener("resize", setHeightCallback)));
   useAutoActionHandler({
     action: setHeightCallback,
+    actionState: bool,
     rightNow: true,
     addListener: (action) => actionHandler<Window>(window, (ele) => ele.addEventListener("resize", action)),
     removeListener: (action) => actionHandler<Window>(window, (ele) => ele.removeEventListener("resize", action)),

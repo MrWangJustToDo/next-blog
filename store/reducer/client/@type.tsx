@@ -1,6 +1,7 @@
 // 定义类型的文件
 import { AnyAction } from "redux";
 import { actionName } from "config/action";
+import { BlogContentProps } from "hook/@type";
 
 /* action */
 interface ClientActionType {
@@ -18,4 +19,9 @@ interface ActionMapType<T> {
   [props: string]: (state: T, action: AnyAction) => T;
 }
 
-export type { ClientActionType, CreateAction, State, ActionMapType };
+/* currentArchive */
+interface StateProps {
+  (year?: string): BlogContentProps[];
+}
+
+export type { ClientActionType, CreateAction, State, ActionMapType, StateProps };

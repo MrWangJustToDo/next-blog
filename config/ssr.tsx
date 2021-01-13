@@ -1,4 +1,5 @@
 import { actionName } from "config/action";
+import { SagaStore } from "store";
 import { setDataSucess_client } from "store/reducer/client/action";
 import { AutoDispatchTockenHandler } from "./@type";
 

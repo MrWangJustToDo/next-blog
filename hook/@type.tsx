@@ -13,6 +13,7 @@ interface BlogContentProps {
   blogId?: string;
   blogState?: number;
   blogOriginState?: number;
+  blogCreateYear?: string;
   blogCreateDate?: string;
   blogModifyState?: number;
   blogModifyDate?: string;
@@ -170,7 +171,7 @@ export type { UseToastPropsType, UseToastPushType, UseContentToastType };
 /* useAuto */
 interface UseAutoActionHandlerProps {
   action: () => void;
-  actionState?: boolean;
+  actionState?: boolean; // 当前需要执行的状态，在事件监听回调中用于判断是否还需要绑定监听，在定时器中用于判断本次action是否需要执行
   timmer?: boolean; // 是否使用定时器
   once?: boolean; // 执行一次，for timmer
   delayTime?: number; // 定时器执行时间间隔
@@ -298,3 +299,19 @@ export type {
   UseReplayModuleToSubmitProps,
   UseReplayModuleToSubmitType,
 };
+
+/* useArchive */
+
+interface ArchiveProps {
+  (year: string): BlogContentProps[];
+}
+
+interface UseArchiveType {
+  (): { value: ArchiveProps | {}; canLoad: boolean; loadMore: () => void; allCount: number };
+}
+
+interface UseAutoLoadArchiveType {
+  (props: { canLoad: boolean; loadMore: () => void; breakPoint: number }): void;
+}
+
+export type { ArchiveProps, UseArchiveType, UseAutoLoadArchiveType };

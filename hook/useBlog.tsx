@@ -24,7 +24,7 @@ let useBlogMenu = (className) => {
       });
     }
     const re = tocbot.destroy.bind(tocbot);
-    return () => re && re();
+    return () => tocbot && re && re();
   }, []);
   return bool;
 };

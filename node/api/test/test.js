@@ -60,6 +60,8 @@ const test_publishHome = actionHandler(async ({ res }) => {
     blogId: "1",
     blogState: 3,
     blogTitle: "Test Blog",
+    blogCreateDate: new Date().toLocaleString(),
+    blogCreateYear: '2020',
     blogImgLink: "https://h2.ioliu.cn/bing/FreshSalt_ZH-CN12818759319_1920x1080.jpg",
     blogPreview: "blog content",
     blogAssentCount: 1,

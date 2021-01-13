@@ -116,7 +116,7 @@ useReplayModuleToSubmit = <T extends MyInputELement, F extends MyInputELement>({
   const pushFail = useFailToast();
   const pushSucess = useSucessToast();
   const submit = useCallback(() => {
-    request({ data: { content: input1.current, checkCode: input2.current } })
+    request({ data: { content: input1.current.value, checkCode: input2.current.value } })
       .run<ApiRequestResult>()
       .then(({ code, data }) => {
         if (code === 0) {
@@ -127,7 +127,7 @@ useReplayModuleToSubmit = <T extends MyInputELement, F extends MyInputELement>({
         }
       })
       .catch((e) => pushFail(`发生错误: ${e}`));
-  }, [pushFail, pushSucess, request]);
+  }, [pushFail, pushSucess, request, closeHandler]);
   const canSubmit1 = useJudgeInputValue(input1);
   const canSubmit2 = useJudgeInputValue(input2);
   return { input1, input2, submit, canSubmit: canSubmit1 && canSubmit2 };

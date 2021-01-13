@@ -3,7 +3,7 @@ import { LoadingType } from "./@type";
 
 let Loading: LoadingType;
 
-Loading = ({ placeholder }) => {
+Loading = ({ placeholder = {} }) => {
   const placeholderStyle = {
     height: placeholder.height ? `${placeholder.height}px` : "auto",
     width: placeholder.width ? `${placeholder.width}px` : "auto",

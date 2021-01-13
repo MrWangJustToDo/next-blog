@@ -10,7 +10,7 @@ let TagHead: Element;
 TagHead = () => {
   const { tag, currentTag } = useTag();
   return (
-    <div className="card mx-4">
+    <div className="card mx-lg-4">
       <h5 className={getClass("card-header text-info user-select-none", flexBetween)}>
         <span className="small">标签</span>
         <div className="text-black-50 small">

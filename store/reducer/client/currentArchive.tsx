@@ -1,26 +1,22 @@
 import { Draft, produce } from "immer";
 import { AnyAction, Reducer } from "redux";
+import { clientAction } from "./action";
+import { actionName } from "config/action";
+import { State, ActionMapType, StateProps } from "./@type";
 import { HYDRATE } from "next-redux-wrapper";
-import { serverAction } from "./action";
-import { apiName } from "config/api";
-import { State, ActionMapType } from "./@type";
-import { BlogContentProps } from "hook/@type";
 
-type CurrentState = State<BlogContentProps[]>;
+type CurrentState = State<StateProps>;
 
 let initState: CurrentState;
 let reducer: Reducer<CurrentState>;
 let actionReducerMap: ActionMapType<CurrentState>;
 
-initState = { data: [] };
+initState = { data: {} as StateProps };
 
 reducer = (state: CurrentState = initState, action: AnyAction) => {
+  // 合并服务器上的client部分数据
   if (action.type === HYDRATE) {
-    if (state.data.length) {
-      return { ...action.payload.server[apiName.home], ...state };
-    } else {
-      return { ...action.payload.server[apiName.home] };
-    }
+    return { ...action.payload.client[actionName.currentArchive] };
   }
   let actionReducer = actionReducerMap[action.type];
   if (actionReducer) {
@@ -31,11 +27,11 @@ reducer = (state: CurrentState = initState, action: AnyAction) => {
 };
 
 actionReducerMap = {
-  [serverAction.GETDATASUCESS(apiName.home)]: (state: CurrentState, action: AnyAction) =>
+  [clientAction.SETDATASUCESS(actionName.currentArchive)]: (state: CurrentState, action: AnyAction) =>
     produce(state, (proxy: Draft<CurrentState>) => {
       proxy.data = action.data;
     }),
-  [serverAction.GETDATAFAIL(apiName.home)]: (state: CurrentState, action: AnyAction) =>
+  [clientAction.SETDATAFAIL(actionName.currentArchive)]: (state: CurrentState, action: AnyAction) =>
     produce(state, (proxy: Draft<CurrentState>) => {
       proxy.data = action.e;
     }),
