@@ -11,7 +11,9 @@ import { setDataSucess_client } from "store/reducer/client/action";
 import { getDataAction_Server, getDataSucess_Server } from "store/reducer/server/action";
 import { BlogContentType } from "containers/Blog/@type";
 
-let BlogContent: BlogContentType;
+type BlogContentComponent = BlogContentType & { title?: string };
+
+let BlogContent: BlogContentComponent;
 
 BlogContent = (props) => {
   return (
@@ -23,6 +25,8 @@ BlogContent = (props) => {
     </>
   );
 };
+
+BlogContent.title = "博客";
 
 export const getServerSideProps = wrapper.getServerSideProps(
   autoDispatchTockenHandler(async ({ store, req, res, ...etc }) => {

@@ -10,9 +10,9 @@ class TreeNode<T> {
   private head: NodeItem<T>;
   private foot: NodeItem<T>;
   // 自动删除时间
-  readonly time: number = 10000;
+  readonly time: number = 20000;
   // 最大查找深度
-  readonly deepSearchLength = 10;
+  readonly deepSearchLength: number = 10;
 
   constructor(val?: T) {
     if (val !== undefined) {

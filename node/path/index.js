@@ -36,9 +36,9 @@ const path = {
 
 const access = {
   [path.autoLogin]: { disable: false },
-  [path.login]: { disable: false, token: false },
+  [path.login]: { disable: false, token: false, method: "post" },
   [path.logout]: { disable: false, token: false },
-  [path.register]: { disable: false, token: false },
+  [path.register]: { disable: false, token: false, method: "post" },
   [path.captcha]: { disable: false, token: false },
   [path.captchaStr]: { disable: false, token: false },
   [path.image]: { disable: false, token: false },

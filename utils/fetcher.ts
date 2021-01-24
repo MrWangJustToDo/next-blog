@@ -1,7 +1,7 @@
 // 请求自动参数处理逻辑
 import axios from "axios";
 import assign from "lodash/assign";
-import { apiName } from "config/api";
+import { apiName, cacheApi } from "config/api";
 import { getToken } from "./token";
 import { TreeNode } from "./node";
 import { getRelativeApiPath, transformStringUrl } from "./path";
@@ -37,11 +37,13 @@ autoRequest = ({ method, path, query, data, token }) => {
     const relativePath = targetPath.startsWith("http") ? transformStringUrl(targetPath, targetQuery) : getRelativeApiPath(targetPath as apiName, targetQuery);
     try {
       if (window) {
-        const target = treeNode.get(relativePath);
-        if (target) {
-          const resData = weakMap.get(target);
-          if (resData) {
-            return Promise.resolve(resData);
+        if (cacheApi[currentPath]) {
+          const target = treeNode.get(relativePath);
+          if (target) {
+            const resData = weakMap.get(target);
+            if (resData) {
+              return Promise.resolve(resData);
+            }
           }
         }
         const config = getConfig(data, token);

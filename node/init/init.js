@@ -54,7 +54,7 @@ exports.autoGetUser = actionHandler(
       }
       if (!req.user) {
         req.user = await getUserById({
-          id: req.signedCookies.id,
+          userId: req.signedCookies.id,
           db: global.db,
         });
         if (req.session) {

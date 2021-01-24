@@ -2,16 +2,13 @@ import { wrapper } from "store";
 import { END } from "redux-saga";
 import isEqual from "lodash/isEqual";
 import Main from "containers/Main";
+import { MyNextComponent } from "./_app";
 import { apiName } from "config/api";
 import { autoDispatchTockenHandler } from "config/ssr";
 import { animateFadein, getClass } from "utils/class";
 import { getDataAction_Server, getDataSucess_Server } from "store/reducer/server/action";
 
-interface HomeComponent {
-  (): JSX.Element;
-}
-
-let Home: HomeComponent;
+let Home: MyNextComponent;
 
 Home = () => {
   return (
@@ -20,6 +17,8 @@ Home = () => {
     </div>
   );
 };
+
+Home.title = "首页";
 
 export default Home;
 

@@ -6,6 +6,9 @@ enum apiName {
   type = "type", // 获取type页面数据path
   tag = "tag", // 获取tag页面数据path
   blog = "blog", // 获取blog详情
+  login = "login", // 登录
+  logout = "logout", // 登出
+  autoLogin = "autoLogin", // 自动登录
   primaryMessage = "primaryMessage", // 获取主要留言信息
   childMessage = "childMessage", // 获取次要留言信息
   captcha = "captcha", // 获取验证码图片
@@ -14,4 +17,16 @@ enum apiName {
   putChildMessage = "putChildMessage", // 发布次要评论
 }
 
-export { apiName };
+// 需要暂存结果的路径
+enum cacheApi {
+  home,
+  userEx,
+  user,
+  type,
+  tag,
+  blog,
+  primaryMessage,
+  childMessage,
+}
+
+export { apiName, cacheApi };

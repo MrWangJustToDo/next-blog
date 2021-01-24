@@ -39,16 +39,13 @@ useCustomizeToast = () => {
 
 useFailToast = () => {
   const push = useContext(ToastPushContext);
-  const failToast = useCallback((content) => push({ title: "message", content, contentState: toastState.fail }), []);
+  const failToast = useCallback((content) => push({ title: "message", content, contentState: toastState.fail, autoCloseSecond: 5000 }), []);
   return failToast;
 };
 
 useSucessToast = () => {
   const push = useContext(ToastPushContext);
-  const failToast = useCallback(
-    (content) => push({ title: "message", content, contentState: toastState.success, autoCloseSecond: 5000 }),
-    []
-  );
+  const failToast = useCallback((content) => push({ title: "message", content, contentState: toastState.success, autoCloseSecond: 5000 }), []);
   return failToast;
 };
 

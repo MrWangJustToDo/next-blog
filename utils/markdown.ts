@@ -13,7 +13,8 @@ const mark = new Mark({
         const transformArr = transformValue.split(/\n/).slice(0, -1);
         const minWidth = String(transformArr.length).length - 0.7;
         const html = transformArr.reduce(
-          (p, c, idx) => `${p}<span class='d-inline-block text-right border-right pr-2 mr-2 border-dark' style='min-width: ${minWidth}em'>${idx + 1}</span>${c}\n`,
+          (p, c, idx) =>
+            `${p}<span class='d-inline-block text-right border-right pr-2 mr-2 border-dark' style='min-width: ${minWidth}em'>${idx + 1}</span>${c}\n`,
           `<b class='float-right text-info'>${lang}</b>`
         );
         return `<pre class="rounded"><code class="hljs ${lang} p-2" style='font-size: 16px'>${html}</code></pre>`;
@@ -50,4 +51,19 @@ addIdForHeads = (className) => {
   }
 };
 
-export { mark, addIdForHeads };
+const markNOLineNumber = new Mark({
+  html: true,
+  xhtmlOut: true,
+  breaks: true,
+  highlight: function (str, lang) {
+    if (lang && hljs.getLanguage(lang)) {
+      try {
+        const transformValue = hljs.highlight(lang, str, true).value;
+        return `<pre class="rounded bg-dark"><code class="bg-dark hljs ${lang} p-2">${transformValue}</code></pre>`;
+      } catch (__) {}
+    }
+    return '<pre><code class="hljs">' + mark.utils.escapeHtml(str) + "</code></pre>";
+  },
+});
+
+export { mark, markNOLineNumber, addIdForHeads };

@@ -1,8 +1,8 @@
 import { getClass } from "utils/class";
 import { useBool } from "hook/useBool";
 import HeadContainerList from "./headContainerList";
+import HeadContainerUser from "./headContainerUser";
 import HeadContainerButton from "./headContainerButton";
-
 
 import style from "./index.module.scss";
 
@@ -14,6 +14,7 @@ const Header: () => JSX.Element = () => {
         <div className="navbar-brand text-info font-weight-bold">Blog</div>
         <HeadContainerButton handler={switchBoolThrottle} />
         <HeadContainerList show={bool} />
+        <HeadContainerUser />
       </div>
     </nav>
   );

@@ -8,6 +8,7 @@ import currentTag from "./currentTag";
 import currentTagPage from "./currentTagPage";
 import currentBlogId from "./currentBlogId";
 import currentArchive from "./currentArchive";
+import currentUser from "./currentUser";
 import { actionName } from "config/action";
 
 export default combineReducers({
@@ -20,4 +21,5 @@ export default combineReducers({
   [actionName.currentTagPage]: currentTagPage,
   [actionName.currentBlogId]: currentBlogId,
   [actionName.currentArchive]: currentArchive,
+  [actionName.currentUser]: currentUser,
 });

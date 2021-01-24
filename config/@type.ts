@@ -95,4 +95,18 @@ interface AutoDispatchTockenHandler {
   (props: AutoDispatchTockenHandlerType): AutoDispatchTockenHandlerType;
 }
 
-export type { AutoDispatchTockenHandler };
+export type { AutoDispatchTockenHandler, AutoDispatchTockenHandlerProps };
+
+/* user */
+interface LoginProps {
+  regexp: RegExp;
+  success: string;
+  fail: string;
+}
+
+interface LoginType {
+  username: LoginProps;
+  password: LoginProps;
+}
+
+export type { LoginProps, LoginType };

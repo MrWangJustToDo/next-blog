@@ -51,10 +51,18 @@ useJudgeInputValue = <T extends MyInputELement>(ref) => {
     () => actionHandler<T>(ref.current, (ele) => (!!ele.value.length ? setBool(true) : setBool(false))),
     []
   );
+  const addListenerCallback = useCallback<(action: () => void) => void>(
+    (action) => actionHandler<T>(ref.current, (ele) => ele.addEventListener("input", action)),
+    []
+  );
+  const removeListenerCallback = useCallback<(action: () => void) => void>(
+    (action) => actionHandler<T>(ref.current, (ele) => ele.removeEventListener("input", action)),
+    []
+  );
   useAutoActionHandler({
     action: judgeValue,
-    addListener: (action) => actionHandler<T>(ref.current, (ele) => ele.addEventListener("input", action)),
-    removeListener: (action) => actionHandler<T>(ref.current, (ele) => ele.removeEventListener("input", action)),
+    addListener: addListenerCallback,
+    removeListener: removeListenerCallback,
   });
   return bool;
 };
@@ -84,8 +92,8 @@ useCheckcodeModuleToSubmit = <T extends MyInputELement>({ request, closeHandler 
   const submit = useCallback(() => {
     actionHandler<T>(ref.current, (ele) => {
       if (ele.value.length) {
-        request({ data: { checkCode: ele.value } })
-          .run<ApiRequestResult>()
+        request({ data: { checkcode: ele.value } })
+          .run<ApiRequestResult<string>>()
           .then(({ code, data }) => {
             if (code === 0) {
               pushSucess("提交成功");
@@ -116,8 +124,8 @@ useReplayModuleToSubmit = <T extends MyInputELement, F extends MyInputELement>({
   const pushFail = useFailToast();
   const pushSucess = useSucessToast();
   const submit = useCallback(() => {
-    request({ data: { content: input1.current.value, checkCode: input2.current.value } })
-      .run<ApiRequestResult>()
+    request({ data: { content: input1.current.value, checkcode: input2.current.value } })
+      .run<ApiRequestResult<string>>()
       .then(({ code, data }) => {
         if (code === 0) {
           pushSucess("提交成功");

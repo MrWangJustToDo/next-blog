@@ -2,16 +2,13 @@ import { wrapper } from "store";
 import { END } from "redux-saga";
 import isEqual from "lodash/isEqual";
 import TypeContent from "containers/Type";
+import { MyNextComponent } from "./_app";
 import { apiName } from "config/api";
 import { autoDispatchTockenHandler } from "config/ssr";
 import { animateFadein, getClass } from "utils/class";
 import { getDataAction_Server, getDataSucess_Server } from "store/reducer/server/action";
 
-interface TypeComponent {
-  (): JSX.Element;
-}
-
-let Type: TypeComponent;
+let Type: MyNextComponent;
 
 Type = () => {
   return (
@@ -20,6 +17,8 @@ Type = () => {
     </div>
   );
 };
+
+Type.title = "分类";
 
 export default Type;
 

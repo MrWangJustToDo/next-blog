@@ -15,6 +15,7 @@ useShowAndHideAnimate = <T extends HTMLElement>({ state, ref, key, showClassName
     // init
     actionHandler<T>(ref.current, (ele) => ele.classList.add("animate__animated", "animate__faster"));
     if (!state) {
+      // hide
       delay(0, () => actionHandler(ref.current, (ele) => ele.classList.add(hideClassName)), key)
         .then(() => delay(delayTime, () => actionHandler(ref.current, (ele) => (ele.style.display = "none")), key))
         .then(() => actionHandler(ref.current, (ele) => ele.classList.remove(hideClassName)));

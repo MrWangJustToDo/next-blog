@@ -1,23 +1,32 @@
 import dynamic from "next/dynamic";
+import { useAutoLogin } from "hook/useUser";
 import Head from "components/Head";
 import Header from "components/Header";
 import LoadingBar from "components/LoadingBar";
 import ModuleManager from "components/ModuleManager";
-import { getClass, animateFadein } from "utils/class";
+import { animateFadein, flexBetween, getClass } from "utils/class";
 
 const Footer = dynamic(() => import("../Footer"));
 
-const Layout = ({ title, children }: { title?: string; children?: object }): JSX.Element => {
+const Layout = ({ title, container = true, children }: { title?: string; container: boolean; children?: object }): JSX.Element => {
+  useAutoLogin();
+  const withModuleChildren = (
+    <ModuleManager
+      children={
+        <>
+          {container && <Header />}
+          <div style={{ minHeight: "calc(100vh - 200px)" }}>{children}</div>
+          {container && <Footer />}
+        </>
+      }
+    />
+  );
   return (
     <>
       <LoadingBar />
       <Head title={title} />
       <div className={getClass("d-flex flex-column", animateFadein)} style={{ minWidth: "320px" }}>
-        <div style={{ minHeight: "calc(100vh - 100px)" }}>
-          <Header />
-          <ModuleManager children={children} />
-        </div>
-        <Footer />
+        {withModuleChildren}
       </div>
     </>
   );

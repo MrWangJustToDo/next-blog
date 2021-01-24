@@ -19,15 +19,25 @@ interface GetItem<T> {
 export type { TransformArray, GetClass, GetArray, GetItem };
 
 /* data */
-type ResultProps = ApiRequestResult | any;
+// type ResultProps = ApiRequestResult<T> | any;
 interface AutoTransformDataType {
-  (props: ResultProps): any;
+  <T>(props: ApiRequestResult<T> | any): any;
 }
 interface GetCurrentAvatar {
   (avatar: string, gender: number): string;
 }
+interface FormChild extends Element {
+  name?: string;
+  type?: string;
+  value?: string;
+  checked?: boolean;
+  disabled?: boolean;
+}
+interface FormSerializeType {
+  (element: HTMLFormElement): { [props: string]: string };
+}
 
-export type { AutoTransformDataType, GetCurrentAvatar };
+export type { AutoTransformDataType, GetCurrentAvatar, FormChild, FormSerializeType };
 
 /* delay */
 interface Cancel {
@@ -56,9 +66,9 @@ interface RequestProps {
   token?: boolean | string;
   data?: object;
 }
-interface ApiRequestResult {
+interface ApiRequestResult<T> {
   code: number;
-  data: object | object[];
+  data: T | T[];
   state: string;
   res: any;
 }
@@ -99,12 +109,27 @@ interface TimeToString {
 
 export type { TimeToString };
 
-/* element */
+/* action */
 interface ActionHandlerType {
-  <T>(element: T | undefined, action: (ele: T) => void | any): void | any;
+  <T>(element: T | undefined, action: (ele: T) => void | any, otherAction?: () => void): void | any;
 }
 
-export type { ActionHandlerType };
+interface JudgeActioProps<T> {
+  element: T;
+  judge: boolean | (() => boolean);
+  successClassname: string;
+  successMessage: string;
+  failClassname: string;
+  failMessage: string;
+  successCallback?: () => void;
+  failCallback?: () => void;
+}
+
+interface JudgeActionType {
+  <T extends HTMLElement>(props: JudgeActioProps<T>): void;
+}
+
+export type { ActionHandlerType, JudgeActioProps, JudgeActionType };
 
 /* image */
 interface LoadImgProps {

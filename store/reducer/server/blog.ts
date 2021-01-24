@@ -3,22 +3,23 @@ import { AnyAction, Reducer } from "redux";
 import { HYDRATE } from "next-redux-wrapper";
 import { serverAction } from "./action";
 import { apiName } from "config/api";
+import { BlogContentProps } from "hook/@type";
 import { State, ActionMapType } from "./@type";
 
-type CurrentState = State<any[]>;
+type CurrentState = State<BlogContentProps>;
 
 let initState: CurrentState;
 let reducer: Reducer<CurrentState>;
 let actionReducerMap: ActionMapType<CurrentState>;
 
-initState = { data: [] };
+initState = { data: {} };
 
 reducer = (state: CurrentState = initState, action: AnyAction) => {
   if (action.type === HYDRATE) {
-    if (state.data.length) {
-      return { ...action.payload.server[apiName.type], ...state };
+    if (Object.keys(state.data).length) {
+      return { ...action.payload.server[apiName.blog], ...state };
     } else {
-      return { ...action.payload.server[apiName.type] };
+      return { ...action.payload.server[apiName.blog] };
     }
   }
   let actionReducer = actionReducerMap[action.type];
@@ -30,13 +31,13 @@ reducer = (state: CurrentState = initState, action: AnyAction) => {
 };
 
 actionReducerMap = {
-  [serverAction.GETDATASUCESS(apiName.type)]: (state: CurrentState, action: AnyAction) =>
+  [serverAction.GETDATASUCESS(apiName.blog)]: (state: CurrentState, action: AnyAction) =>
     produce(state, (proxy: Draft<CurrentState>) => {
-      proxy.data = action.data;
+      proxy.data[action.id] = action.data;
     }),
-  [serverAction.GETDATAFAIL(apiName.type)]: (state: CurrentState, action: AnyAction) =>
+  [serverAction.GETDATAFAIL(apiName.blog)]: (state: CurrentState, action: AnyAction) =>
     produce(state, (proxy: Draft<CurrentState>) => {
-      proxy.data = action.e;
+      proxy.data[action.id] = action.e;
     }),
 };
 

@@ -3,6 +3,7 @@ import { END } from "redux-saga";
 import isEqual from "lodash/isEqual";
 import groupBy from "lodash/groupBy";
 import ArchiveContent from "containers/Archive";
+import { MyNextComponent } from "./_app";
 import { apiName } from "config/api";
 import { actionName } from "config/action";
 import { autoDispatchTockenHandler } from "config/ssr";
@@ -10,11 +11,8 @@ import { animateFadein, getClass } from "utils/class";
 import { setDataSucess_client } from "store/reducer/client/action";
 import { getDataAction_Server, getDataSucess_Server } from "store/reducer/server/action";
 
-interface ArchiveComponent {
-  (): JSX.Element;
-}
 
-let Archive: ArchiveComponent;
+let Archive: MyNextComponent;
 
 Archive = () => {
   return (
@@ -23,6 +21,8 @@ Archive = () => {
     </div>
   );
 };
+
+Archive.title = "归档";
 
 export default Archive;
 

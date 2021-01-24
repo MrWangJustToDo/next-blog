@@ -2,16 +2,13 @@ import { wrapper } from "store";
 import { END } from "redux-saga";
 import isEqual from "lodash/isEqual";
 import TagContent from "containers/Tag";
+import { MyNextComponent } from "./_app";
 import { apiName } from "config/api";
 import { autoDispatchTockenHandler } from "config/ssr";
 import { animateFadein, getClass } from "utils/class";
 import { getDataAction_Server, getDataSucess_Server } from "store/reducer/server/action";
 
-interface TagComponent {
-  (): JSX.Element;
-}
-
-let Tag: TagComponent;
+let Tag: MyNextComponent;
 
 Tag = () => {
   return (
@@ -20,6 +17,8 @@ Tag = () => {
     </div>
   );
 };
+
+Tag.title = "标签";
 
 export default Tag;
 

@@ -66,12 +66,20 @@ useAutoSetHeaderHeight = <T extends HTMLElement>(breakPoint) => {
     ),
     [breakPoint]
   );
+  const addListenerCallback = useCallback<(action: () => void) => void>(
+    (action) => actionHandler<Window>(window, (ele) => ele.addEventListener("resize", action)),
+    []
+  );
+  const removeListenerCallback = useCallback<(action: () => void) => void>(
+    (action) => actionHandler<Window>(window, (ele) => ele.removeEventListener("resize", action)),
+    []
+  );
   useAutoActionHandler({
     action: setHeightCallback,
     actionState: bool,
     rightNow: true,
-    addListener: (action) => actionHandler<Window>(window, (ele) => ele.addEventListener("resize", action)),
-    removeListener: (action) => actionHandler<Window>(window, (ele) => ele.removeEventListener("resize", action)),
+    addListener: addListenerCallback,
+    removeListener: removeListenerCallback,
   });
   return { ref, height };
 };
@@ -86,11 +94,19 @@ useAutoLoadCheckcodeImg = <T extends HTMLImageElement>({ imgUrl, strUrl }) => {
     ),
     []
   );
+  const addListenerCallback = useCallback<(action: () => void) => void>(
+    (action) => actionHandler<T>(ref.current, (ele) => ele.addEventListener("click", action)),
+    []
+  );
+  const removeListenerCallback = useCallback<(action: () => void) => void>(
+    (action) => actionHandler<T>(ref.current, (ele) => ele.removeEventListener("click", action)),
+    []
+  );
   useAutoActionHandler({
     action: loadActionCallback,
     rightNow: true,
-    addListener: (action) => actionHandler<T>(ref.current, (ele) => ele.addEventListener("click", action)),
-    removeListener: (action) => actionHandler<T>(ref.current, (ele) => ele.removeEventListener("click", action)),
+    addListener: addListenerCallback,
+    removeListener: removeListenerCallback,
   });
   return ref;
 };
@@ -107,11 +123,19 @@ useAutoShowAndHide = <T extends HTMLElement>(breakPoint) => {
     }, 400),
     [breakPoint]
   );
+  const addListenerCallback = useCallback<(action: () => void) => void>(
+    (action) => actionHandler<Window>(window, (ele) => ele.addEventListener("scroll", action)),
+    []
+  );
+  const removeListenerCallback = useCallback<(action: () => void) => void>(
+    (action) => actionHandler<Window>(window, (ele) => ele.removeEventListener("scroll", action)),
+    []
+  );
   useAutoActionHandler({
     action: autoSetValueHandler,
     rightNow: true,
-    addListener: (action) => actionHandler<Window>(window, (ele) => ele.addEventListener("scroll", action)),
-    removeListener: (action) => actionHandler<Window>(window, (ele) => ele.removeEventListener("scroll", action)),
+    addListener: addListenerCallback,
+    removeListener: removeListenerCallback,
   });
   const { ref } = useShowAndHideAnimate<T>({ state: value, key: "blogUtil", showClassName: "animate__slideInRight", hideClassName: "animate__slideOutRight" });
   return ref;

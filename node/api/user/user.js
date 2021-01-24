@@ -5,14 +5,16 @@ const { getUserByUser, insertUser, getUsersEx, getUserById } = require("../../da
 // 用户登录请求
 exports.login = actionHandler(
   async ({ req, res }) => {
-    if (req.session.captcha === req.body.checkcode) {
+    const body = req.body || {};
+    const { data } = body;
+    if (req.session.captcha === data.checkcode) {
       let user = await getUserByUser({
-        username: req.body.username,
-        password: req.body.password,
+        username: data.username,
+        password: data.password,
         db: global.db,
       });
       if (user) {
-        res.cookie("id", user.id, {
+        res.cookie("id", user.userId, {
           maxAge: 8640000,
           signed: true,
         });

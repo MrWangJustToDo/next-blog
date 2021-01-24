@@ -11,7 +11,7 @@ let ModuleManager = ({ children }) => {
   const { replay, open } = useReplayProps();
   return (
     <>
-      <div className="position-fixed" style={{ right: "10px", top: "15px", zIndex: 100 }}>
+      <div className="position-fixed" style={{ right: "10px", top: "15px", zIndex: 999 }}>
         {toast.map((props) => (
           <Toast key={props.currentTime.getTime()} {...props} />
         ))}

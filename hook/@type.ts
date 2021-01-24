@@ -2,13 +2,39 @@ import { State } from "store";
 import { RefObject } from "react";
 import { AnyAction } from "redux";
 import { apiName } from "config/api";
+import { LoginProps } from "config/@type";
 import { AutoRequestType } from "utils/@type";
 import { ToastProps } from "components/Toast/@type";
 import { ReplayProps } from "components/Replay/@type";
 import { LoadingBarProps } from "components/LoadingBar/@type";
 import { ChildMessageProps, PrimaryMessageProps } from "components/BlogMessage/@type";
 
-interface BlogContentProps {
+interface UserProps {
+  ip?: string;
+  userId?: string;
+  username?: string;
+  password?: string;
+  nickname?: string;
+  address?: string;
+  email?: string;
+  gender?: number;
+  avatar?: string;
+  qq?: string;
+}
+
+interface TypeProps {
+  typeId?: number;
+  typeCount?: number;
+  typeContent?: string;
+}
+
+interface TagProps {
+  tagId?: number[];
+  tagCount?: number;
+  tagContent?: string[];
+}
+
+interface BlogProps {
   authorId?: string;
   blogId?: string;
   blogState?: number;
@@ -26,21 +52,11 @@ interface BlogContentProps {
   blogTitle?: string;
   blogPriseState?: number;
   blogCommentState?: number;
-  avatar?: string;
-  typeId?: number;
-  typeContent?: string;
-  tagId?: number[];
-  tagContent?: string[];
-  userId?: string;
-  username?: string;
-  nickname?: string;
-  address?: string;
-  email?: string;
-  gender?: number;
-  qq?: string;
 }
 
-export type { BlogContentProps };
+type BlogContentProps = UserProps & BlogProps & TypeProps & TagProps;
+
+export type { UserProps, TypeProps, TagProps, BlogProps, BlogContentProps };
 
 /* useBase */
 interface UseCurrentStateType {
@@ -169,18 +185,18 @@ interface UseContentToastType {
 export type { UseToastPropsType, UseToastPushType, UseContentToastType };
 
 /* useAuto */
-interface UseAutoActionHandlerProps {
-  action: () => void;
+interface UseAutoActionHandlerProps<T> {
+  action: (e?: T) => void;
   actionState?: boolean; // 当前需要执行的状态，在事件监听回调中用于判断是否还需要绑定监听，在定时器中用于判断本次action是否需要执行
   timmer?: boolean; // 是否使用定时器
   once?: boolean; // 执行一次，for timmer
   delayTime?: number; // 定时器执行时间间隔
-  addListener?: (props: () => void) => void; // 事件监听自动执行
-  removeListener?: (props: () => void) => void;
+  addListener?: (props: (e?: T) => void) => void; // 事件监听自动执行
+  removeListener?: (props: (e?: T) => void) => void;
   rightNow?: boolean; // 立即执行，for listner
 }
 interface UseAutoActionHandlerType {
-  (props: UseAutoActionHandlerProps): void;
+  <T extends Event>(props: UseAutoActionHandlerProps<T>): void;
 }
 interface UseAutoSetHeaderHeightType {
   <T extends HTMLElement>(breakPoint?: number): { ref: RefObject<T>; height: number };
@@ -301,17 +317,51 @@ export type {
 };
 
 /* useArchive */
-
 interface ArchiveProps {
   (year: string): BlogContentProps[];
 }
-
 interface UseArchiveType {
   (): { value: ArchiveProps | {}; canLoad: boolean; loadMore: () => void; allCount: number };
 }
-
 interface UseAutoLoadArchiveType {
   (props: { canLoad: boolean; loadMore: () => void; breakPoint: number }): void;
 }
 
 export type { ArchiveProps, UseArchiveType, UseAutoLoadArchiveType };
+
+/* useBlog */
+interface UseBlogMenuType {
+  (className: string): boolean;
+}
+interface UseAutoScrollType {
+  <T extends HTMLElement>(): RefObject<T>;
+}
+interface UseLinkToImgType {
+  <T extends HTMLElement>(): RefObject<T>;
+}
+
+export type { UseBlogMenuType, UseAutoScrollType, UseLinkToImgType };
+
+/* useUser */
+interface UseAutoLoginType {
+  (): void;
+}
+interface UseCurrentUserType {
+  (): UserProps;
+}
+interface UseLoginInputProps {
+  option: LoginProps;
+  successClassname: string;
+  failClassname: string;
+}
+interface UseLoginInputType {
+  <T extends HTMLInputElement>(props: UseLoginInputProps): [RefObject<T>, boolean];
+}
+interface UseLoginType {
+  (): RefObject<HTMLFormElement>;
+}
+interface UseLogoutType {
+  (): () => void;
+}
+
+export type { UseAutoLoginType, UseCurrentUserType, UseLoginInputProps, UseLoginInputType, UseLoginType, UseLogoutType };

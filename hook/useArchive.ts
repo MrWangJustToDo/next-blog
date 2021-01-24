@@ -55,12 +55,20 @@ useAutoLoadArchive = ({ canLoad, loadMore, breakPoint }) => {
     }, 1000),
     []
   );
+  const addListenerCallback = useCallback<(action: () => void) => void>(
+    (action) => actionHandler<Window>(window, (ele) => ele.addEventListener("scroll", action)),
+    []
+  );
+  const removeListenerCallback = useCallback<(action: () => void) => void>(
+    (action) => actionHandler<Window>(window, (ele) => ele.removeEventListener("scroll", action)),
+    []
+  );
   useAutoActionHandler({
     action: loadMoreCallback,
     actionState: canLoad,
     rightNow: true,
-    addListener: (action) => actionHandler<Window>(window, (ele) => ele.addEventListener("scroll", action)),
-    removeListener: (action) => actionHandler<Window>(window, (ele) => ele.removeEventListener("scroll", action)),
+    addListener: addListenerCallback,
+    removeListener: removeListenerCallback,
   });
 };
 

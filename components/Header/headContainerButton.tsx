@@ -8,7 +8,7 @@ let HeadContainerTagNavBtn: HeadContainerTagNavBtnType;
 HeadContainerTagNavBtn = ({ handler }) => {
   return (
     <button className={getClass(style.btn, "navbar-toggler")} onClick={handler}>
-      <span className="navbar-toggler-icon"></span>
+      <span className="navbar-toggler-icon" />
     </button>
   );
 };

@@ -13,8 +13,8 @@ loadImg = ({ imgUrl, strUrl, imgElement }) => {
     imgElement.addEventListener("load", () => resolve(imgElement));
   }).then((imgEle) =>
     request
-      .run<ApiRequestResult>(getRelativeApiPath(strUrl))
-      .then(autoTransformData)
+      .run<ApiRequestResult<string>>(getRelativeApiPath(strUrl))
+      .then<string>(autoTransformData)
       .then((value) => imgEle.setAttribute("title", value))
   );
 };
