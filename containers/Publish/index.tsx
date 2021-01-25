@@ -1,5 +1,7 @@
 import PublishHead from "./publishHead";
 import PublishEditor from "./publishEditor";
+import PublishType_Tag from "./publishType&Tag";
+import PublishImage from "./publishImage";
 
 let Index = () => {
   return (
@@ -9,6 +11,8 @@ let Index = () => {
           <form>
             <PublishHead />
             <PublishEditor />
+            <PublishType_Tag />
+            <PublishImage />
             {/* <AdminBodyContainerPublishHead /> */}
             {/* <AdminBodyContainerPublishEditor /> */}
             {/* <AdminBodyContainerPublishType /> */}

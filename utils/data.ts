@@ -22,7 +22,7 @@ getCurrentAvatar = (avatar, gender) => {
     if (gender === 0) {
       return process.env.NEXT_PUBLIC_MAN;
     } else {
-      return process.env.NEXT_PUBLIC_WOMAN;
+      return process.env.NEXT_PUBLIC_WOMEN;
     }
   }
 };

@@ -9,7 +9,7 @@ import style from "./index.module.scss";
 
 let Index = () => {
   const logoutCallback = useLogout();
-  const { bool, switchBoolThrottle } = useBool(false);
+  const { bool, switchBoolThrottle, hideDebounceState } = useBool(false);
   const { username, avatar, gender, userId } = useCurrentUser();
   const { ref } = useShowAndHideAnimate<HTMLDivElement>({
     state: bool,
@@ -27,7 +27,9 @@ let Index = () => {
         <div className={getClass("position-absolute", style.hoverTriangle)} />
         <div className={getClass("position-absolute d-flex", style.controlPanel)}>
           <Link href="/publish">
-            <a className="small text-info text-decoration-none text-nowrap">写博客</a>
+            <a className="small text-info text-decoration-none text-nowrap" onClick={hideDebounceState}>
+              写博客
+            </a>
           </Link>
           <div className="small text-info text-decoration-none text-nowrap" onClick={logoutCallback}>
             退出

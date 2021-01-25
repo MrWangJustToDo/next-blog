@@ -191,12 +191,12 @@ interface UseAutoActionHandlerProps<T> {
   timmer?: boolean; // 是否使用定时器
   once?: boolean; // 执行一次，for timmer
   delayTime?: number; // 定时器执行时间间隔
-  addListener?: (props: (e?: T) => void) => void; // 事件监听自动执行
-  removeListener?: (props: (e?: T) => void) => void;
   rightNow?: boolean; // 立即执行，for listner
+  addListener?: (props: (e?: T) => void) => void; // 添加事件监听
+  removeListener?: (props: (e?: T) => void) => void; // 移除事件监听
 }
 interface UseAutoActionHandlerType {
-  <T extends Event>(props: UseAutoActionHandlerProps<T>): void;
+  <T extends Event>(props: UseAutoActionHandlerProps<T>, ...deps: any[]): void;
 }
 interface UseAutoSetHeaderHeightType {
   <T extends HTMLElement>(breakPoint?: number): { ref: RefObject<T>; height: number };
@@ -211,8 +211,18 @@ interface UseAutoLoadCheckcodeImgType {
 interface UseAutoShowAndHideType {
   <T extends HTMLElement>(breakPoint: number): RefObject<T>;
 }
+interface UseAutoSetHeightType {
+  <T extends HTMLElement>(...deps: any[]): [RefObject<T>, number];
+}
 
-export type { UseAutoActionHandlerType, UseAutoSetHeaderHeightType, UseAutoLoadCheckcodeImgProps, UseAutoLoadCheckcodeImgType, UseAutoShowAndHideType };
+export type {
+  UseAutoActionHandlerType,
+  UseAutoSetHeaderHeightType,
+  UseAutoLoadCheckcodeImgProps,
+  UseAutoLoadCheckcodeImgType,
+  UseAutoShowAndHideType,
+  UseAutoSetHeightType,
+};
 
 /* useAnimate */
 interface UseShowAndHideAnimateProps<T> {

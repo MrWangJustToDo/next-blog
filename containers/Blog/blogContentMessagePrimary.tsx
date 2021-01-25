@@ -7,7 +7,7 @@ import { apiName } from "config/api";
 import { autoRequest } from "utils/fetcher";
 import BlogContentChildMessage from "./blogContentMessageChild";
 import BlogContentReplayModule from "./blogContentReplayModule";
-import { PrimaryMessageProps } from "components/BlogMessage/@type";
+import { ChildMessageProps, PrimaryMessageProps } from "components/BlogMessage/@type";
 import { BlogContentPrimaryMessageType, BlogContentPrimaryMessageWithReplayType } from "./@type";
 
 import style from "./index.module.scss";
@@ -22,7 +22,7 @@ BlogContentPrimaryMessageWithReplay = ({ messages, replay }) => {
       <div className="card-body">
         {currentMessage.map((item) => (
           <PrimaryMessage key={item.commentId} {...item} replayHandler={replay}>
-            <LoadRender
+            <LoadRender<ChildMessageProps[]>
               path={apiName.childMessage}
               method="post"
               requestData={{ primaryCommentId: item.commentId }}

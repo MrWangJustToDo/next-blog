@@ -1,12 +1,12 @@
 import { useCallback, useEffect, useRef, useState } from "react";
 import tocbot from "tocbot";
 import { toCanvas } from "qrcode";
+import { cancel, delay } from "utils/delay";
 import { actionHandler } from "utils/action";
 import { addIdForHeads } from "utils/markdown";
 import { useAutoActionHandler } from "./useAuto";
 import { UseBlogMenuType, UseAutoScrollType, UseLinkToImgType } from "./@type";
 import "tocbot/dist/tocbot.css";
-import { cancel, delay } from "utils/delay";
 
 let useBlogMenu: UseBlogMenuType;
 let useAutoScrollTop: UseAutoScrollType;
@@ -106,14 +106,7 @@ useEditor = (className) => {
     () =>
       delay(
         100,
-        () =>
-          actionHandler<HTMLTextAreaElement>(
-            document.querySelector(className),
-            (ele) => {
-              ele.addEventListener("keydown", keydonwHandler);
-            },
-            initCallback
-          ),
+        () => actionHandler<HTMLTextAreaElement>(document.querySelector(className), (ele) => ele.addEventListener("keydown", keydonwHandler), initCallback),
         "initEditor"
       ),
     [className]

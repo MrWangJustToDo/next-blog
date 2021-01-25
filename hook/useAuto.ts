@@ -4,14 +4,15 @@ import throttle from "lodash/throttle";
 import { loadImg } from "utils/image";
 import { actionHandler } from "utils/action";
 import { useShowAndHideAnimate } from "./useAnimate";
-import { UseAutoActionHandlerType, UseAutoSetHeaderHeightType, UseAutoLoadCheckcodeImgType, UseAutoShowAndHideType } from "./@type";
+import { UseAutoActionHandlerType, UseAutoSetHeaderHeightType, UseAutoLoadCheckcodeImgType, UseAutoShowAndHideType, UseAutoSetHeightType } from "./@type";
 
 let useAutoActionHandler: UseAutoActionHandlerType;
 let useAutoSetHeaderHeight: UseAutoSetHeaderHeightType;
 let useAutoLoadCheckcodeImg: UseAutoLoadCheckcodeImgType;
 let useAutoShowAndHide: UseAutoShowAndHideType;
+let useAutoSetHeight: UseAutoSetHeightType;
 
-useAutoActionHandler = ({ action, timmer, actionState = true, once = true, delayTime, rightNow = false, addListener, removeListener }) => {
+useAutoActionHandler = ({ action, timmer, actionState = true, once = true, delayTime, rightNow = false, addListener, removeListener }, ...deps) => {
   const actionCallback = useCallback(() => {
     if (actionState) {
       action();
@@ -43,7 +44,7 @@ useAutoActionHandler = ({ action, timmer, actionState = true, once = true, delay
         }
       }
     }
-  }, [delayTime, once, actionCallback, rightNow, addListener, removeListener, action]);
+  }, [delayTime, once, actionCallback, rightNow, addListener, removeListener, action, actionState, ...deps]);
 };
 
 useAutoSetHeaderHeight = <T extends HTMLElement>(breakPoint) => {
@@ -141,4 +142,42 @@ useAutoShowAndHide = <T extends HTMLElement>(breakPoint) => {
   return ref;
 };
 
-export { useAutoActionHandler, useAutoSetHeaderHeight, useAutoLoadCheckcodeImg, useAutoShowAndHide };
+useAutoSetHeight = <T extends HTMLElement>(...deps) => {
+  const ref = useRef<T>();
+  const [height, setHeight] = useState<number>(0);
+  const setHeightCallback = useCallback(
+    debounce(
+      () =>
+        actionHandler<T>(ref.current, (ele) => {
+          const lastHeight = ele.offsetHeight;
+          ele.style.height = "auto";
+          const allHeight = ele.offsetHeight;
+          ele.style.height = `${lastHeight}px`;
+          setHeight(allHeight);
+        }),
+      400,
+      { leading: true }
+    ),
+    []
+  );
+  const addListenerCallback = useCallback(
+    (action) => actionHandler<Window>(window, (ele) => ele.addEventListener("resize", action)),
+    []
+  );
+  const removeListenerCallback = useCallback(
+    (action) => actionHandler<Window>(window, (ele) => ele.removeEventListener("resize", action)),
+    []
+  );
+  useAutoActionHandler(
+    {
+      action: setHeightCallback,
+      rightNow: true,
+      addListener: addListenerCallback,
+      removeListener: removeListenerCallback,
+    },
+    ...deps
+  );
+  return [ref, height];
+};
+
+export { useAutoActionHandler, useAutoSetHeaderHeight, useAutoLoadCheckcodeImg, useAutoShowAndHide, useAutoSetHeight };

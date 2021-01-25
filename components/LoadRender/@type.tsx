@@ -2,23 +2,23 @@ import { apiName } from "config/api";
 import { QueryProps } from "utils/@type";
 
 /* index */
-interface LoadRenderProps {
+interface LoadRenderProps<T> {
   method?: string;
   path: apiName | string;
   query?: QueryProps;
   requestData?: object;
   token?: boolean;
   loading?: (props: LoadingProps) => JSX.Element;
-  loaded: (props: any) => JSX.Element;
+  loaded: (props: T) => JSX.Element;
   loadError?: (props: any) => JSX.Element;
   fetcher?: (...args: any) => any;
   placeholder?: { width?: string; height?: string };
-  initialData?: any;
+  initialData?: T;
   revalidateOnMount?: boolean;
 }
 
 interface LoadRenderType {
-  (props: LoadRenderProps): JSX.Element;
+  <T>(props: LoadRenderProps<T>): JSX.Element;
 }
 
 export type { LoadRenderType };

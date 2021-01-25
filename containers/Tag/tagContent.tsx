@@ -5,6 +5,7 @@ import useTag from "hook/useTag";
 import { apiName } from "config/api";
 import { getClass } from "utils/class";
 import { TagContentType } from "./@type";
+import { PrimaryMessageProps } from "components/BlogMessage/@type";
 
 import style from "./index.module.scss";
 
@@ -20,13 +21,17 @@ TagContent = ({ blogs }) => {
             <TagContentItem {...props} />
           </div>
           <div className={getClass("col-lg-4 border-left py-2", style.autoHide)}>
-            <LoadRender
+            <LoadRender<PrimaryMessageProps[]>
               path={apiName.primaryMessage}
               method="post"
               requestData={{ blogId: props.blogId }}
-              loaded={(data) =>
-                data.map((props) => <PrimaryMessage key={props.modifyDate} {...props} withReplay={false} withChildren={false} withHover={false} />)
-              }
+              loaded={(data) => (
+                <>
+                  {data.map((props) => (
+                    <PrimaryMessage key={props.modifyDate} {...props} withReplay={false} withChildren={false} withHover={false} />
+                  ))}
+                </>
+              )}
             />
           </div>
         </div>

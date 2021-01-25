@@ -3,9 +3,8 @@ import LoginUsername from "./loginUsername";
 import LoginPassword from "./loginPassword";
 import LoginCheckcode from "./loginCheckcode";
 import LoginSubmit from "./loginSubmit";
-import { useLogin, useLoginInput } from "hook/useUser";
-import { useShowAndHideAnimate } from "hook/useAnimate";
 import { login } from "config/user";
+import { useLogin, useLoginInput } from "hook/useUser";
 import { flexCenter, getClass } from "utils/class";
 
 import style from "./index.module.scss";
@@ -14,7 +13,6 @@ let Index = () => {
   const formRef = useLogin();
   const [usernameRef, usernameState] = useLoginInput({ option: login.username, successClassname: style.success, failClassname: style.fail });
   const [passwordRef, passwordState] = useLoginInput({ option: login.password, successClassname: style.success, failClassname: style.fail });
-  const { ref } = useShowAndHideAnimate<HTMLDivElement>({ state: usernameState && passwordState });
   return (
     <div className={getClass("rounded my-4 my-lg-5 px-3 overflow-auto user-select-none", style.loginForm)}>
       <Link href="/">
@@ -27,7 +25,7 @@ let Index = () => {
       <form className="px-lg-5 px-3 py-2" ref={formRef}>
         <LoginUsername forWardRef={usernameRef} />
         <LoginPassword forWardRef={passwordRef} />
-        <LoginCheckcode forWardRef={ref} />
+        <LoginCheckcode show={usernameState && passwordState} />
         <LoginSubmit enabled={usernameState && passwordState} />
       </form>
     </div>

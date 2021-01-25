@@ -15,14 +15,16 @@ MainRightTag = ({ index }) => {
     <div className="card mt-4">
       <MainRightHead icon={icon} content={content} hrefTo={hrefTo} />
       <div className="card-body">
-        <LoadRender
+        <LoadRender<{ tagId: number; tagContent: string; tagCount: number }[]>
           path={apiName.tag}
           initialData={tag}
-          loaded={(data) =>
-            data.map(({ tagId, tagContent, tagCount }) => (
-              <MainRightTagItem key={tagId} tagName={tagContent} tagCount={tagCount} changeCurrentTag={changeCurrentTag} />
-            ))
-          }
+          loaded={(data) => (
+            <>
+              {data.map(({ tagId, tagContent, tagCount }) => (
+                <MainRightTagItem key={tagId} tagName={tagContent} tagCount={tagCount} changeCurrentTag={changeCurrentTag} />
+              ))}
+            </>
+          )}
         />
       </div>
     </div>

@@ -59,10 +59,10 @@ const markNOLineNumber = new Mark({
     if (lang && hljs.getLanguage(lang)) {
       try {
         const transformValue = hljs.highlight(lang, str, true).value;
-        return `<pre class="rounded bg-dark"><code class="bg-dark hljs ${lang} p-2">${transformValue}</code></pre>`;
+        return `<pre class="rounded bg-dark"><code class="bg-dark hljs ${lang}">${transformValue}</code></pre>`;
       } catch (__) {}
     }
-    return '<pre><code class="hljs">' + mark.utils.escapeHtml(str) + "</code></pre>";
+    return `<pre class="rounded bg-dark"><code class="bg-dark hljs">${mark.utils.escapeHtml(str)}</code></pre>`;
   },
 });
 

@@ -110,3 +110,8 @@ interface LoginType {
 }
 
 export type { LoginProps, LoginType };
+
+/* BlogOrigin */
+type BlogOriginProps = Array<{ name?: string; value: number }>;
+
+export type { BlogOriginProps };

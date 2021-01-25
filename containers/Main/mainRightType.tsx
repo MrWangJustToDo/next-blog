@@ -4,6 +4,7 @@ import { mainRightHeader } from "config/hoom";
 import { apiName } from "config/api";
 import LoadRender from "components/LoadRender";
 import useType from "hook/useType";
+import { TypeProps } from "hook/@type";
 import { MainRightTypeType } from "./@type";
 
 let MainRightType: MainRightTypeType;
@@ -16,14 +17,16 @@ MainRightType = ({ index }) => {
       <MainRightHead icon={icon} content={content} hrefTo={hrefTo} />
       <div className="card-body">
         <div className="list-group">
-          <LoadRender
+          <LoadRender<TypeProps[]>
             path={apiName.type}
             initialData={type}
-            loaded={(data) =>
-              data.map(({ typeId, typeContent, typeCount }) => (
-                <MainRightTypeItem key={typeId} typeName={typeContent} typeCount={typeCount} changeCurrentType={changeCurrentType} />
-              ))
-            }
+            loaded={(data) => (
+              <>
+                {data.map(({ typeId, typeContent, typeCount }) => (
+                  <MainRightTypeItem key={typeId} typeName={typeContent} typeCount={typeCount} changeCurrentType={changeCurrentType} />
+                ))}
+              </>
+            )}
           />
         </div>
       </div>

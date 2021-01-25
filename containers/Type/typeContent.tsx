@@ -7,6 +7,7 @@ import { getClass } from "utils/class";
 import { TypeContentType } from "./@type";
 
 import style from "./index.module.scss";
+import { PrimaryMessageProps } from "components/BlogMessage/@type";
 
 let TypeContent: TypeContentType;
 
@@ -20,13 +21,17 @@ TypeContent = ({ blogs }) => {
             <TypeContentItem {...props} />
           </div>
           <div className={getClass("col-lg-4 border-left py-2", style.autoHide)}>
-            <LoadRender
+            <LoadRender<PrimaryMessageProps[]>
               path={apiName.primaryMessage}
               method="post"
               requestData={{ blogId: props.blogId }}
-              loaded={(data) =>
-                data.map((props) => <PrimaryMessage key={props.modifyDate} {...props} withReplay={false} withChildren={false} withHover={false} />)
-              }
+              loaded={(data) => (
+                <>
+                  {data.map((props) => (
+                    <PrimaryMessage key={props.modifyDate} {...props} withReplay={false} withChildren={false} withHover={false} />
+                  ))}
+                </>
+              )}
             />
           </div>
         </div>
