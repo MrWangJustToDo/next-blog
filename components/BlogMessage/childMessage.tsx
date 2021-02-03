@@ -8,9 +8,9 @@ import { ChildMessageType } from "./@type";
 
 import style from "./index.module.scss";
 
-let Index: ChildMessageType;
+let ChildMessage: ChildMessageType;
 
-Index = (props) => {
+ChildMessage = (props) => {
   const {
     modifyState,
     modifyDate,
@@ -56,4 +56,4 @@ Index = (props) => {
   );
 };
 
-export default Index;
+export default ChildMessage;

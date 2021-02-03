@@ -8,8 +8,16 @@ interface UserHoverProps extends BlogContentProps {
 interface UserHoverItemType {
   (props: UserHoverProps): JSX.Element;
 }
+interface UserExProps {
+  userId?: string;
+  collect?: number;
+  assent?: number;
+  publish?: number;
+  collectIds?: number;
+  assentIds?: number;
+}
 
-export type { UserHoverItemType };
+export type { UserExProps, UserHoverItemType };
 
 /* index */
 

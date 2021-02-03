@@ -5,7 +5,9 @@ import { FootContainerContentItemType } from "./@type";
 import style from "./index.module.scss";
 
 let IconItem: FootContainerContentItemType;
+
 let ColumnItem: FootContainerContentItemType;
+
 let FootContainerContentItem: FootContainerContentItemType;
 
 ColumnItem = ({ head, content, title }) => {

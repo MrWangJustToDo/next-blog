@@ -1,4 +1,4 @@
-import { useMemo } from "react";
+import { useEffect, useMemo } from "react";
 import { useShowAndHideAnimate } from "hook/useAnimate";
 import { flexBetween, getClass } from "utils/class";
 import { ReplayType } from "./@type";
@@ -13,6 +13,10 @@ Replay = ({ head, body, foot, closeHandler, showState, className = "" }) => {
     hideClassName: "animate__fadeOutDown",
   });
   const bodyContent = useMemo(() => body(closeHandler), []);
+  useEffect(() => {
+    document.body.classList.add("overflow-hidden", "mr-3");
+    return () => document.body.classList.remove("overflow-hidden", "mr-3");
+  }, []);
   return (
     <div ref={ref} className={getClass("card m-auto user-select-none", className)} style={{ display: "none" }}>
       <div className={getClass("card-header", flexBetween)}>

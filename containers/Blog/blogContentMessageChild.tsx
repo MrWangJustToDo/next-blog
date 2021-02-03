@@ -11,6 +11,7 @@ import { BlogContentChildMessageType, BlogContentChildMessageWithReplayType } fr
 import style from "./index.module.scss";
 
 let BlogContentChildMessageWithReplay: BlogContentChildMessageWithReplayType;
+
 let BlogContentChildMessage: BlogContentChildMessageType;
 
 BlogContentChildMessageWithReplay = ({ messages, replay }) => {

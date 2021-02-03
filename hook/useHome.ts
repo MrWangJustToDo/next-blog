@@ -4,7 +4,7 @@ import { actionName } from "config/action";
 import { pageContentLength } from "config/hoom";
 import { useCurrentState } from "./useBase";
 import { setDataSucess_client } from "store/reducer/client/action";
-import { UseHomeType, UseCommendType } from "./@type";
+import { UseHomeType, UseCommendType, BlogContentProps } from "./@type";
 
 let useHome: UseHomeType;
 let useCommend: UseCommendType;

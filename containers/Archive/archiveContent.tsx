@@ -5,9 +5,9 @@ import { ArchiveContentType } from "./@type";
 
 import style from "./index.module.scss";
 
-let Index: ArchiveContentType;
+let ArchiveContent: ArchiveContentType;
 
-Index = ({ year, blogProps }) => {
+ArchiveContent = ({ year, blogProps }) => {
   return (
     <>
       <h3 className="text-center display-5 my-3">{year}</h3>
@@ -31,4 +31,4 @@ Index = ({ year, blogProps }) => {
   );
 };
 
-export default Index;
+export default ArchiveContent;

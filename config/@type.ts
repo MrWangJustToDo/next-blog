@@ -67,9 +67,9 @@ interface GetUserPropsProps {
 }
 
 interface GetUserStateProps {
-  collect: number;
-  assent: number;
-  publish: number;
+  collect?: number;
+  assent?: number;
+  publish?: number;
   [props: string]: any;
 }
 
@@ -114,4 +114,6 @@ export type { LoginProps, LoginType };
 /* BlogOrigin */
 type BlogOriginProps = Array<{ name?: string; value: number }>;
 
-export type { BlogOriginProps };
+type BlogStateType = Array<{ fieldName: string; name: string; value: number | BlogOriginProps }>;
+
+export type { BlogOriginProps, BlogStateType };

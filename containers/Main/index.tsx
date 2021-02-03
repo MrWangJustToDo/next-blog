@@ -1,9 +1,9 @@
 import MainLeft from "./mainLeft";
 import MainRight from "./mainRight";
 import { animateFadein, getClass } from "utils/class";
-import { Element } from "./@type";
+import { SimpleElement } from "./@type";
 
-let Main: Element;
+let Main: SimpleElement;
 
 Main = () => {
   return (

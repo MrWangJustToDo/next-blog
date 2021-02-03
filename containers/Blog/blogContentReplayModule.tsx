@@ -7,6 +7,7 @@ import { BlogContentReplayModuleType, BlogContentReplayModuleWithImagType } from
 import style from "./index.module.scss";
 
 let BlogContentReplayModule: BlogContentReplayModuleType;
+
 let BlogContentReplayModuleWithImag: BlogContentReplayModuleWithImagType;
 
 BlogContentReplayModuleWithImag = ({ request, closeHandler, imgRef }) => {

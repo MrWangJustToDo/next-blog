@@ -1,8 +1,8 @@
+import LoadRender from "components/LoadRender";
 import MainRightHead from "components/CardHead";
 import MainRightTagItem from "./mainRightTagItem";
 import { mainRightHeader } from "config/hoom";
 import { apiName } from "config/api";
-import LoadRender from "components/LoadRender";
 import useTag from "hook/useTag";
 import { MainRightTagType } from "./@type";
 

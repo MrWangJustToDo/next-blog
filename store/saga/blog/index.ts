@@ -8,7 +8,7 @@ import { getDataSucess_Server, getDataFail_Server } from "store/reducer/server/a
 export function* getBlogData() {
   const state = yield select((state) => state);
   const token = state.client[actionName.currentToken]["data"];
-  const id = state.client[actionName.currentBlogId]["data"] || 1;
+  const id = state.client[actionName.currentBlogId]["data"] || "1";
   try {
     let { code, state, data } = yield call(autoRequest({ token }).run, getRelativeApiPath(apiName.blog, { blogId: id }));
     if (code === 0) {

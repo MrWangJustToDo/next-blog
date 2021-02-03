@@ -4,17 +4,18 @@ import TagContent from "./tagContent";
 import LoadRender from "components/LoadRender";
 import { useHome } from "hook/useHome";
 import { apiName } from "config/api";
-import { Element } from "./@type";
+import { BlogContentProps } from "hook/@type";
+import { SimpleElement } from "containers/Main/@type";
 
-let Index: Element;
+let Tag: SimpleElement;
 
-Index = () => {
+Tag = () => {
   const { blogs } = useHome();
   return (
     <>
       <TagHead />
       <div className="card mx-lg-4 mt-4">
-        <LoadRender
+        <LoadRender<BlogContentProps[]>
           path={apiName.home}
           initialData={blogs}
           loaded={(data) => {
@@ -31,4 +32,4 @@ Index = () => {
   );
 };
 
-export default Index;
+export default Tag;

@@ -85,13 +85,12 @@
     position: relative;
   }
   @include mobile {
-    z-index: 50;
     position: absolute;
     right: 80px;
     top: 11px;
   }
   & > .dropPanel {
-    z-index: 100;
+    z-index: 2;
     filter: drop-shadow(0 0 5px rgba(100, 100, 100, 0.4));
     & > .controlPanel {
       text-align: center;
@@ -143,7 +142,7 @@
   }
   @include mobile {
     font-size: 13px;
-    z-index: 50;
+    z-index: 2;
     position: absolute;
     right: 80px;
     top: 15px;

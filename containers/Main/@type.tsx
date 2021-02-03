@@ -1,10 +1,10 @@
 import { mainRight } from "config/hoom";
 
-interface Element {
+interface SimpleElement {
   (): JSX.Element;
 }
 
-export type { Element };
+export type { SimpleElement };
 
 /* mainRightCommend */
 interface MainRightCommendType {

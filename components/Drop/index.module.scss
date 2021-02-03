@@ -24,3 +24,11 @@
   top: calc(100% + 1px);
   left: 0;
 }
+
+.drpSelectItem {
+  position: relative;
+  &_cacel:hover {
+    text-decoration: line-through;
+    color: #9a9a9a;
+  }
+}

@@ -1,8 +1,8 @@
 import { ForWardRefType } from "./@type";
 
-let Index: ForWardRefType<HTMLInputElement>;
+let LoginUsername: ForWardRefType<HTMLInputElement>;
 
-Index = ({ forWardRef }) => {
+LoginUsername = ({ forWardRef }) => {
   return (
     <div className="form-group row align-items-center position-relative">
       <label htmlFor="username" className="col-sm-3 col-form-label">
@@ -15,4 +15,4 @@ Index = ({ forWardRef }) => {
   );
 };
 
-export default Index;
+export default LoginUsername;

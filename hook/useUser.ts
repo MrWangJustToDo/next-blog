@@ -1,4 +1,5 @@
 import { useCallback, useEffect, useRef, useState } from "react";
+import { useDispatch } from "react-redux";
 import { useRouter } from "next/dist/client/router";
 import debounce from "lodash/debounce";
 import { apiName } from "config/api";
@@ -51,10 +52,10 @@ useCurrentUser = () => {
 useLoginInput = <T extends HTMLInputElement>({ option, successClassname, failClassname }: UseLoginInputProps) => {
   const ref = useRef<T>();
   const [bool, setBool] = useState<boolean>(false);
-  const actionCallback = useCallback(
+  const actionCallback = useCallback<() => void>(
     debounce(
       () =>
-        judgeAction({
+        judgeAction<T>({
           element: ref.current,
           judge: option.regexp.test(ref.current.value),
           successClassname,
@@ -69,11 +70,11 @@ useLoginInput = <T extends HTMLInputElement>({ option, successClassname, failCla
     [option]
   );
   const addListenerCallback = useCallback<(action: () => void) => void>(
-    (action) => actionHandler<T>(ref.current, (ele) => ele.addEventListener("input", action)),
+    (action) => actionHandler<T, void>(ref.current, (ele) => ele.addEventListener("input", action)),
     []
   );
   const removeListenerCallback = useCallback<(action: () => void) => void>(
-    (action) => actionHandler<T>(ref.current, (ele) => ele.removeEventListener("input", action)),
+    (action) => actionHandler<T, void>(ref.current, (ele) => ele.removeEventListener("input", action)),
     []
   );
   useAutoActionHandler({
@@ -87,11 +88,11 @@ useLoginInput = <T extends HTMLInputElement>({ option, successClassname, failCla
 // 登录
 useLogin = () => {
   const router = useRouter();
-  const { dispatch } = useCurrentState();
+  const dispatch = useDispatch();
   const failToast = useFailToast();
   const successToast = useSucessToast();
   const ref = useRef<HTMLFormElement>();
-  const loginCallback = useCallback((e: Event) => {
+  const loginCallback = useCallback<(e: Event) => void>((e) => {
     e.preventDefault();
     autoRequest({ method: "post", data: formSerialize(ref.current) })
       .run<ApiRequestResult<UserProps>>(apiName.login)
@@ -99,7 +100,7 @@ useLogin = () => {
         if (code === 0 && !Array.isArray(data) && data.userId) {
           dispatch(setDataSucess_client(actionName.currentUser, data));
           successToast("登录成功，将要跳转到首页");
-          delay(2000, () => router.push("/"));
+          delay(1000, () => router.push("/"));
         } else {
           failToast(`登录失败：${data}`);
         }
@@ -107,11 +108,11 @@ useLogin = () => {
       .catch((e) => failToast(`出现错误：${e.toString()}`));
   }, []);
   const addListenerCallback = useCallback<(action: (e: Event) => void) => void>(
-    (action) => actionHandler<HTMLFormElement>(ref.current, (ele) => ele.addEventListener("submit", action)),
+    (action) => actionHandler<HTMLFormElement, void>(ref.current, (ele) => ele.addEventListener("submit", action)),
     []
   );
   const removeListenerCallback = useCallback<(action: (e: Event) => void) => void>(
-    (action) => actionHandler<HTMLFormElement>(ref.current, (ele) => ele.removeEventListener("submit", action)),
+    (action) => actionHandler<HTMLFormElement, void>(ref.current, (ele) => ele.removeEventListener("submit", action)),
     []
   );
   useAutoActionHandler<Event>({ action: loginCallback, addListener: addListenerCallback, removeListener: removeListenerCallback });
@@ -133,7 +134,7 @@ useLogout = () => {
           if (code === 0) {
             dispatch(setDataSucess_client(actionName.currentUser, {}));
             successToast("登出成功，即将返回首页");
-            delay(2000, () => router.push("/"));
+            delay(1000, () => router.push("/"));
           } else {
             failToast(`登出失败：${state}`);
           }

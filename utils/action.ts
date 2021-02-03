@@ -25,7 +25,7 @@ judgeAction = <T extends HTMLElement>({
   failCallback,
 }: JudgeActioProps<T>) => {
   // reset element
-  actionHandler(element.parentElement.lastElementChild, (ele) => {
+  actionHandler<Element, void>(element.parentElement.lastElementChild, (ele) => {
     if (ele.localName === "span") {
       ele.remove();
     }
@@ -46,7 +46,7 @@ judgeAction = <T extends HTMLElement>({
       failCallback();
     }
   }
-  actionHandler(element.parentElement, (ele) => ele.appendChild(span));
+  actionHandler<Element, void>(element.parentElement, (ele) => ele.appendChild(span));
 };
 
 export { actionHandler, judgeAction };

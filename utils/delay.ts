@@ -19,7 +19,7 @@ cancel = (key) => {
   if (timeoutMap[key]) {
     const length = timeoutMap[key].length;
     timeoutMap[key] = timeoutMap[key].map((id) => id && clearTimeout(id)).slice(length);
-    resolveMap[key] = resolveMap[key].map((resolve) => resolve()).slice(length);
+    resolveMap[key] = resolveMap[key].map((resolve) => resolve && resolve()).slice(length);
   }
   if (keyLength > 300) {
     // 按照使用次数从小到大排序

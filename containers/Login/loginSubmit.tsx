@@ -1,8 +1,8 @@
 import { SubmitType } from "./@type";
 
-let Index: SubmitType;
+let LoginSubmit: SubmitType;
 
-Index = ({ enabled }) => {
+LoginSubmit = ({ enabled }) => {
   return (
     <div className="form-row justify-content-around">
       <button type="submit" className="btn px-5 my-2 btn-info" disabled={!enabled}>
@@ -12,4 +12,4 @@ Index = ({ enabled }) => {
   );
 };
 
-export default Index;
+export default LoginSubmit;

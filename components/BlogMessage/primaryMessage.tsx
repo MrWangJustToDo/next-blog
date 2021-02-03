@@ -8,9 +8,9 @@ import { PrimaryMessageType } from "./@type";
 
 import style from "./index.module.scss";
 
-let Index: PrimaryMessageType;
+let PrimaryMessage: PrimaryMessageType;
 
-Index = (props) => {
+PrimaryMessage = (props) => {
   const {
     modifyState,
     modifyDate,
@@ -52,4 +52,4 @@ Index = (props) => {
   );
 };
 
-export default Index;
+export default PrimaryMessage;

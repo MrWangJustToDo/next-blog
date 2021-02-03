@@ -1,8 +1,8 @@
 import { useHome } from "hook/useHome";
 import MainLeftItem from "components/BlogItem";
-import { Element } from "./@type";
+import { SimpleElement } from "./@type";
 
-let MainLeftContent: Element;
+let MainLeftContent: SimpleElement;
 
 MainLeftContent = () => {
   const { currentPageBlogs } = useHome();

@@ -6,9 +6,9 @@ import { BlogContentMessagePutType } from "./@type";
 
 import style from "./index.module.scss";
 
-let Index: BlogContentMessagePutType;
+let BlogContentMessagePut: BlogContentMessagePutType;
 
-Index = ({ blogId }) => {
+BlogContentMessagePut = ({ blogId }) => {
   const putRequest = autoRequest({ method: "post", path: apiName.putPrimaryMessage, data: { blogId } });
   const { ref, submit, canSubmit } = usePutToCheckcodeModule<HTMLTextAreaElement>({
     request: putRequest,
@@ -25,4 +25,4 @@ Index = ({ blogId }) => {
   );
 };
 
-export default Index;
+export default BlogContentMessagePut;

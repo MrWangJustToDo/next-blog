@@ -5,7 +5,7 @@ import { apiName } from "config/api";
 import { getUserProps, getUserState } from "config/hover";
 import { getCurrentAvatar } from "utils/data";
 import { getClass, flexAround, flexBetween, flexCenter } from "utils/class";
-import { UserHoverItemType } from "./@type";
+import { UserExProps, UserHoverItemType } from "./@type";
 
 import style from "./index.module.scss";
 
@@ -25,7 +25,7 @@ UserHoverItem = (props) => {
         </div>
       </div>
       <div className="card-body text-left py-2">
-        <LoadRender path={apiName.userEx} token query={{ userId }} loaded={Loaded} />
+        <LoadRender<UserExProps> path={apiName.userEx} token query={{ userId }} loaded={Loaded} />
         {getUserProps(props).map(({ key, icon, value }) => (
           <div key={key}>
             <i className={icon} />
@@ -37,7 +37,7 @@ UserHoverItem = (props) => {
   );
 };
 
-let Loaded = (data) => {
+let Loaded = (data: UserExProps) => {
   return (
     <div className={getClass(flexBetween, "mb-2")}>
       {getUserState(data).map(({ key, icon, value }) => {

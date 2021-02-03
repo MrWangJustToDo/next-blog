@@ -72,24 +72,28 @@ interface UseHeaderItemType {
 
 export type { UseHeaderItemType };
 
-/* useBool */
+/* useData */
 interface UseBoolResult {
   bool: boolean;
   switchBool: () => void;
   switchBoolThrottle: () => void;
-  switchBoolThrottleState: () => void;
+  switchBoolState: () => void;
   show: () => void;
   showThrottle: () => void;
-  showThrottleState: () => void;
+  showState: () => void;
   hide: () => void;
   hideDebounce: () => void;
   hideDebounceState: () => void;
+  hideDebounceNoState: () => void;
 }
 interface UseBoolType {
-  (init?: boolean): UseBoolResult;
+  (props?: { init?: boolean; stateChangeTimeStep?: number }): UseBoolResult;
+}
+interface UseArrayType {
+  <T>(init: T[]): [T[], (val: T) => void, (val: T) => void, (val: T) => void, (val: T) => void];
 }
 
-export type { UseBoolType };
+export type { UseBoolType, UseArrayType };
 
 /* useLoadingBar */
 interface UseLoadReturn {
@@ -211,16 +215,22 @@ interface UseAutoLoadCheckcodeImgType {
 interface UseAutoShowAndHideType {
   <T extends HTMLElement>(breakPoint: number): RefObject<T>;
 }
+interface UseAutoSetHeightProps {
+  maxHeight?: number;
+  deps?: any[];
+}
 interface UseAutoSetHeightType {
-  <T extends HTMLElement>(...deps: any[]): [RefObject<T>, number];
+  <T extends HTMLElement>(props: UseAutoSetHeightProps): [RefObject<T>, number];
 }
 
 export type {
+  UseAutoActionHandlerProps,
   UseAutoActionHandlerType,
   UseAutoSetHeaderHeightType,
   UseAutoLoadCheckcodeImgProps,
   UseAutoLoadCheckcodeImgType,
   UseAutoShowAndHideType,
+  UseAutoSetHeightProps,
   UseAutoSetHeightType,
 };
 
@@ -349,8 +359,18 @@ interface UseAutoScrollType {
 interface UseLinkToImgType {
   <T extends HTMLElement>(): RefObject<T>;
 }
+interface UseEditorType {
+  (id: string): void;
+}
+interface UsePublishProps {
+  id: string;
+  request: AutoRequestType;
+}
+interface UsePublishType {
+  (props: UsePublishProps): [RefObject<HTMLFormElement>, () => void];
+}
 
-export type { UseBlogMenuType, UseAutoScrollType, UseLinkToImgType };
+export type { UseBlogMenuType, UseAutoScrollType, UseLinkToImgType, UseEditorType, UsePublishProps, UsePublishType };
 
 /* useUser */
 interface UseAutoLoginType {

@@ -1,16 +1,19 @@
 import Drop from "components/Drop";
-import { DropItemProps } from "components/Drop/@type";
 import LoadRender from "components/LoadRender";
 import { apiName } from "config/api";
 import { TypeProps } from "hook/@type";
+import { DropItemProps } from "components/Drop/@type";
+import { SimpleElement } from "containers/Main/@type";
 
-let Index = () => {
+let PublishType: SimpleElement;
+
+PublishType = () => {
   return (
     <div className="input-group col">
       <div className="input-group-prepend text-center">
         <span
           className="d-inline-block input-group-text bg-transparent border-info text-info position-relative font-weight-bold"
-          style={{ zIndex: 12, minWidth: "80px" }}
+          style={{ zIndex: 12, minWidth: "60px" }}
         >
           分类
         </span>
@@ -21,11 +24,11 @@ let Index = () => {
           const data: DropItemProps<number>[] = res.map(({ typeContent, typeId }) => {
             return { name: typeContent, value: typeId };
           });
-          return <Drop<number> filedName="blogType" className="form-control" placeHolder="分类" data={data} />;
+          return <Drop<number> fieldName="typeId" className="form-control" placeHolder="添加分类" data={data} />;
         }}
       />
     </div>
   );
 };
 
-export default Index;
+export default PublishType;

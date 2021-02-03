@@ -1,9 +1,12 @@
+import { mainRight } from "config/hoom";
 import MainRightType from "./mainRightType";
 import MainRightTag from "./mainRightTag";
 import MainRightCommend from "./mainRightCommend";
-import { mainRight } from "config/hoom";
+import { SimpleElement } from "./@type";
 
-const MainRight = () => {
+let MainRight: SimpleElement;
+
+MainRight = () => {
   return (
     <div className="col-md-4 user-select-none">
       <MainRightType index={mainRight.type} />

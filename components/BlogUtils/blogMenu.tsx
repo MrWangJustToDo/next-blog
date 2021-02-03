@@ -1,13 +1,16 @@
 import { getClass } from "utils/class";
-import { useBool } from "hook/useBool";
+import { useBool } from "hook/useData";
 import { useBlogMenu } from "hook/useBlog";
 import { useShowAndHideAnimate } from "hook/useAnimate";
+import { SimpleElement } from "containers/Main/@type";
 
 import style from "./index.module.scss";
 
-let Index = () => {
+let BlogMenu: SimpleElement;
+
+BlogMenu = () => {
   const seted = useBlogMenu(".blog-content");
-  const { bool, switchBoolThrottle } = useBool(false);
+  const { bool, switchBoolThrottle } = useBool();
   const { ref } = useShowAndHideAnimate<HTMLDivElement>({
     state: bool && seted,
     key: "blogMenu",
@@ -26,4 +29,4 @@ let Index = () => {
   );
 };
 
-export default Index;
+export default BlogMenu;

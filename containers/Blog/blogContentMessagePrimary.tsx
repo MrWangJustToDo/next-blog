@@ -13,6 +13,7 @@ import { BlogContentPrimaryMessageType, BlogContentPrimaryMessageWithReplayType 
 import style from "./index.module.scss";
 
 let BlogContentPrimaryMessage: BlogContentPrimaryMessageType;
+
 let BlogContentPrimaryMessageWithReplay: BlogContentPrimaryMessageWithReplayType;
 
 BlogContentPrimaryMessageWithReplay = ({ messages, replay }) => {

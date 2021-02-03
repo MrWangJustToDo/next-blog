@@ -6,7 +6,7 @@ let Publish: MyNextComponent;
 
 Publish = () => {
   return (
-    <div className={getClass(animateFadein, "container-md my-5 position-relative")} style={{ zIndex: 10 }}>
+    <div className={getClass(animateFadein, "container-md my-5")}>
       <PublishContent />
     </div>
   );

@@ -1,13 +1,16 @@
 import { getClass } from "utils/class";
-import { useBool } from "hook/useBool";
+import { useBool } from "hook/useData";
 import { useLinkToImg } from "hook/useBlog";
 import { useShowAndHideAnimate } from "hook/useAnimate";
+import { SimpleElement } from "containers/Main/@type";
 
 import style from "./index.module.scss";
 
-let Index = () => {
+let BlogCanvas: SimpleElement;
+
+BlogCanvas = () => {
   const canvasRef = useLinkToImg<HTMLCanvasElement>();
-  const { bool, switchBoolThrottleState } = useBool(false);
+  const { bool, switchBoolState } = useBool();
   useShowAndHideAnimate<HTMLCanvasElement>({
     state: bool,
     ref: canvasRef,
@@ -17,7 +20,7 @@ let Index = () => {
   });
   return (
     <>
-      <button className="btn btn-secondary position-relative" onClick={switchBoolThrottleState}>
+      <button className="btn btn-secondary position-relative" onClick={switchBoolState}>
         <i className="ri-smartphone-line" />
       </button>
       <canvas ref={canvasRef} className={getClass("position-absolute border rounded", style.canvasContent)} style={{ display: "none" }} />
@@ -25,4 +28,4 @@ let Index = () => {
   );
 };
 
-export default Index;
+export default BlogCanvas;

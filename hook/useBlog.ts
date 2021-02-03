@@ -1,18 +1,25 @@
 import { useCallback, useEffect, useRef, useState } from "react";
 import tocbot from "tocbot";
 import { toCanvas } from "qrcode";
+import { apiName } from "config/api";
 import { cancel, delay } from "utils/delay";
+import { formSerialize } from "utils/data";
 import { actionHandler } from "utils/action";
 import { addIdForHeads } from "utils/markdown";
+import { useCurrentUser } from "./useUser";
 import { useAutoActionHandler } from "./useAuto";
-import { UseBlogMenuType, UseAutoScrollType, UseLinkToImgType } from "./@type";
+import { useFailToast, useSucessToast } from "./useToast";
+import { ApiRequestResult } from "utils/@type";
+import { UseBlogMenuType, UseAutoScrollType, UseLinkToImgType, UsePublishType, UseEditorType } from "./@type";
+
 import "tocbot/dist/tocbot.css";
 
 let useBlogMenu: UseBlogMenuType;
 let useAutoScrollTop: UseAutoScrollType;
 let useAutoScrollBottom: UseAutoScrollType;
 let useLinkToImg: UseLinkToImgType;
-let useEditor;
+let useEditor: UseEditorType;
+let usePublish: UsePublishType;
 
 useBlogMenu = (className) => {
   const [bool, setBool] = useState<boolean>(false);
@@ -32,25 +39,25 @@ useBlogMenu = (className) => {
       });
     }
     const re = tocbot.destroy.bind(tocbot);
-    return () => tocbot && re && re();
+    return () => tocbot && re && added && re();
   }, []);
   return bool;
 };
 
 useAutoScrollTop = <T extends HTMLElement>() => {
   const ref = useRef<T>();
-  const scrollTopCallback = useCallback(() => {
+  const scrollTopCallback = useCallback<() => void>(() => {
     window.scrollTo({
       top: 0,
       behavior: "smooth",
     });
   }, []);
   const addListenerCallback = useCallback<(action: () => void) => void>(
-    (action) => actionHandler<T>(ref.current, (ele) => ele.addEventListener("click", action)),
+    (action) => actionHandler<T, void>(ref.current, (ele) => ele.addEventListener("click", action)),
     []
   );
   const removeListenerCallback = useCallback<(action: () => void) => void>(
-    (action) => actionHandler<T>(ref.current, (ele) => ele.removeEventListener("click", action)),
+    (action) => actionHandler<T, void>(ref.current, (ele) => ele.removeEventListener("click", action)),
     []
   );
   useAutoActionHandler({
@@ -63,18 +70,18 @@ useAutoScrollTop = <T extends HTMLElement>() => {
 
 useAutoScrollBottom = <T extends HTMLElement>() => {
   const ref = useRef<T>();
-  const scrollTopCallback = useCallback(() => {
+  const scrollTopCallback = useCallback<() => void>(() => {
     window.scrollTo({
       top: document.body.offsetHeight - 1000,
       behavior: "smooth",
     });
   }, []);
   const addListenerCallback = useCallback<(action: () => void) => void>(
-    (action) => actionHandler<T>(ref.current, (ele) => ele.addEventListener("click", action)),
+    (action) => actionHandler<T, void>(ref.current, (ele) => ele.addEventListener("click", action)),
     []
   );
   const removeListenerCallback = useCallback<(action: () => void) => void>(
-    (action) => actionHandler<T>(ref.current, (ele) => ele.removeEventListener("click", action)),
+    (action) => actionHandler<T, void>(ref.current, (ele) => ele.removeEventListener("click", action)),
     []
   );
   useAutoActionHandler({
@@ -90,38 +97,88 @@ useLinkToImg = <T extends HTMLElement>() => {
   useEffect(() => {
     let a = document.createElement("a");
     a.href = "#";
-    actionHandler<T>(ref.current, (ele) => toCanvas(ele, a.href));
+    actionHandler<T, void>(ref.current, (ele) => toCanvas(ele, a.href));
   }, []);
   return ref;
 };
 
-useEditor = (className) => {
+useEditor = (id) => {
+  const mdId = `#${id}_md`;
+  // 创建DOM观察者对象，观察DOM的class变化，执行对应的操作
+  const observer = new MutationObserver(function (mutationsList) {
+    // 遍历出所有的MutationRecord对象
+    mutationsList.forEach(function (mutation) {
+      if (mutation.attributeName === "class") {
+        if ((mutation.target as HTMLDivElement).classList.contains("full")) {
+          document.body.style.overflow = "hidden";
+        } else {
+          document.body.style.overflow = "auto";
+        }
+      }
+    });
+  });
   const keydonwHandler = useCallback<(e: KeyboardEvent) => void>((e) => {
     if (e.key === "Tab") {
       e.preventDefault();
       document.execCommand("insertText", false, " ".repeat(2));
     }
   }, []);
-  const initCallback = useCallback(
-    () =>
+  useEffect(() => {
+    const init = () =>
       delay(
         100,
-        () => actionHandler<HTMLTextAreaElement>(document.querySelector(className), (ele) => ele.addEventListener("keydown", keydonwHandler), initCallback),
+        () => actionHandler<HTMLTextAreaElement, void>(document.querySelector(mdId), (ele) => ele.addEventListener("keydown", keydonwHandler), init),
         "initEditor"
-      ),
-    [className]
-  );
-  const removeCallback = useCallback(
-    () => actionHandler<HTMLTextAreaElement>(document.querySelector(className), (ele) => ele.removeEventListener("keydown", keydonwHandler)),
-    [className]
-  );
-  useEffect(() => {
-    initCallback();
+      );
+    const listen = () =>
+      delay(
+        100,
+        () => actionHandler<HTMLDivElement, void>(document.querySelector(`#${id}`), (ele) => observer.observe(ele, { attributes: true }), listen),
+        "initObserve"
+      );
+    init();
+    listen();
     return () => {
       cancel("initEditor");
-      removeCallback();
+      cancel("initObserve");
+      observer.disconnect();
+      actionHandler<HTMLTextAreaElement, void>(document.querySelector(mdId), (ele) => ele.removeEventListener("keydown", keydonwHandler));
     };
   }, []);
 };
 
-export { useBlogMenu, useAutoScrollTop, useAutoScrollBottom, useLinkToImg, useEditor };
+usePublish = ({ request, id }) => {
+  const htmlId = `#${id}_html`;
+  const ref = useRef<HTMLFormElement>();
+  const { userId } = useCurrentUser();
+  const success = useSucessToast();
+  const fail = useFailToast();
+  const submit = useCallback(
+    () =>
+      actionHandler<HTMLFormElement, void>(
+        ref.current,
+        (ele) => {
+          if (!userId) {
+            fail("登录失效，请重新登录！");
+          } else {
+            const blogPreview = ele.querySelector(htmlId).textContent;
+            request({ data: { ...formSerialize(ele), blogPreview } })
+              .run<ApiRequestResult<string>>(apiName.publishBlog, { userId })
+              .then(({ code, data }) => {
+                if (code === 0) {
+                  success(data.toString());
+                } else {
+                  fail(data.toString());
+                }
+              })
+              .catch((e) => fail(e.toString()));
+          }
+        },
+        () => fail("form元素不存在...")
+      ),
+    [success, fail, userId]
+  );
+  return [ref, submit];
+};
+
+export { useBlogMenu, useAutoScrollTop, useAutoScrollBottom, useLinkToImg, useEditor, usePublish };

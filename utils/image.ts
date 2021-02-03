@@ -3,7 +3,7 @@ import { getRelativeApiPath } from "./path";
 import { autoTransformData } from "./data";
 import { LoadImgType, ApiRequestResult } from "./@type";
 
-const request = autoRequest({ method: "get" });
+const request = autoRequest();
 
 let loadImg: LoadImgType;
 
@@ -14,8 +14,8 @@ loadImg = ({ imgUrl, strUrl, imgElement }) => {
   }).then((imgEle) =>
     request
       .run<ApiRequestResult<string>>(getRelativeApiPath(strUrl))
-      .then<string>(autoTransformData)
-      .then((value) => imgEle.setAttribute("title", value))
+      .then(data => autoTransformData<string, {}>(data))
+      .then((value) => imgEle.setAttribute("title", <string>value))
   );
 };
 

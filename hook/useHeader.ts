@@ -17,7 +17,7 @@ useHeaderItem = () => {
   const { route } = useRouter();
   const { state, dispatch } = useCurrentState();
   const currentHeader = state.client[actionName.currentHeader]["data"];
-  const changeCurrentHeader = useCallback((headItem) => dispatch(setDataSucess_client(actionName.currentHeader, headItem)), []);
+  const changeCurrentHeader = useCallback<(props: string) => void>((headItem) => dispatch(setDataSucess_client(actionName.currentHeader, headItem)), []);
   autoChangeHeader(route, changeCurrentHeader);
   return { currentHeader, changeCurrentHeader };
 };

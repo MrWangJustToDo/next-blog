@@ -12,7 +12,7 @@ momentTo = (time) => {
   if (time instanceof Date) {
     return moment(new Date()).to(moment(time));
   } else {
-    console.warn(`time parameter error d${time}`);
+    console.error(`time parameter error d${time}`);
     const now = new Date();
     return moment(now).to(now);
   }

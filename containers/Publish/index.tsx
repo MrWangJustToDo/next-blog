@@ -1,23 +1,30 @@
+import { usePublish } from "hook/useBlog";
+import { autoRequest } from "utils/fetcher";
+import { editorId } from "config/publish";
 import PublishHead from "./publishHead";
 import PublishEditor from "./publishEditor";
-import PublishType_Tag from "./publishType&Tag";
+import PublishTypeTag from "./publishType&Tag";
 import PublishImage from "./publishImage";
+import PublishState from "./publishState";
+import PublishSubmit from "./publishSubmit";
+import { SimpleElement } from "containers/Main/@type";
 
-let Index = () => {
+let Publish: SimpleElement;
+
+Publish = () => {
+  const request = autoRequest({ method: "post", token: true });
+  const [ref, submit] = usePublish({ request, id: editorId });
   return (
     <div className="mt-5">
       <div className="container">
         <div className="mx-4 pb-5">
-          <form>
+          <form ref={ref}>
             <PublishHead />
-            <PublishEditor />
-            <PublishType_Tag />
+            <PublishEditor id={editorId} />
+            <PublishTypeTag />
             <PublishImage />
-            {/* <AdminBodyContainerPublishHead /> */}
-            {/* <AdminBodyContainerPublishEditor /> */}
-            {/* <AdminBodyContainerPublishType /> */}
-            {/* <AdminBodyContainerPublishBtns /> */}
-            {/* <AdminBodyContainerPublishSubmit /> */}
+            <PublishState />
+            <PublishSubmit submit={submit} />
           </form>
         </div>
       </div>
@@ -25,4 +32,4 @@ let Index = () => {
   );
 };
 
-export default Index;
+export default Publish;

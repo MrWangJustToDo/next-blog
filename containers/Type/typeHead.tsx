@@ -1,9 +1,9 @@
 import useType from "hook/useType";
 import TypeHeadItem from "./typeHeadItem";
 import { flexBetween, getClass } from "utils/class";
-import { Element } from "./@type";
+import { SimpleElement } from "containers/Main/@type";
 
-let TypeHead: Element;
+let TypeHead: SimpleElement;
 
 TypeHead = () => {
   const { type } = useType();

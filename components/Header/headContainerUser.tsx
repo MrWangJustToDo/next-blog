@@ -1,15 +1,18 @@
 import Link from "next/link";
-import { useBool } from "hook/useBool";
+import { useBool } from "hook/useData";
 import { useCurrentUser, useLogout } from "hook/useUser";
 import { useShowAndHideAnimate } from "hook/useAnimate";
 import { getCurrentAvatar } from "utils/data";
 import { flexCenter, getClass } from "utils/class";
+import { SimpleElement } from "containers/Main/@type";
 
 import style from "./index.module.scss";
 
-let Index = () => {
+let HeadContainerUser: SimpleElement;
+
+HeadContainerUser = () => {
   const logoutCallback = useLogout();
-  const { bool, switchBoolThrottle, hideDebounceState } = useBool(false);
+  const { bool, switchBoolThrottle, hideDebounceState } = useBool();
   const { username, avatar, gender, userId } = useCurrentUser();
   const { ref } = useShowAndHideAnimate<HTMLDivElement>({
     state: bool,
@@ -47,4 +50,4 @@ let Index = () => {
   );
 };
 
-export default Index;
+export default HeadContainerUser;

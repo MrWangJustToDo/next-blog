@@ -34,7 +34,7 @@ transformArray = (arr) =>
       }
       return pre;
     }
-    console.error("type error: ", current);
+    console.error("className type error: ", current);
     return pre;
   }, []);
 

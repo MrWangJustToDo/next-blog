@@ -1,13 +1,14 @@
 import { apiName } from "config/api";
 import { useAutoLoadCheckcodeImg, useAutoSetHeight } from "hook/useAuto";
 import { flexBetween, getClass } from "utils/class";
+import { LoginCheckCodeType } from "./@type";
 
 import style from "./index.module.scss";
 
-let Index: ({ show: boolean }) => JSX.Element;
+let LoginCheckCode: LoginCheckCodeType;
 
-Index = ({ show }) => {
-  const [ref, height] = useAutoSetHeight<HTMLDivElement>();
+LoginCheckCode = ({ show }) => {
+  const [ref, height] = useAutoSetHeight<HTMLDivElement>({});
   const imgRef = useAutoLoadCheckcodeImg({ imgUrl: apiName.captcha, strUrl: apiName.captchaStr });
   return (
     <div ref={ref} className={getClass("form-group row align-items-center overflow-hidden", style.checkcode)} style={{ height: show ? `${height}px` : "0px" }}>
@@ -22,4 +23,4 @@ Index = ({ show }) => {
   );
 };
 
-export default Index;
+export default LoginCheckCode;

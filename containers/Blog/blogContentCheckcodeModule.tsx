@@ -5,6 +5,7 @@ import { useAutoLoadCheckcodeImg } from "hook/useAuto";
 import { BlogContentCheckcodeModuleWithImagType, BlogContentCheckcodeModuleType } from "./@type";
 
 let BlogContentCheckcodeModule: BlogContentCheckcodeModuleType;
+
 let BlogContentCheckcodeModuleWithImag: BlogContentCheckcodeModuleWithImagType;
 
 BlogContentCheckcodeModuleWithImag = ({ request, closeHandler, imgRef }) => {

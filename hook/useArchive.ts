@@ -47,7 +47,7 @@ useArchive = () => {
 };
 
 useAutoLoadArchive = ({ canLoad, loadMore, breakPoint }) => {
-  const loadMoreCallback = useCallback(
+  const loadMoreCallback = useCallback<() => void>(
     throttle(() => {
       if (document.body.offsetHeight - document.scrollingElement.scrollTop < breakPoint) {
         loadMore();
@@ -56,11 +56,11 @@ useAutoLoadArchive = ({ canLoad, loadMore, breakPoint }) => {
     []
   );
   const addListenerCallback = useCallback<(action: () => void) => void>(
-    (action) => actionHandler<Window>(window, (ele) => ele.addEventListener("scroll", action)),
+    (action) => actionHandler<Window, void>(window, (ele) => ele.addEventListener("scroll", action)),
     []
   );
   const removeListenerCallback = useCallback<(action: () => void) => void>(
-    (action) => actionHandler<Window>(window, (ele) => ele.removeEventListener("scroll", action)),
+    (action) => actionHandler<Window, void>(window, (ele) => ele.removeEventListener("scroll", action)),
     []
   );
   useAutoActionHandler({

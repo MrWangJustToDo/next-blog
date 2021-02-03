@@ -1,11 +1,13 @@
 import { getClass, flexCenter } from "utils/class";
 import LoadRender from "components/LoadRender";
-import { YiYanComponent, Element } from "./@type";
+import { YiYanComponent } from "./@type";
+import { SimpleElement } from "containers/Main/@type";
 
 import style from "./index.module.scss";
 
 let Bquote: YiYanComponent;
-let FootContainerYiYan: Element;
+
+let FootContainerYiYan: SimpleElement;
 
 Bquote = ({ hitokoto, from_who, from }) => {
   return (

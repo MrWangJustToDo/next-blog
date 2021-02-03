@@ -1,13 +1,16 @@
 import Drop from "components/Drop";
-import { BlogOrigin } from "config/publish";
+import { blogOrigin } from "config/publish";
+import { SimpleElement } from "containers/Main/@type";
 
-let Index = () => {
+let PublishHead: SimpleElement;
+
+PublishHead = () => {
   return (
     <div className="input-group mb-3">
-      <Drop<number> filedName={"blogOriginState"} className="col-1 border-info rounded-left" data={BlogOrigin} />
-      <input type="text" id="title" className="form-control shadow-none col-11" placeholder="标题" name="blog-title" />
+      <Drop<number> fieldName="blogOriginState" className="col-1 border-info rounded-left" data={blogOrigin} />
+      <input type="text" className="form-control shadow-none col-11" placeholder="标题" name="blogTitle" />
     </div>
   );
 };
 
-export default Index;
+export default PublishHead;

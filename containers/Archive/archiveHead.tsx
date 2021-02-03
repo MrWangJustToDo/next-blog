@@ -1,7 +1,10 @@
 import { useArchive } from "hook/useArchive";
 import { flexBetween, getClass } from "utils/class";
+import { SimpleElement } from "containers/Main/@type";
 
-let Index = () => {
+let ArchiveHead: SimpleElement
+
+ArchiveHead = () => {
   const { allCount } = useArchive();
   return (
     <div className="card mx-4">
@@ -17,4 +20,4 @@ let Index = () => {
   );
 };
 
-export default Index;
+export default ArchiveHead;

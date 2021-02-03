@@ -8,8 +8,11 @@ import { useLogin, useLoginInput } from "hook/useUser";
 import { flexCenter, getClass } from "utils/class";
 
 import style from "./index.module.scss";
+import { SimpleElement } from "containers/Main/@type";
 
-let Index = () => {
+let Login: SimpleElement;
+
+Login = () => {
   const formRef = useLogin();
   const [usernameRef, usernameState] = useLoginInput({ option: login.username, successClassname: style.success, failClassname: style.fail });
   const [passwordRef, passwordState] = useLoginInput({ option: login.password, successClassname: style.success, failClassname: style.fail });
@@ -32,4 +35,4 @@ let Index = () => {
   );
 };
 
-export default Index;
+export default Login;

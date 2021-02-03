@@ -6,8 +6,7 @@ exports.getPrimaryMessageByBlogId = cacheHandler(
   actionHandler(
     async ({ req, res }) => {
       const body = req.body || {};
-      const { data } = body;
-      const { blogId } = data || {};
+      const { blogId } = body;
       if (blogId === undefined) {
         throw new Error("博客id参数不存在");
       }
@@ -22,8 +21,7 @@ exports.getChildMessageByPrimaryId = cacheHandler(
   actionHandler(
     async ({ req, res }) => {
       const body = req.body || {};
-      const { data } = body;
-      const { primaryCommentId } = data || {};
+      const { primaryCommentId } = body;
       if (primaryCommentId === undefined) {
         throw new Error("主评论id参数不存在");
       }

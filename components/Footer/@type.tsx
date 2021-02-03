@@ -1,9 +1,3 @@
-interface Element {
-  (): JSX.Element;
-}
-
-export type { Element };
-
 /* footContainerContactMe */
 interface FootContainerContactMeProps {
   length?: number;
@@ -24,7 +18,7 @@ interface FootContainerProps {
   icon?: string;
   hrefTo?: string;
   title?: string;
-  [propo: string]: any;
+  [props: string]: any;
 }
 
 interface FootContainerContentItemType {

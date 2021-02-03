@@ -3,11 +3,11 @@ import FootContainerYiYan from "./footContainerYiYan";
 import FootContainerCardMe from "./footContainerCardMe";
 import FootContainerRecommend from "./footContainerRecommend";
 import FootContainerConnectionMe from "./footContainerContactMe";
-import { Element } from "./@type";
+import { SimpleElement } from "containers/Main/@type";
 
 import style from "./index.module.scss";
 
-let Footer: Element;
+let Footer: SimpleElement;
 
 Footer = () => {
   return (

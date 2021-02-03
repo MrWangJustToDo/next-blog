@@ -19,9 +19,9 @@ interface GetItem<T> {
 export type { TransformArray, GetClass, GetArray, GetItem };
 
 /* data */
-// type ResultProps = ApiRequestResult<T> | any;
+type ResultProps<T, F> = ApiRequestResult<T> & F;
 interface AutoTransformDataType {
-  <T>(props: ApiRequestResult<T> | any): any;
+  <T, F extends { [props: string]: string }>(data: ResultProps<T, F>): T | T[] | F;
 }
 interface GetCurrentAvatar {
   (avatar: string, gender: number): string;
@@ -37,20 +37,20 @@ interface FormSerializeType {
   (element: HTMLFormElement): { [props: string]: string };
 }
 
-export type { AutoTransformDataType, GetCurrentAvatar, FormChild, FormSerializeType };
+export type { ResultProps, AutoTransformDataType, GetCurrentAvatar, FormChild, FormSerializeType };
 
 /* delay */
 interface Cancel {
   (key: string): void;
 }
 interface Delay {
-  (time: number, action: Function, key?: string): Promise<any>;
+  <T>(time: number, action: () => T, key?: string): Promise<T | void>;
 }
 interface TimeoutMap {
   [props: string]: Array<NodeJS.Timeout | void>;
 }
 interface ResolveMap {
-  [props: string]: Array<Function>;
+  [props: string]: Array<(() => void) | void>;
 }
 interface KeyMap {
   [props: string]: number;
@@ -111,7 +111,7 @@ export type { TimeToString };
 
 /* action */
 interface ActionHandlerType {
-  <T>(element: T | undefined, action: (ele: T) => void | any, otherAction?: () => void): void | any;
+  <T, F>(element: T | undefined, action: (ele: T) => void | F, otherAction?: () => void): void | F;
 }
 
 interface JudgeActioProps<T> {

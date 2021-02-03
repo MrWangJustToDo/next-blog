@@ -4,7 +4,7 @@ import { toastState } from "config/toast";
 import { ToastProps } from "components/Toast/@type";
 import { UseToastPropsType, UseToastPushType, UseContentToastType } from "./@type";
 
-const ToastPushContext = createContext<UseToastPushType>(() => Promise.resolve());
+const ToastPushContext = createContext<UseToastPushType>(() => {});
 
 let useToastProps: UseToastPropsType;
 let useCustomizeToast: () => UseToastPushType;

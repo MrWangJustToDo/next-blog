@@ -1,14 +1,14 @@
-import { AutoTransformDataType, FormChild, FormSerializeType, GetCurrentAvatar } from "./@type";
+import { ApiRequestResult, AutoTransformDataType, FormChild, FormSerializeType, GetCurrentAvatar, ResultProps } from "./@type";
 
 let autoTransformData: AutoTransformDataType;
 let getCurrentAvatar: GetCurrentAvatar;
 let formSerialize: FormSerializeType;
 
-autoTransformData = (data) => {
+autoTransformData = <T, F>(data: ResultProps<T, F>) => {
   if (data.code !== undefined && data.state && data.data) {
-    return data.data;
+    return (<ApiRequestResult<T>>data).data;
   } else {
-    return data;
+    return <F>data;
   }
 };
 
@@ -72,7 +72,7 @@ formSerialize = (element: HTMLFormElement) => {
       }
     });
   } else {
-    throw new Error("FormSerialize parameter type error");
+    throw new Error(`FormSerialize parameter type error`);
   }
   return re;
 };

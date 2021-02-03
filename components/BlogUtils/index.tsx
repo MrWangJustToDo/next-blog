@@ -4,10 +4,13 @@ import { useAutoShowAndHide } from "hook/useAuto";
 import { useAutoScrollTop, useAutoScrollBottom } from "hook/useBlog";
 import BlogMenu from "./blogMenu";
 import BlogCanvas from "./blogCanvas";
+import { SimpleElement } from "containers/Main/@type";
 
 import style from "./index.module.scss";
 
-let Index = () => {
+let BlogUtils: SimpleElement;
+
+BlogUtils = () => {
   const divRef = useAutoShowAndHide<HTMLDivElement>(360);
   const topRef = useAutoScrollTop<HTMLButtonElement>();
   const bottomRef = useAutoScrollBottom<HTMLButtonElement>();
@@ -25,4 +28,4 @@ let Index = () => {
   );
 };
 
-export default Index;
+export default BlogUtils;

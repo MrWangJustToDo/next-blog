@@ -1,9 +1,9 @@
 import MainLeftHead from "./mainLeftHead";
 import MainLeftFoot from "./mainLeftFoot";
 import MainLeftContent from "./mainLeftContent";
-import { Element } from "./@type";
+import { SimpleElement } from "./@type";
 
-let MainLeft: Element;
+let MainLeft: SimpleElement;
 
 MainLeft = () => {
   return (

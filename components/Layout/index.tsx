@@ -1,10 +1,10 @@
 import dynamic from "next/dynamic";
-import { useAutoLogin } from "hook/useUser";
 import Head from "components/Head";
 import Header from "components/Header";
 import LoadingBar from "components/LoadingBar";
 import ModuleManager from "components/ModuleManager";
-import { animateFadein, flexBetween, getClass } from "utils/class";
+import { useAutoLogin } from "hook/useUser";
+import { animateFadein, getClass } from "utils/class";
 
 const Footer = dynamic(() => import("../Footer"));
 
@@ -15,7 +15,9 @@ const Layout = ({ title, container = true, children }: { title?: string; contain
       children={
         <>
           {container && <Header />}
-          <div style={{ minHeight: "calc(100vh - 200px)" }}>{children}</div>
+          <div className="position-relative" style={{ minHeight: "calc(100vh - 200px)", zIndex: 1 }}>
+            {children}
+          </div>
           {container && <Footer />}
         </>
       }

@@ -2,8 +2,11 @@ import ArchiveHead from "./archiveHead";
 import ArchiveContent from "./archiveContent";
 import Loading from "components/LoadRender/loading";
 import { useArchive, useAutoLoadArchive } from "hook/useArchive";
+import { SimpleElement } from "containers/Main/@type";
 
-let Index = () => {
+let Archive: SimpleElement;
+
+Archive = () => {
   const { value, canLoad, loadMore } = useArchive();
   useAutoLoadArchive({ canLoad, loadMore, breakPoint: 600 });
   return (
@@ -19,4 +22,4 @@ let Index = () => {
   );
 };
 
-export default Index;
+export default Archive;

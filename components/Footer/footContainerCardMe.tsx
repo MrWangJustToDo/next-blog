@@ -1,10 +1,10 @@
 import Image from "next/image";
 import { getClass, flexCenter } from "utils/class";
-import { Element } from "./@type";
+import { SimpleElement } from "containers/Main/@type";
 
 import style from "./index.module.scss";
 
-let FootContainerCardMe: Element;
+let FootContainerCardMe: SimpleElement;
 
 FootContainerCardMe = () => {
   return (
