@@ -5,7 +5,7 @@ import { apiName } from "config/api";
 import { LoginProps } from "config/@type";
 import { AutoRequestType } from "utils/@type";
 import { ToastProps } from "components/Toast/@type";
-import { ReplayProps } from "components/Replay/@type";
+import { OverlayProps } from "components/Overlay/@type";
 import { LoadingBarProps } from "components/LoadingBar/@type";
 import { ChildMessageProps, PrimaryMessageProps } from "components/BlogMessage/@type";
 
@@ -183,7 +183,7 @@ interface UseToastPropsType {
   (init: ToastProps[]): { toast: ToastProps[]; push: UseToastPushType };
 }
 interface UseContentToastType {
-  (): (content: string) => void;
+  (): (content: string) => Promise<void>;
 }
 
 export type { UseToastPropsType, UseToastPushType, UseContentToastType };
@@ -215,12 +215,16 @@ interface UseAutoLoadCheckcodeImgType {
 interface UseAutoShowAndHideType {
   <T extends HTMLElement>(breakPoint: number): RefObject<T>;
 }
-interface UseAutoSetHeightProps {
+interface UseAutoSetHeightProps<T> {
+  forWardRef?: RefObject<T>;
   maxHeight?: number;
   deps?: any[];
 }
 interface UseAutoSetHeightType {
-  <T extends HTMLElement>(props: UseAutoSetHeightProps): [RefObject<T>, number];
+  <T extends HTMLElement>(props: UseAutoSetHeightProps<T>): [RefObject<T>, number];
+}
+interface UseAutoLoadRandomImgType {
+  (apiName: apiName): [RefObject<HTMLImageElement>, boolean];
 }
 
 export type {
@@ -232,31 +236,32 @@ export type {
   UseAutoShowAndHideType,
   UseAutoSetHeightProps,
   UseAutoSetHeightType,
+  UseAutoLoadRandomImgType,
 };
 
 /* useAnimate */
 interface UseShowAndHideAnimateProps<T> {
   state: boolean;
   key?: string;
-  ref?: RefObject<T>;
+  forWardRef?: RefObject<T>;
   showClassName?: string;
   hideClassName?: string;
 }
 interface UseShowAndHideAnimateType {
-  <T extends HTMLElement>(props: UseShowAndHideAnimateProps<T>): { ref: RefObject<T> };
+  <T extends HTMLElement>(props: UseShowAndHideAnimateProps<T>): RefObject<T>;
 }
 
 export type { UseShowAndHideAnimateProps, UseShowAndHideAnimateType };
 
-/* useReplay */
-interface UseReplayOpenType {
-  (props: ReplayProps): void;
+/* useOverlay */
+interface UseOverlayOpenType {
+  (props: OverlayProps): void;
 }
-interface UseReplayPropsType {
-  (): { replay: ReplayProps; open: UseReplayOpenType };
+interface UseOverlayPropsType {
+  (): { overlay: OverlayProps; open: UseOverlayOpenType };
 }
 
-export type { UseReplayOpenType, UseReplayPropsType };
+export type { UseOverlayPropsType, UseOverlayOpenType };
 
 /* useMessage */
 interface UseChildMessageType {
@@ -297,7 +302,7 @@ interface UseCheckcodeModuleToSubmitType {
   <T extends MyInputELement>(props: UseCheckcodeModuleToSubmitProps): {
     ref: RefObject<T>;
     canSubmit: boolean;
-    submit: () => void;
+    submit: () => Promise<void>;
   };
 }
 interface UseMessageToReplayModuleProps<T> {
@@ -316,7 +321,7 @@ interface UseReplayModuleToSubmitType {
   <T extends MyInputELement, F extends MyInputELement>(props: UseReplayModuleToSubmitProps): {
     input1: RefObject<T>;
     input2: RefObject<F>;
-    submit: () => void;
+    submit: () => Promise<void>;
     canSubmit: boolean;
   };
 }
@@ -367,10 +372,18 @@ interface UsePublishProps {
   request: AutoRequestType;
 }
 interface UsePublishType {
-  (props: UsePublishProps): [RefObject<HTMLFormElement>, () => void];
+  (props: UsePublishProps): [RefObject<HTMLFormElement>, () => Promise<void>];
+}
+interface UseInputToImageModuleProps {
+  className?: string;
+  appendHandler: (url: string) => void;
+  body: (appendHandler: (url: string) => void) => (closeHandler: () => void) => JSX.Element;
+}
+interface UseInputToImageModuleType {
+  (props: UseInputToImageModuleProps): () => void;
 }
 
-export type { UseBlogMenuType, UseAutoScrollType, UseLinkToImgType, UseEditorType, UsePublishProps, UsePublishType };
+export type { UseBlogMenuType, UseAutoScrollType, UseLinkToImgType, UseEditorType, UsePublishProps, UsePublishType, UseInputToImageModuleType };
 
 /* useUser */
 interface UseAutoLoginType {
@@ -391,7 +404,7 @@ interface UseLoginType {
   (): RefObject<HTMLFormElement>;
 }
 interface UseLogoutType {
-  (): () => void;
+  (): () => Promise<void>;
 }
 
 export type { UseAutoLoginType, UseCurrentUserType, UseLoginInputProps, UseLoginInputType, UseLoginType, UseLogoutType };

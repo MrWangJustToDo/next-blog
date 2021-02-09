@@ -1,4 +1,5 @@
 import { combineReducers } from "redux";
+import { actionName } from "config/action";
 import currentToken from "./currentToken";
 import currentHomePage from "./currentHomePage";
 import currentHeader from "./currentHeader";
@@ -9,7 +10,7 @@ import currentTagPage from "./currentTagPage";
 import currentBlogId from "./currentBlogId";
 import currentArchive from "./currentArchive";
 import currentUser from "./currentUser";
-import { actionName } from "config/action";
+import currentResult from "./currentResult";
 
 export default combineReducers({
   [actionName.currentHeader]: currentHeader,
@@ -22,4 +23,5 @@ export default combineReducers({
   [actionName.currentBlogId]: currentBlogId,
   [actionName.currentArchive]: currentArchive,
   [actionName.currentUser]: currentUser,
+  [actionName.currentResult]: currentResult,
 });

@@ -128,7 +128,7 @@ useLogout = () => {
   const user = state.client[actionName.currentUser]["data"] as UserProps;
   const logoutCallback = useCallback(() => {
     if (user.userId) {
-      autoRequest({ method: "post", token: true })
+      return autoRequest({ method: "post", token: true })
         .run<ApiRequestResult<string>>(apiName.logout)
         .then(({ code, state }) => {
           if (code === 0) {
@@ -140,6 +140,8 @@ useLogout = () => {
           }
         })
         .catch((e) => failToast(`出现错误：${e.toString()}`));
+    } else {
+      return failToast(`未登录，登出失败`);
     }
   }, [user]);
   return logoutCallback;

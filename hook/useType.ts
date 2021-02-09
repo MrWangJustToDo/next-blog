@@ -10,8 +10,8 @@ let useType: UseTypeType;
 
 let autoChangeType = (type, currentType, changeCurrentType) => {
   useEffect(() => {
-    if (currentType === "") {
-      if (type.length) changeCurrentType(type[0].typeContent);
+    if (currentType === "" && type.length) {
+      changeCurrentType(type[0].typeContent);
     }
   }, [currentType, changeCurrentType, type]);
 };

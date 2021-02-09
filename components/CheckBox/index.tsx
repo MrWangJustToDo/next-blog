@@ -6,7 +6,7 @@ import styleCss from "./index.module.scss";
 
 let CheckBox: CheckBoxType;
 
-CheckBox = ({ fieldName, className = "", style }) => {
+CheckBox = ({ fieldName, style, className = "" }) => {
   const { bool, switchBoolState } = useBool();
   return (
     <div className={getClass(className)} style={style}>

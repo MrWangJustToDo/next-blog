@@ -1,14 +1,14 @@
 import Link from "next/link";
+import { login } from "config/user";
 import LoginUsername from "./loginUsername";
 import LoginPassword from "./loginPassword";
 import LoginCheckcode from "./loginCheckcode";
 import LoginSubmit from "./loginSubmit";
-import { login } from "config/user";
-import { useLogin, useLoginInput } from "hook/useUser";
 import { flexCenter, getClass } from "utils/class";
+import { useLogin, useLoginInput } from "hook/useUser";
+import { SimpleElement } from "containers/Main/@type";
 
 import style from "./index.module.scss";
-import { SimpleElement } from "containers/Main/@type";
 
 let Login: SimpleElement;
 

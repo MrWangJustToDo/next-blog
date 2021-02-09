@@ -1,7 +1,8 @@
 import { apiName } from "config/api";
+import Button from "components/Button";
+import { flexBetween, getClass } from "utils/class";
 import { useAutoLoadCheckcodeImg } from "hook/useAuto";
 import { useReplayModuleToSubmit } from "hook/useMessage";
-import { flexBetween, getClass } from "utils/class";
 import { BlogContentReplayModuleType, BlogContentReplayModuleWithImagType } from "./@type";
 
 import style from "./index.module.scss";
@@ -21,9 +22,7 @@ BlogContentReplayModuleWithImag = ({ request, closeHandler, imgRef }) => {
         </label>
         <img ref={imgRef} className="col-4 col-md-3 border rounded" height="38" alt="验证码" />
         <input ref={input2} className="col-4 col-md-3 form-control" id="putcheck" />
-        <button className="btn btn-sm btn-primary" onClick={submit} disabled={!canSubmit}>
-          新留言
-        </button>
+        <Button className="btn-sm btn-primary" request={submit} disable={!canSubmit} value={"新留言"} />
       </div>
     </>
   );

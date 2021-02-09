@@ -1,3 +1,4 @@
+import { AxiosRequestConfig, Method } from "axios";
 import { apiName } from "config/api";
 
 /* class */
@@ -60,7 +61,7 @@ export type { Cancel, Delay, TimeoutMap, ResolveMap, KeyMap };
 
 /* fetcher */
 interface RequestProps {
-  method?: string;
+  method?: Method;
   path?: string | apiName;
   query?: QueryProps;
   token?: boolean | string;
@@ -72,12 +73,15 @@ interface ApiRequestResult<T> {
   state: string;
   res: any;
 }
+interface NeedCacheType {
+  (path: string | apiName): boolean;
+}
 interface AutoRequestType {
   run?: <T>(path?: string, query?: QueryProps) => Promise<T>;
   (props?: RequestProps): AutoRequestType;
 }
 
-export type { AutoRequestType, ApiRequestResult };
+export type { AutoRequestType, ApiRequestResult, NeedCacheType };
 
 /* path */
 interface QueryProps {
@@ -111,7 +115,7 @@ export type { TimeToString };
 
 /* action */
 interface ActionHandlerType {
-  <T, F>(element: T | undefined, action: (ele: T) => void | F, otherAction?: () => void): void | F;
+  <T, F>(element: T | undefined, action: (ele: T) => F, otherAction?: () => Promise<void>): Promise<void> | F;
 }
 
 interface JudgeActioProps<T> {
@@ -149,3 +153,18 @@ interface AddIdForHeadsType {
 }
 
 export type { AddIdForHeadsType };
+
+/* request */
+interface PendingType {
+  url?: string;
+  method?: Method;
+  params: any;
+  data: any;
+  cancel: Function;
+}
+
+interface RemovePendingType {
+  (props: AxiosRequestConfig): void;
+}
+
+export type { PendingType, RemovePendingType };

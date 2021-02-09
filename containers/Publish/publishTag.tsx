@@ -3,6 +3,7 @@ import Drop from "components/Drop";
 import LoadRender from "components/LoadRender";
 import { DropItemProps } from "components/Drop/@type";
 import { SimpleElement } from "containers/Main/@type";
+import { TagProps } from "./@type";
 
 let PublishTag: SimpleElement;
 
@@ -17,7 +18,7 @@ PublishTag = () => {
           标签
         </span>
       </div>
-      <LoadRender<{ tagId: number; tagContent: string; tagCount: number }[]>
+      <LoadRender<TagProps[]>
         path={apiName.tag}
         loaded={(res) => {
           const data: DropItemProps<number>[] = res.map(({ tagContent, tagId }) => {

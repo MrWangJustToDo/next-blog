@@ -6,11 +6,10 @@ const { getUserByUser, insertUser, getUsersEx, getUserById } = require("../../da
 exports.login = actionHandler(
   async ({ req, res }) => {
     const body = req.body || {};
-    const { data } = body;
-    if (req.session.captcha === data.checkcode) {
+    if (req.session.captcha === body.checkcode) {
       let user = await getUserByUser({
-        username: data.username,
-        password: data.password,
+        username: body.username,
+        password: body.password,
         db: global.db,
       });
       if (user) {

@@ -7,10 +7,11 @@ import { formSerialize } from "utils/data";
 import { actionHandler } from "utils/action";
 import { addIdForHeads } from "utils/markdown";
 import { useCurrentUser } from "./useUser";
+import { useOverlayOpen } from "./useOverlay";
 import { useAutoActionHandler } from "./useAuto";
 import { useFailToast, useSucessToast } from "./useToast";
 import { ApiRequestResult } from "utils/@type";
-import { UseBlogMenuType, UseAutoScrollType, UseLinkToImgType, UsePublishType, UseEditorType } from "./@type";
+import { UseBlogMenuType, UseAutoScrollType, UseLinkToImgType, UsePublishType, UseEditorType, UseInputToImageModuleType } from "./@type";
 
 import "tocbot/dist/tocbot.css";
 
@@ -20,6 +21,7 @@ let useAutoScrollBottom: UseAutoScrollType;
 let useLinkToImg: UseLinkToImgType;
 let useEditor: UseEditorType;
 let usePublish: UsePublishType;
+let useInputToImageModule: UseInputToImageModuleType;
 
 useBlogMenu = (className) => {
   const [bool, setBool] = useState<boolean>(false);
@@ -155,14 +157,14 @@ usePublish = ({ request, id }) => {
   const fail = useFailToast();
   const submit = useCallback(
     () =>
-      actionHandler<HTMLFormElement, void>(
+      actionHandler<HTMLFormElement, Promise<void>>(
         ref.current,
         (ele) => {
           if (!userId) {
-            fail("登录失效，请重新登录！");
+            return fail("登录失效，请重新登录！");
           } else {
             const blogPreview = ele.querySelector(htmlId).textContent;
-            request({ data: { ...formSerialize(ele), blogPreview } })
+            return request({ data: { ...formSerialize(ele), blogPreview } })
               .run<ApiRequestResult<string>>(apiName.publishBlog, { userId })
               .then(({ code, data }) => {
                 if (code === 0) {
@@ -181,4 +183,12 @@ usePublish = ({ request, id }) => {
   return [ref, submit];
 };
 
-export { useBlogMenu, useAutoScrollTop, useAutoScrollBottom, useLinkToImg, useEditor, usePublish };
+useInputToImageModule = ({ body, className, appendHandler }) => {
+  const open = useOverlayOpen();
+  const select = useCallback<() => void>(() => {
+    open({ head: "选择图片", body: body(appendHandler), className });
+  }, []);
+  return select;
+};
+
+export { useBlogMenu, useAutoScrollTop, useAutoScrollBottom, useLinkToImg, useEditor, usePublish, useInputToImageModule };

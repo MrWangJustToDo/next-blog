@@ -16,6 +16,7 @@ enum apiName {
   putPrimaryMessage = "putPrimaryMessage", // 发布主要评论
   putChildMessage = "putChildMessage", // 发布次要评论
   publishBlog = "publishBlog", // 发布博客信息
+  image = "image",
 }
 
 // 需要暂存结果的路径
@@ -26,8 +27,6 @@ enum cacheApi {
   type,
   tag,
   blog,
-  primaryMessage,
-  childMessage,
 }
 
 export { apiName, cacheApi };

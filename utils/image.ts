@@ -13,8 +13,8 @@ loadImg = ({ imgUrl, strUrl, imgElement }) => {
     imgElement.addEventListener("load", () => resolve(imgElement));
   }).then((imgEle) =>
     request
-      .run<ApiRequestResult<string>>(getRelativeApiPath(strUrl))
-      .then(data => autoTransformData<string, {}>(data))
+      .run<ApiRequestResult<string>>(getRelativeApiPath(strUrl, { time: String(Date.now()) }))
+      .then((data) => autoTransformData<string, {}>(data))
       .then((value) => imgEle.setAttribute("title", <string>value))
   );
 };

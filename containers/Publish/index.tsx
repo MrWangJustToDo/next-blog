@@ -15,19 +15,15 @@ Publish = () => {
   const request = autoRequest({ method: "post", token: true });
   const [ref, submit] = usePublish({ request, id: editorId });
   return (
-    <div className="mt-5">
-      <div className="container">
-        <div className="mx-4 pb-5">
-          <form ref={ref}>
-            <PublishHead />
-            <PublishEditor id={editorId} />
-            <PublishTypeTag />
-            <PublishImage />
-            <PublishState />
-            <PublishSubmit submit={submit} />
-          </form>
-        </div>
-      </div>
+    <div className="card mx-lg-4 border-0">
+      <form ref={ref}>
+        <PublishHead />
+        <PublishEditor id={editorId} />
+        <PublishTypeTag />
+        <PublishImage />
+        <PublishState />
+        <PublishSubmit submit={submit} />
+      </form>
     </div>
   );
 };

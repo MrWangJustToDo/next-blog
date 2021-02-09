@@ -1,15 +1,20 @@
 // 请求自动参数处理逻辑
-import axios from "axios";
+import { AxiosResponse } from "axios";
 import assign from "lodash/assign";
 import { apiName, cacheApi } from "config/api";
 import { getToken } from "./token";
 import { TreeNode } from "./node";
+import { instance } from "./request";
 import { getRelativeApiPath, transformStringUrl } from "./path";
-import { AutoRequestType } from "./@type";
+import { AutoRequestType, NeedCacheType, QueryProps } from "./@type";
 
 let autoRequest: AutoRequestType;
-const treeNode = new TreeNode<string>();
-const weakMap = new WeakMap();
+
+let needCache: NeedCacheType;
+
+const treeNode = new TreeNode<string, any>();
+
+needCache = (path) => path.startsWith("http") || cacheApi[path];
 
 autoRequest = (props = {}) => {
   const { method, path, query, data, token } = props;
@@ -21,32 +26,31 @@ autoRequest = (props = {}) => {
     const newToken = props.token ? props.token : token;
     return autoRequest({ method: newMethod, path: newPath, query: newQuery, data: newData, token: newToken });
   };
-  nextRequest.run = (currentPath, currentQuery) => {
+  nextRequest.run = <T>(currentPath: string, currentQuery: QueryProps) => {
     const targetPath = currentPath ? currentPath : path;
     if (!targetPath) {
-      throw new Error('request path should not undefined!!')
+      throw new Error("request path should not undefined!!");
     }
     const targetQuery = assign(query, currentQuery);
     const relativePath = targetPath.startsWith("http") ? transformStringUrl(targetPath, targetQuery) : getRelativeApiPath(targetPath as apiName, targetQuery);
     if (process.browser) {
-      if (cacheApi[currentPath]) {
+      if (needCache(targetPath)) {
         const target = treeNode.get(relativePath);
         if (target) {
-          const resData = weakMap.get(target);
-          if (resData) {
-            return Promise.resolve(resData);
-          }
+          return Promise.resolve(<T>target.value);
         }
       }
       const currentMethod = method || "get";
-      const newTarget = treeNode.add(relativePath);
-      // 使用链表优化网络请求  尽量避免短时间内的大量重复请求
-      return axios[currentMethod](relativePath, data, { headers: { apiToken: getToken(token) } })
-        .then((res) => res.data)
-        .then((resData) => (weakMap.set(newTarget, resData), resData));
+      const currentToken = getToken(token);
+      let requestPromise: Promise<AxiosResponse<T>>;
+      requestPromise = instance({ method: currentMethod, headers: { apiToken: currentToken }, url: relativePath, data });
+      return requestPromise.then((res) => res.data).then((resData) => (needCache(relativePath) && treeNode.add(relativePath, resData), resData));
     } else {
       const currentMethod = method || "get";
-      return axios[currentMethod](relativePath, data, { headers: { apiToken: getToken(token) } }).then((res) => res.data);
+      const currentToken = getToken(token);
+      let requestPromise: Promise<AxiosResponse<T>>;
+      requestPromise = instance({ method: currentMethod, headers: { apiToken: currentToken }, url: relativePath, data });
+      return requestPromise.then((res) => res.data);
     }
   };
   return nextRequest;

@@ -7,10 +7,10 @@ let judgeAction: JudgeActionType;
 actionHandler = (element, action, otherAction) => {
   if (element) {
     return action(element);
+  } else if (otherAction) {
+    return otherAction();
   } else {
-    if (otherAction) {
-      otherAction();
-    }
+    return Promise.resolve();
   }
 };
 

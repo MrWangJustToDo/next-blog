@@ -12,9 +12,9 @@ BlogCanvas = () => {
   const canvasRef = useLinkToImg<HTMLCanvasElement>();
   const { bool, switchBoolState } = useBool();
   useShowAndHideAnimate<HTMLCanvasElement>({
-    state: bool,
-    ref: canvasRef,
     key: "blogMenu",
+    state: bool,
+    forWardRef: canvasRef,
     showClassName: "animate__backInRight",
     hideClassName: "animate__backOutRight",
   });

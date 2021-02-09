@@ -7,7 +7,7 @@ let ArchiveHead: SimpleElement
 ArchiveHead = () => {
   const { allCount } = useArchive();
   return (
-    <div className="card mx-4">
+    <div className="card mx-lg-4">
       <h5 className={getClass("card-header text-info bg-transparent border-0 p-3", flexBetween)}>
         <span className="small">归档</span>
         <div className="text-black-50 small">

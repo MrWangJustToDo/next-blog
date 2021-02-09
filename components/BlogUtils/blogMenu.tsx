@@ -11,7 +11,7 @@ let BlogMenu: SimpleElement;
 BlogMenu = () => {
   const seted = useBlogMenu(".blog-content");
   const { bool, switchBoolThrottle } = useBool();
-  const { ref } = useShowAndHideAnimate<HTMLDivElement>({
+  const ref = useShowAndHideAnimate<HTMLDivElement>({
     state: bool && seted,
     key: "blogMenu",
     showClassName: "animate__lightSpeedInRight",

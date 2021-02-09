@@ -2,7 +2,6 @@ import { call, put, select } from "redux-saga/effects";
 import { apiName } from "config/api";
 import { actionName } from "config/action";
 import { autoRequest } from "utils/fetcher";
-import { getRelativeApiPath } from "utils/path";
 import { getDataSucess_Server, getDataFail_Server } from "store/reducer/server/action";
 
 export function* getBlogData() {
@@ -10,7 +9,7 @@ export function* getBlogData() {
   const token = state.client[actionName.currentToken]["data"];
   const id = state.client[actionName.currentBlogId]["data"] || "1";
   try {
-    let { code, state, data } = yield call(autoRequest({ token }).run, getRelativeApiPath(apiName.blog, { blogId: id }));
+    let { code, state, data } = yield call(autoRequest({ token, query: { blogId: id } }).run, apiName.blog);
     if (code === 0) {
       yield put(getDataSucess_Server(apiName.blog, data, { id }));
     } else {

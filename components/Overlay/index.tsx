@@ -1,18 +1,24 @@
 import { useEffect, useMemo } from "react";
 import { useShowAndHideAnimate } from "hook/useAnimate";
 import { flexBetween, getClass } from "utils/class";
-import { ReplayType } from "./@type";
+import { OverlayType } from "./@type";
 
-let Replay: ReplayType;
+let Overlay: OverlayType;
 
-Replay = ({ head, body, foot, closeHandler, showState, className = "" }) => {
-  const { ref } = useShowAndHideAnimate<HTMLDivElement>({
+Overlay = ({ head, body, foot, closeHandler, showState, className = "" }) => {
+  const ref = useShowAndHideAnimate<HTMLDivElement>({
     state: showState,
-    key: "replay",
+    key: "overlay",
     showClassName: "animate__fadeInDown",
     hideClassName: "animate__fadeOutDown",
   });
-  const bodyContent = useMemo(() => body(closeHandler), []);
+  const bodyContent = useMemo(() => {
+    if (typeof body === "function") {
+      return body(closeHandler);
+    } else {
+      return body;
+    }
+  }, [body]);
   useEffect(() => {
     document.body.classList.add("overflow-hidden", "mr-3");
     return () => document.body.classList.remove("overflow-hidden", "mr-3");
@@ -31,4 +37,4 @@ Replay = ({ head, body, foot, closeHandler, showState, className = "" }) => {
   );
 };
 
-export default Replay;
+export default Overlay;

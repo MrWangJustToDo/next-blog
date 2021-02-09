@@ -110,6 +110,10 @@
         box-sizing: content-box;
         transition-duration: 0.2s;
         transition-property: background, color;
+        @include mobile {
+          margin: 4px 6px;
+          padding: 5px 8px;
+        }
         &:hover {
           background-color: rgba(100, 100, 100, 0.12);
         }

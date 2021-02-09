@@ -78,6 +78,7 @@ export type { GetUserPropsProps, GetUserStateProps };
 /* ssr */
 interface SessionReq extends IncomingMessage {
   session?: object;
+  [props: string]: any;
 }
 
 interface AutoDispatchTockenHandlerProps {

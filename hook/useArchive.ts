@@ -13,9 +13,7 @@ let useAutoLoadArchive: UseAutoLoadArchiveType;
 
 let autoLoadArchive = (loadArchive, archiveData, needUpdate, setNeedUpdate) => {
   if (Object.keys(archiveData).length && needUpdate) {
-    loadArchive((last) => {
-      return { ...last, ...archiveData };
-    });
+    loadArchive({...archiveData});
     setNeedUpdate(false);
   }
 };

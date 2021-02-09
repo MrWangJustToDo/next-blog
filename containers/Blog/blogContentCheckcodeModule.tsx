@@ -1,7 +1,8 @@
 import { apiName } from "config/api";
+import Button from "components/Button";
 import { flexCenter, getClass } from "utils/class";
-import { useCheckcodeModuleToSubmit } from "hook/useMessage";
 import { useAutoLoadCheckcodeImg } from "hook/useAuto";
+import { useCheckcodeModuleToSubmit } from "hook/useMessage";
 import { BlogContentCheckcodeModuleWithImagType, BlogContentCheckcodeModuleType } from "./@type";
 
 let BlogContentCheckcodeModule: BlogContentCheckcodeModuleType;
@@ -19,9 +20,7 @@ BlogContentCheckcodeModuleWithImag = ({ request, closeHandler, imgRef }) => {
       <div className="col-4">
         <input className="form-control" id="putcheck" ref={ref} />
       </div>
-      <button className="btn btn-sm btn-outline-info" onClick={submit} disabled={!canSubmit}>
-        提交
-      </button>
+      <Button className="btn-sm btn-outline-info" request={submit} disable={!canSubmit} value={"提交"} />
     </div>
   );
 };

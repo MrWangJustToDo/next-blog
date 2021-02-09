@@ -2,6 +2,7 @@ import dynamic from "next/dynamic";
 import { useEditor } from "hook/useBlog";
 import { getClass } from "utils/class";
 import { markNOLineNumber } from "utils/markdown";
+import { PublishEditorType } from "./@type";
 
 import style from "./index.module.scss";
 import "react-markdown-editor-lite/lib/index.css";
@@ -10,7 +11,9 @@ const MdEditor = dynamic(() => import("react-markdown-editor-lite"), {
   ssr: false,
 });
 
-let Index = ({ id }: { id: string }) => {
+let PublishEditor: PublishEditorType;
+
+PublishEditor = ({ id }) => {
   if (process.browser) {
     useEditor(id);
   }
@@ -21,4 +24,4 @@ let Index = ({ id }: { id: string }) => {
   );
 };
 
-export default Index;
+export default PublishEditor;

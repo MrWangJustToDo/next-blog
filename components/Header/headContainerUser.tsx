@@ -14,7 +14,7 @@ HeadContainerUser = () => {
   const logoutCallback = useLogout();
   const { bool, switchBoolThrottle, hideDebounceState } = useBool();
   const { username, avatar, gender, userId } = useCurrentUser();
-  const { ref } = useShowAndHideAnimate<HTMLDivElement>({
+  const ref = useShowAndHideAnimate<HTMLDivElement>({
     state: bool,
     key: "admin",
     showClassName: "animate__flipInX",
@@ -34,7 +34,12 @@ HeadContainerUser = () => {
               写博客
             </a>
           </Link>
-          <div className="small text-info text-decoration-none text-nowrap" onClick={logoutCallback}>
+          <Link href="/manage">
+            <a className="small text-info text-decoration-none text-nowrap" onClick={hideDebounceState}>
+              管理
+            </a>
+          </Link>
+          <div className="small text-info text-decoration-none text-nowrap cursor-pointer" onClick={logoutCallback}>
             退出
           </div>
         </div>

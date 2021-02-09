@@ -2,7 +2,7 @@ const { delay } = require("./delay");
 
 // 可缓存工具对象
 class Cache {
-  constructor(maxTime = 1000 * 60 * 60, store = new Map()) {
+  constructor(maxTime = 1000 * 60 * 10, store = new Map()) {
     if (!store.has || !store.set || !store.delete || !store.get) {
       throw new Error(`store must is a Map. store: ${store}`);
     }
@@ -26,7 +26,7 @@ class Cache {
           console.log(`start delete data from cache, next request will update this data. key: ${key}`);
           this.store.delete(key);
         } else {
-          console.error(`nothing need to delete. key: ${key}`);
+          console.error(`error, nothing need to delete. key: ${key}`);
         }
       },
       key
@@ -37,7 +37,7 @@ class Cache {
     if (this.store.has(key)) {
       return this.store.get(key);
     } else {
-      console.warn(`not cache yet, nothing to return. key: ${key}`);
+      console.warn(`warn, not cache yet, nothing to return. key: ${key}`);
       return false;
     }
   }

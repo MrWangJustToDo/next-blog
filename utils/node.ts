@@ -1,28 +1,28 @@
 import { delay } from "./delay";
 
-class NodeItem<T> {
-  previous: NodeItem<T>;
-  next: NodeItem<T>;
-  constructor(readonly val: T) {}
+class NodeItem<T, F> {
+  previous: NodeItem<T, F>;
+  next: NodeItem<T, F>;
+  constructor(readonly key: T, readonly value: F) {}
 }
 
-class TreeNode<T> {
-  private head: NodeItem<T>;
-  private foot: NodeItem<T>;
+class TreeNode<T, F> {
+  private head: NodeItem<T, F>;
+  private foot: NodeItem<T, F>;
   // 自动删除时间
   readonly time: number = 20000;
   // 最大查找深度
   readonly deepSearchLength: number = 10;
 
-  constructor(val?: T) {
-    if (val !== undefined) {
-      const nodeItem = new NodeItem<T>(val);
+  constructor(key?: T, value?:F) {
+    if (key !== undefined) {
+      const nodeItem = new NodeItem<T, F>(key, value);
       this.head = nodeItem;
       this.foot = nodeItem;
     }
   }
 
-  delete(item: NodeItem<T>) {
+  delete(item: NodeItem<T, F>) {
     const pre = this.getPre(item);
     const next = this.getNext(item);
     item!.next = null;
@@ -46,18 +46,18 @@ class TreeNode<T> {
     }
   }
 
-  getPre(item: NodeItem<T>): NodeItem<T> | undefined {
+  getPre(item: NodeItem<T, F>): NodeItem<T, F> | undefined {
     return item.previous;
   }
 
-  getNext(item: NodeItem<T>): NodeItem<T> | undefined {
+  getNext(item: NodeItem<T, F>): NodeItem<T, F> | undefined {
     return item.next;
   }
 
-  add(val: T, deleteTime?: number): NodeItem<T> {
+  add(key: T, value: F,deleteTime?: number): NodeItem<T, F> {
     // 添加一个链表元素  并在指定时间内删除
     deleteTime = deleteTime === undefined ? this.time : deleteTime;
-    const item = new NodeItem<T>(val);
+    const item = new NodeItem<T, F>(key, value);
     if (this.head === null || this.head === undefined) {
       // 第一次添加或者前面的删除空了
       this.head = item;
@@ -72,13 +72,13 @@ class TreeNode<T> {
     return item;
   }
 
-  get(val: T): NodeItem<T> | undefined {
+  get(key: T): NodeItem<T, F> | undefined {
     let targetItem;
     let tempItem = this.foot;
-    while (tempItem && tempItem.val !== val) {
+    while (tempItem && tempItem.key !== key) {
       tempItem = tempItem.previous;
     }
-    if (tempItem && tempItem.val === val) {
+    if (tempItem && tempItem.key === key) {
       targetItem = tempItem;
     }
     return targetItem;

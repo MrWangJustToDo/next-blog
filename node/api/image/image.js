@@ -1,14 +1,19 @@
 const { getRandom, fail, success, actionHandler } = require("../../util");
 
-// 获取随机图片
+// 获取图片请求链接
+const getImagePath = (props = {}) => {
+  const idx = getRandom(0, props.index || 7);
+  const n = getRandom(1, props.length || 7);
+  let requestUrl = String(process.env.BINGAPI);
+  requestUrl = requestUrl.replace("--n--", n);
+  requestUrl = requestUrl.replace("--idx--", idx);
+  return requestUrl;
+};
+
+// 获取所有随机图片信息
 const getImages = actionHandler(
   async ({ req, res }) => {
-    req.body = req.body || {};
-    const idx = getRandom(0, req.body.index || 7);
-    const n = getRandom(1, req.body.length || 7);
-    let requestUrl = process.env.BINGAPI;
-    requestUrl = requestUrl.replace("${n}", n);
-    requestUrl = requestUrl.replace("${idx}", idx);
+    const requestUrl = getImagePath(req.body);
     let { images } = await fetch(requestUrl).then((res) => res.json());
     images = images.map((item) => {
       return { ...item, relativeUrl: `${process.env.BINGURL}${item.url}` };
@@ -18,4 +23,16 @@ const getImages = actionHandler(
   ({ res, e }) => fail(res, 404, ["获取失败", e.toString()], "getImages方法出现错误")
 );
 
+// 获取随机图片信息
+const getRandomImage = actionHandler(
+  async ({ req, res }) => {
+    const requestUrl = getImagePath(req.body);
+    const { images } = await fetch(requestUrl).then((res) => res.json());
+    const [{ relativeUrl }] = images.map((item) => ({ relativeUrl: `${process.env.BINGURL}${item.url}` }));
+    success(res, 200, ["获取成功", relativeUrl]);
+  },
+  ({ res, e }) => fail(res, 404, ["获取失败", e.toString()], "getRandomIamge方法出错")
+);
+
 exports.getImages = getImages;
+exports.getRandomImage = getRandomImage;

@@ -10,6 +10,7 @@ enum actionName {
   currentBlogId = "currentBlogId",
   currentArchive = "currentArchive",
   currentUser = "currentUser",
+  currentResult = "currentResult",
 }
 
 export { actionName };

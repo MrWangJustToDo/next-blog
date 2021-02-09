@@ -12,7 +12,7 @@ Archive = () => {
   return (
     <>
       <ArchiveHead />
-      <div className="card mx-4 border-0">
+      <div className="card mx-lg-4 border-0">
         {Object.keys(value).map((year) => (
           <ArchiveContent key={year} year={year} blogProps={value[year]} />
         ))}

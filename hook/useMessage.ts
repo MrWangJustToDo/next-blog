@@ -1,7 +1,7 @@
 import { RefObject, useCallback, useMemo, useRef, useState } from "react";
 import { childMessageLength, primaryMessageLength } from "config/message";
 import { actionHandler } from "utils/action";
-import { useReplayOpen } from "./useReplay";
+import { useOverlayOpen } from "./useOverlay";
 import { useAutoActionHandler } from "./useAuto";
 import { useFailToast, useSucessToast } from "./useToast";
 import { ApiRequestResult } from "utils/@type";
@@ -70,7 +70,7 @@ useJudgeInputValue = <T extends MyInputELement>(ref: RefObject<T>) => {
 
 usePutToCheckcodeModule = <T extends MyInputELement>({ request, body, className = "" }: UsePutToCheckcodeModuleProps) => {
   const ref = useRef<T>();
-  const open = useReplayOpen();
+  const open = useOverlayOpen();
   const submit = useCallback(() => {
     actionHandler<T, void>(ref.current, (ele) => {
       if (!!ele.value.length) {
@@ -91,9 +91,9 @@ useCheckcodeModuleToSubmit = <T extends MyInputELement>({ request, closeHandler 
   const pushFail = useFailToast();
   const pushSucess = useSucessToast();
   const submit = useCallback(() => {
-    actionHandler<T, void>(ref.current, (ele) => {
+    return actionHandler<T, Promise<void>>(ref.current, (ele) => {
       if (ele.value.length) {
-        request({ data: { checkcode: ele.value } })
+        return request({ data: { checkcode: ele.value } })
           .run<ApiRequestResult<string>>()
           .then(({ code, data }) => {
             if (code === 0) {
@@ -104,6 +104,8 @@ useCheckcodeModuleToSubmit = <T extends MyInputELement>({ request, closeHandler 
             }
           })
           .catch((e) => pushFail(`发生错误: ${e.toString()}`));
+      } else {
+        return pushFail(`输入框没有内容？`);
       }
     });
   }, [request, closeHandler, pushFail, pushSucess]);
@@ -112,7 +114,7 @@ useCheckcodeModuleToSubmit = <T extends MyInputELement>({ request, closeHandler 
 };
 
 useMessageToReplayModule = <T extends {}>({ request, body, className }: UseMessageToReplayModuleProps<T>) => {
-  const open = useReplayOpen();
+  const open = useOverlayOpen();
   const replay = useCallback<(props: T) => void>((props) => {
     open({ head: "回复", body: body(request)(props), className });
   }, []);
@@ -124,19 +126,21 @@ useReplayModuleToSubmit = <T extends MyInputELement, F extends MyInputELement>({
   const input2 = useRef<F>();
   const pushFail = useFailToast();
   const pushSucess = useSucessToast();
-  const submit = useCallback(() => {
-    request({ data: { content: input1.current.value, checkcode: input2.current.value } })
-      .run<ApiRequestResult<string>>()
-      .then(({ code, data }) => {
-        if (code === 0) {
-          pushSucess("提交成功");
-          closeHandler();
-        } else {
-          pushFail(`提交失败: ${data.toString()}`);
-        }
-      })
-      .catch((e) => pushFail(`发生错误: ${e.toString()}`));
-  }, [pushFail, pushSucess, request, closeHandler]);
+  const submit = useCallback(
+    () =>
+      request({ data: { content: input1.current.value, checkcode: input2.current.value } })
+        .run<ApiRequestResult<string>>()
+        .then(({ code, data }) => {
+          if (code === 0) {
+            pushSucess("提交成功");
+            closeHandler();
+          } else {
+            pushFail(`提交失败: ${data.toString()}`);
+          }
+        })
+        .catch((e) => pushFail(`发生错误: ${e.toString()}`)),
+    [pushFail, pushSucess, request, closeHandler]
+  );
   const canSubmit1 = useJudgeInputValue(input1);
   const canSubmit2 = useJudgeInputValue(input2);
   return { input1, input2, submit, canSubmit: canSubmit1 && canSubmit2 };

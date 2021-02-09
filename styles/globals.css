@@ -2,9 +2,10 @@ html,
 body {
   padding: 0;
   margin: 0;
-  font-family: Roboto, blog-font, consolas, -apple-system, BlinkMacSystemFont, Segoe UI, Oxygen, Ubuntu, Cantarell, Fira Sans, Droid Sans,
-    Helvetica Neue, sans-serif;
+  font-family: Roboto, blog-font, consolas, -apple-system, BlinkMacSystemFont, Segoe UI, Oxygen, Ubuntu, Cantarell, Fira Sans, Droid Sans, Helvetica Neue,
+    sans-serif;
   font-size: 16px;
+  min-width: 460px;
 }
 
 @media screen and (max-width: 992px) {
@@ -43,6 +44,16 @@ a {
   font-size: initial;
   display: inline-block;
   vertical-align: middle;
+}
+
+.cursor-pointer {
+  cursor: pointer;
+}
+
+.absolute-center {
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
 }
 
 /* 块/段落引用 */

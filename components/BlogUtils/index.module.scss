@@ -1,7 +1,7 @@
 @import "../../styles/basic.module";
 
 .btnsPosition {
-  right: 14px;
+  left: calc(100vw - 90px);
   bottom: 18px;
   z-index: 100;
   width: 60px;

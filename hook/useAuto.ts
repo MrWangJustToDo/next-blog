@@ -2,8 +2,12 @@ import { useCallback, useEffect, useRef, useState } from "react";
 import debounce from "lodash/debounce";
 import throttle from "lodash/throttle";
 import { loadImg } from "utils/image";
+import { autoRequest } from "utils/fetcher";
 import { actionHandler } from "utils/action";
+import { useBool } from "./useData";
+import { useFailToast } from "./useToast";
 import { useShowAndHideAnimate } from "./useAnimate";
+import { ApiRequestResult } from "utils/@type";
 import {
   UseAutoActionHandlerProps,
   UseAutoActionHandlerType,
@@ -13,6 +17,7 @@ import {
   UseAutoShowAndHideType,
   UseAutoSetHeightProps,
   UseAutoSetHeightType,
+  UseAutoLoadRandomImgType,
 } from "./@type";
 
 let useAutoActionHandler: UseAutoActionHandlerType;
@@ -20,18 +25,19 @@ let useAutoSetHeaderHeight: UseAutoSetHeaderHeightType;
 let useAutoLoadCheckcodeImg: UseAutoLoadCheckcodeImgType;
 let useAutoShowAndHide: UseAutoShowAndHideType;
 let useAutoSetHeight: UseAutoSetHeightType;
+let useAutoLoadRandomImg: UseAutoLoadRandomImgType;
 
 useAutoActionHandler = <T>(
   { action, timmer, actionState = true, once = true, delayTime, rightNow = false, addListener, removeListener }: UseAutoActionHandlerProps<T>,
   ...deps: any[]
 ) => {
-  const actionCallback = useCallback<() => void>(() => {
-    if (actionState) {
-      action();
-    }
-  }, [actionState, action]);
   useEffect(() => {
     if (timmer) {
+      const actionCallback = () => {
+        if (actionState) {
+          action();
+        }
+      };
       if (delayTime === undefined) {
         console.error("timmer delayTime not set ---> useAutoActionHandler");
         delayTime = 0;
@@ -47,16 +53,16 @@ useAutoActionHandler = <T>(
       if (!removeListener) {
         throw new Error("every addListener need a removeListener! ---> useAutoActionHandler");
       } else {
-        if (rightNow && actionState) {
-          action();
-        }
         if (actionState) {
+          if (rightNow) {
+            action();
+          }
           addListener(action);
           return () => removeListener(action);
         }
       }
     }
-  }, [delayTime, once, actionCallback, rightNow, addListener, removeListener, action, actionState, ...deps]);
+  }, [delayTime, once, rightNow, addListener, removeListener, action, actionState, ...deps]);
 };
 
 useAutoSetHeaderHeight = <T extends HTMLElement>(breakPoint: number) => {
@@ -150,17 +156,18 @@ useAutoShowAndHide = <T extends HTMLElement>(breakPoint: number) => {
     addListener: addListenerCallback,
     removeListener: removeListenerCallback,
   });
-  const { ref } = useShowAndHideAnimate<T>({ state: value, key: "blogUtil", showClassName: "animate__slideInRight", hideClassName: "animate__slideOutRight" });
+  const ref = useShowAndHideAnimate<T>({ state: value, key: "blogUtil", showClassName: "animate__slideInRight", hideClassName: "animate__slideOutRight" });
   return ref;
 };
 
-useAutoSetHeight = <T extends HTMLElement>({ maxHeight = 9999, deps = [] }: UseAutoSetHeightProps) => {
+useAutoSetHeight = <T extends HTMLElement>({ forWardRef, maxHeight = 9999, deps = [] }: UseAutoSetHeightProps<T>) => {
   const ref = useRef<T>();
+  const currentRef = forWardRef ? forWardRef : ref;
   const [height, setHeight] = useState<number>(0);
   const setHeightCallback = useCallback<() => void>(
     debounce(
       () =>
-        actionHandler<T, void>(ref.current, (ele) => {
+        actionHandler<T, void>(currentRef.current, (ele) => {
           const lastHeight = ele.offsetHeight;
           ele.style.height = "auto";
           const allHeight = ele.offsetHeight;
@@ -190,7 +197,58 @@ useAutoSetHeight = <T extends HTMLElement>({ maxHeight = 9999, deps = [] }: UseA
     },
     ...deps
   );
-  return [ref, height];
+  return [currentRef, height];
 };
 
-export { useAutoActionHandler, useAutoSetHeaderHeight, useAutoLoadCheckcodeImg, useAutoShowAndHide, useAutoSetHeight };
+useAutoLoadRandomImg = (apiName) => {
+  const fail = useFailToast();
+  const { bool, show, hide } = useBool();
+  const ref = useRef<HTMLImageElement>();
+  const loadSrc = useCallback<() => void>(
+    debounce(
+      () => {
+        hide();
+        autoRequest({ path: apiName, token: true })
+          .run<ApiRequestResult<string>>()
+          .then(({ data }) => {
+            if (Array.isArray(data)) {
+              throw new Error(`接口返回数据正确：${data.toString()}`);
+            } else {
+              return data;
+            }
+          })
+          .then((url) => (actionHandler<HTMLImageElement, void>(ref.current, (ele) => (ele.src = "")), url))
+          .then((url) => actionHandler<HTMLImageElement, void>(ref.current, (ele) => (ele.src = url)))
+          .catch((e) => fail(`获取失败: ${e.toString()}`));
+      },
+      800,
+      { leading: true }
+    ),
+    [apiName]
+  );
+  const addListenerCallback = useCallback<(action: () => void) => void>(
+    (action) =>
+      actionHandler<HTMLImageElement, void>(ref.current, (ele) => {
+        ele.addEventListener("load", show);
+        ele.addEventListener("click", action);
+      }),
+    []
+  );
+  const removeListenerCallback = useCallback<(action: () => void) => void>(
+    (action) =>
+      actionHandler<HTMLImageElement, void>(ref.current, (ele) => {
+        ele.removeEventListener("load", show);
+        ele.removeEventListener("click", action);
+      }),
+    []
+  );
+  useAutoActionHandler({
+    action: loadSrc,
+    rightNow: true,
+    addListener: addListenerCallback,
+    removeListener: removeListenerCallback,
+  });
+  return [ref, bool];
+};
+
+export { useAutoActionHandler, useAutoSetHeaderHeight, useAutoLoadCheckcodeImg, useAutoShowAndHide, useAutoSetHeight, useAutoLoadRandomImg };

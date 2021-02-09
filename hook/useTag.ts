@@ -10,8 +10,8 @@ let useTag: UseTagType;
 
 let autoChangeTag = (tag, currentTag, changeCurrentTag) => {
   useEffect(() => {
-    if (currentTag === "") {
-      if (tag.length) changeCurrentTag(tag[0].tagContent);
+    if (currentTag === "" && tag.length) {
+      changeCurrentTag(tag[0].tagContent);
     }
   }, [currentTag, changeCurrentTag, tag]);
 };

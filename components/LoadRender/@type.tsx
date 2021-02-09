@@ -1,9 +1,10 @@
+import { Method } from "axios";
 import { apiName } from "config/api";
 import { QueryProps } from "utils/@type";
 
 /* index */
 interface LoadRenderProps<T> {
-  method?: string;
+  method?: Method;
   path: apiName | string;
   query?: QueryProps;
   requestData?: object;
@@ -12,7 +13,7 @@ interface LoadRenderProps<T> {
   loaded: (props: T) => JSX.Element;
   loadError?: (props: any) => JSX.Element;
   fetcher?: (...args: any) => any;
-  placeholder?: { width?: string; height?: string };
+  placeholder?: { width?: string; height?: string; [props: string]: string };
   initialData?: T;
   revalidateOnMount?: boolean;
 }
@@ -25,7 +26,8 @@ export type { LoadRenderType };
 
 /* loading */
 interface LoadingProps {
-  placeholder?: { width?: string; height?: string };
+  className?: string;
+  placeholder?: { width?: string; height?: string; [props: string]: string };
 }
 
 interface LoadingType {

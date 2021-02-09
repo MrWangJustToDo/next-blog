@@ -61,6 +61,8 @@ exports.autoGetUser = actionHandler(
           req.session.userCache = req.user;
         }
       }
+    } else {
+      req.session.userCache = null;
     }
     next();
   },
