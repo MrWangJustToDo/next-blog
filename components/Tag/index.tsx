@@ -7,15 +7,11 @@ import style from "./index.module.scss";
 
 let Tag: TagType;
 
+let WithChangeTag: TagType;
+
 Tag = ({ tagContent, tagCount, className = "" }) => {
-  const { changeCurrentTag } = useTag();
-  const changeTag = useCallback(() => changeCurrentTag(tagContent), [changeCurrentTag]);
   return (
-    <div
-      title={tagContent}
-      className={getClass(flexCenter, style.tagItem, "border rounded user-select-none", className)}
-      onClick={changeTag}
-    >
+    <div title={tagContent} className={getClass(flexCenter, style.tagItem, "border rounded user-select-none", className)}>
       <div className={getClass("bg-info", flexCenter, style.tagItem__left)}>
         <i className="ri-price-tag-line pl-1" />
         <span className="ml-2">{tagContent}</span>
@@ -25,4 +21,14 @@ Tag = ({ tagContent, tagCount, className = "" }) => {
   );
 };
 
-export default Tag;
+WithChangeTag = ({ tagContent, tagCount, className }) => {
+  const { changeCurrentTag } = useTag();
+  const changeTag = useCallback(() => changeCurrentTag(tagContent), []);
+  return (
+    <div onClick={changeTag}>
+      <Tag {...{ tagContent, tagCount, className }} />
+    </div>
+  );
+};
+
+export { Tag, WithChangeTag };

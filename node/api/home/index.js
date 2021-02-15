@@ -1,7 +1,7 @@
 // 首页相关
 const { path } = require("../../path");
-const { getHomeData } = require("./home");
+const { getHomeAction } = require("./home");
 
 exports.homeHandler = {
-  [path.home]: getHomeData,
+  [path.home]: getHomeAction,
 };

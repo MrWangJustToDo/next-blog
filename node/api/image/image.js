@@ -1,4 +1,4 @@
-const { getRandom, fail, success, actionHandler } = require("../../util");
+const { getRandom, fail, success, actionTransform, actionCatch } = require("../../util");
 
 // 获取图片请求链接
 const getImagePath = (props = {}) => {
@@ -11,28 +11,33 @@ const getImagePath = (props = {}) => {
 };
 
 // 获取所有随机图片信息
-const getImages = actionHandler(
-  async ({ req, res }) => {
-    const requestUrl = getImagePath(req.body);
-    let { images } = await fetch(requestUrl).then((res) => res.json());
-    images = images.map((item) => {
-      return { ...item, relativeUrl: `${process.env.BINGURL}${item.url}` };
-    });
-    success(res, 200, ["获取成功", images]);
-  },
-  ({ res, e }) => fail(res, 404, ["获取失败", e.toString()], "getImages方法出现错误")
+const getImagesAction = actionTransform(
+  actionCatch(
+    async ({ req, res }) => {
+      const requestUrl = getImagePath(req.body);
+      let { images } = await fetch(requestUrl).then((res) => res.json());
+      images = images.map((item) => {
+        return { ...item, relativeUrl: `${process.env.BINGURL}${item.url}` };
+      });
+      success(res, 200, ["获取成功", images]);
+    },
+    ({ res, e }) => fail(res, 404, ["获取失败", e.toString()], "getImagesAction")
+  )
 );
 
 // 获取随机图片信息
-const getRandomImage = actionHandler(
-  async ({ req, res }) => {
-    const requestUrl = getImagePath(req.body);
-    const { images } = await fetch(requestUrl).then((res) => res.json());
-    const [{ relativeUrl }] = images.map((item) => ({ relativeUrl: `${process.env.BINGURL}${item.url}` }));
-    success(res, 200, ["获取成功", relativeUrl]);
-  },
-  ({ res, e }) => fail(res, 404, ["获取失败", e.toString()], "getRandomIamge方法出错")
+const getRandomImageAction = actionTransform(
+  actionCatch(
+    async ({ req, res }) => {
+      const requestUrl = getImagePath(req.body);
+      const { images } = await fetch(requestUrl).then((res) => res.json());
+      const [{ relativeUrl }] = images.map((item) => ({ relativeUrl: `${process.env.BINGURL}${item.url}` }));
+      success(res, 200, ["获取成功", relativeUrl]);
+    },
+    ({ res, e }) => fail(res, 404, ["获取失败", e.toString()], "getRandomImageAction")
+  )
 );
 
-exports.getImages = getImages;
-exports.getRandomImage = getRandomImage;
+exports.getImagesAction = getImagesAction;
+
+exports.getRandomImageAction = getRandomImageAction;

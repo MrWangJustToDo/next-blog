@@ -1,8 +1,8 @@
-import { SimpleElement } from "containers/Main/@type";
+import { useCallback } from "react";
 import { useLogout } from "hook/useUser";
 import { useRouter } from "next/dist/client/router";
-import { useCallback } from "react";
 import { flexBetween, getClass } from "utils/class";
+import { SimpleElement } from "containers/Main/@type";
 
 let ReLogin: SimpleElement;
 

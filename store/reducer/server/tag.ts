@@ -4,8 +4,9 @@ import { HYDRATE } from "next-redux-wrapper";
 import { serverAction } from "./action";
 import { apiName } from "config/api";
 import { State, ActionMapType } from "./@type";
+import { TagProps } from "containers/Publish/@type";
 
-type CurrentState = State<any[]>;
+type CurrentState = State<TagProps[]>;
 
 let initState: CurrentState;
 let reducer: Reducer<CurrentState>;

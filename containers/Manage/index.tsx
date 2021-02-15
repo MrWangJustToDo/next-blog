@@ -1,12 +1,15 @@
-import ManageSearch from "./manageSearch";
-import ManageResult from "./manageResult";
+import ManageLeft from "./manageLeft";
+import ManageRight from "./manageRight";
+import { SimpleElement } from "containers/Main/@type";
 
-let Manage = () => {
+let Manage: SimpleElement;
+
+Manage = () => {
   return (
-    <>
-      <ManageSearch />
-      <ManageResult />
-    </>
+    <div className="row px-lg-4 px-sm-2">
+      <ManageLeft />
+      <ManageRight />
+    </div>
   );
 };
 

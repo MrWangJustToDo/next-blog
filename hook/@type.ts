@@ -2,7 +2,7 @@ import { State } from "store";
 import { RefObject } from "react";
 import { AnyAction } from "redux";
 import { apiName } from "config/api";
-import { LoginProps } from "config/@type";
+import { InputProps } from "config/@type";
 import { AutoRequestType } from "utils/@type";
 import { ToastProps } from "components/Toast/@type";
 import { OverlayProps } from "components/Overlay/@type";
@@ -392,14 +392,6 @@ interface UseAutoLoginType {
 interface UseCurrentUserType {
   (): UserProps;
 }
-interface UseLoginInputProps {
-  option: LoginProps;
-  successClassname: string;
-  failClassname: string;
-}
-interface UseLoginInputType {
-  <T extends HTMLInputElement>(props: UseLoginInputProps): [RefObject<T>, boolean];
-}
 interface UseLoginType {
   (): RefObject<HTMLFormElement>;
 }
@@ -407,4 +399,34 @@ interface UseLogoutType {
   (): () => Promise<void>;
 }
 
-export type { UseAutoLoginType, UseCurrentUserType, UseLoginInputProps, UseLoginInputType, UseLoginType, UseLogoutType };
+export type { UseAutoLoginType, UseCurrentUserType, UseLoginType, UseLogoutType };
+
+/* useManage */
+interface UseSearchType {
+  (props: { request: AutoRequestType }): [RefObject<HTMLFormElement>, () => Promise<void>];
+}
+interface UseResultType {
+  (): { currentResult: BlogContentProps[]; page: number; increaseAble: boolean; increasePage: () => void; decreaseAble: boolean; decreasePage: () => void };
+}
+interface UseManageToAddModuleProps {
+  title: string;
+  body: (request: AutoRequestType) => (judgeApiName: apiName) => JSX.Element;
+  judgeApiName: apiName;
+  request: AutoRequestType;
+  className?: string;
+}
+interface UseManageToAddModuleType {
+  (props: UseManageToAddModuleProps): () => void;
+}
+interface UseJudgeInputProps {
+  option: InputProps;
+  judgeApiName: apiName;
+  failClassName: string;
+  successClassName: string;
+  loadingClassName: string;
+}
+interface UseJudgeInputType {
+  (props: UseJudgeInputProps): [RefObject<HTMLInputElement>, boolean];
+}
+
+export type { UseSearchType, UseResultType, UseManageToAddModuleType, UseJudgeInputType };

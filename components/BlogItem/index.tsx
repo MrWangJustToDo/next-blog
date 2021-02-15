@@ -6,16 +6,38 @@ import { BlogItemType } from "./@type";
 
 let BlogItem: BlogItemType;
 
+let WithReadBlogItem: BlogItemType;
+
+let WithWriteBlogItem: BlogItemType;
+
 BlogItem = (props) => {
   const { blogImgLink } = props;
   return (
+    <div className={getClass("card-body row flex-wrap-reverse", flexAround)}>
+      <BlogItemLeft {...props} />
+      <BlogItemRight src={blogImgLink} />
+    </div>
+  );
+};
+
+WithReadBlogItem = (props) => {
+  return (
     <Link href={`/blog/${props.blogId}`}>
-      <a className={getClass("text-reset text-decoration-none card-body row flex-wrap-reverse", flexAround)}>
-        <BlogItemLeft {...props} />
-        <BlogItemRight src={blogImgLink} />
+      <a className="text-reset text-decoration-none ">
+        <BlogItem {...props} />
       </a>
     </Link>
   );
 };
 
-export default BlogItem;
+WithWriteBlogItem = (props) => {
+  return (
+    <Link href={`/editor/${props.blogId}`}>
+      <a className="text-reset text-decoration-none">
+        <BlogItem {...props} />
+      </a>
+    </Link>
+  );
+};
+
+export { WithReadBlogItem, WithWriteBlogItem };

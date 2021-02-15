@@ -1,5 +1,5 @@
 import { useHome } from "hook/useHome";
-import MainLeftItem from "components/BlogItem";
+import { WithReadBlogItem as MainLeftItem } from "components/BlogItem";
 import { SimpleElement } from "./@type";
 
 let MainLeftContent: SimpleElement;

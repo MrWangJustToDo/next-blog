@@ -18,9 +18,9 @@ let ModuleManager = ({ children }) => {
       </div>
       <ToastPushContext.Provider value={push}>
         <OverlayOpenContext.Provider value={open}>{children}</OverlayOpenContext.Provider>
-        <div className={getClass("position-fixed")} style={{ left: 0, top: 0, zIndex: 200, pointerEvents: "none" }}>
+        <div className="position-fixed h-100 w-100" style={{ left: 0, top: 0, zIndex: 200, pointerEvents: "none" }}>
           <div
-            className={getClass("vw-100 vh-100 overflow-auto py-5", flexCenter, style.cover, overlay && overlay.showState ? style.cover_active : "")}
+            className={getClass("w-100 h-100 overflow-auto py-5", flexCenter, style.cover, overlay && overlay.showState ? style.cover_active : "")}
             style={{ pointerEvents: overlay && overlay.showState ? "auto" : "none" }}
           >
             {overlay && <Replay {...overlay} />}

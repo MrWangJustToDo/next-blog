@@ -1,25 +1,22 @@
-import { useCallback, useEffect, useRef, useState } from "react";
+import { useCallback, useRef } from "react";
 import { useDispatch } from "react-redux";
 import { useRouter } from "next/dist/client/router";
-import debounce from "lodash/debounce";
 import { apiName } from "config/api";
 import { actionName } from "config/action";
 import { delay } from "utils/delay";
 import { formSerialize } from "utils/data";
 import { autoRequest } from "utils/fetcher";
-import { actionHandler, judgeAction } from "utils/action";
-import { setDataSucess_client } from "store/reducer/client/action";
+import { actionHandler } from "utils/action";
+import { setDataFail_client, setDataSucess_client } from "store/reducer/client/action";
 import { useCurrentState } from "./useBase";
 import { useAutoActionHandler } from "./useAuto";
 import { useFailToast, useSucessToast } from "./useToast";
 import { ApiRequestResult } from "utils/@type";
-import { UserProps, UseAutoLoginType, UseCurrentUserType, UseLoginInputProps, UseLoginInputType, UseLoginType, UseLogoutType } from "./@type";
+import { UserProps, UseAutoLoginType, UseCurrentUserType, UseLoginType, UseLogoutType } from "./@type";
 
 let useAutoLogin: UseAutoLoginType;
 
 let useCurrentUser: UseCurrentUserType;
-
-let useLoginInput: UseLoginInputType;
 
 let useLogin: UseLoginType;
 
@@ -29,60 +26,27 @@ let useLogout: UseLogoutType;
 useAutoLogin = () => {
   const { state, dispatch } = useCurrentState();
   const user = state.client[actionName.currentUser]["data"] as UserProps;
-  useEffect(() => {
-    if (!user.userId) {
+  const autoLoginCallback = useCallback(
+    () =>
       autoRequest({ token: true })
         .run<ApiRequestResult<UserProps>>(apiName.autoLogin)
         .then(({ code, data }) => {
           if (code === 0 && !Array.isArray(data) && data.userId) {
             dispatch(setDataSucess_client(actionName.currentUser, data));
+          } else {
+            dispatch(setDataFail_client(actionName.currentUser, {}));
           }
-        });
-    }
-  }, [user]);
+        })
+        .catch(() => dispatch(setDataFail_client(actionName.currentUser, {}))),
+    []
+  );
+  useAutoActionHandler({ actionState: !!!user.userId, timmer: true, once: false, rightNow: true, delayTime: 1000 * 60 * 10, action: autoLoginCallback });
 };
 
 // 获取当前登录对象
 useCurrentUser = () => {
   const { state } = useCurrentState();
   return state.client[actionName.currentUser]["data"];
-};
-
-// 输入验证
-useLoginInput = <T extends HTMLInputElement>({ option, successClassname, failClassname }: UseLoginInputProps) => {
-  const ref = useRef<T>();
-  const [bool, setBool] = useState<boolean>(false);
-  const actionCallback = useCallback<() => void>(
-    debounce(
-      () =>
-        judgeAction<T>({
-          element: ref.current,
-          judge: option.regexp.test(ref.current.value),
-          successClassname,
-          failClassname,
-          successMessage: option.success,
-          failMessage: option.fail,
-          successCallback: () => setBool(true),
-          failCallback: () => setBool(false),
-        }),
-      800
-    ),
-    [option]
-  );
-  const addListenerCallback = useCallback<(action: () => void) => void>(
-    (action) => actionHandler<T, void>(ref.current, (ele) => ele.addEventListener("input", action)),
-    []
-  );
-  const removeListenerCallback = useCallback<(action: () => void) => void>(
-    (action) => actionHandler<T, void>(ref.current, (ele) => ele.removeEventListener("input", action)),
-    []
-  );
-  useAutoActionHandler({
-    action: actionCallback,
-    addListener: addListenerCallback,
-    removeListener: removeListenerCallback,
-  });
-  return [ref, bool];
 };
 
 // 登录
@@ -127,24 +91,20 @@ useLogout = () => {
   const { state, dispatch } = useCurrentState();
   const user = state.client[actionName.currentUser]["data"] as UserProps;
   const logoutCallback = useCallback(() => {
-    if (user.userId) {
-      return autoRequest({ method: "post", token: true })
-        .run<ApiRequestResult<string>>(apiName.logout)
-        .then(({ code, state }) => {
-          if (code === 0) {
-            dispatch(setDataSucess_client(actionName.currentUser, {}));
-            successToast("登出成功，即将返回首页");
-            delay(1000, () => router.push("/"));
-          } else {
-            failToast(`登出失败：${state}`);
-          }
-        })
-        .catch((e) => failToast(`出现错误：${e.toString()}`));
-    } else {
-      return failToast(`未登录，登出失败`);
-    }
+    return autoRequest({ method: "post", token: true })
+      .run<ApiRequestResult<string>>(apiName.logout)
+      .then(({ code, state }) => {
+        if (code === 0) {
+          dispatch(setDataSucess_client(actionName.currentUser, {}));
+          successToast("登出成功，即将返回首页");
+          delay(1000, () => router.push("/"));
+        } else {
+          failToast(`登出失败：${state}`);
+        }
+      })
+      .catch((e) => failToast(`出现错误：${e.toString()}`));
   }, [user]);
   return logoutCallback;
 };
 
-export { useAutoLogin, useCurrentUser, useLoginInput, useLogin, useLogout };
+export { useAutoLogin, useCurrentUser, useLogin, useLogout };

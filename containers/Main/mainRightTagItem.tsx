@@ -1,6 +1,6 @@
 import { useCallback } from "react";
 import Link from "next/link";
-import Tag from "components/Tag";
+import { Tag } from "components/Tag";
 import { MainRightTagItemType } from "./@type";
 
 let MainRightTagItem: MainRightTagItemType;

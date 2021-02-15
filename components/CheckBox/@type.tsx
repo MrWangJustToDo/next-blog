@@ -1,8 +1,9 @@
 interface CheckBoxProps {
-  className?: string;
-  style?: { [props: string]: string };
-  fieldName: string;
   init?: boolean;
+  type?: "radio" | "checkbox";
+  style?: { [props: string]: string };
+  className?: string;
+  fieldName: string;
 }
 
 interface CheckBoxType {

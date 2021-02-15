@@ -1,7 +1,7 @@
 // 首页相关
 const { path } = require("../../path");
-const { getTagData } = require("./tag");
+const { getTagAction } = require("./tag");
 
 exports.tagHandler = {
-  [path.tag]: getTagData,
+  [path.tag]: getTagAction,
 };

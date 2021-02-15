@@ -23,11 +23,11 @@ reducer = (state: CurrentState = initState, action: AnyAction) => {
 };
 
 actionReducerMap = {
-  [clientAction.SETDATASUCESS(actionName.currentTag)]: (state: CurrentState, action: AnyAction) =>
+  [clientAction.SETDATASUCESS(actionName.currentResult)]: (state: CurrentState, action: AnyAction) =>
     produce(state, (proxy: Draft<CurrentState>) => {
       proxy.data = action.data;
     }),
-  [clientAction.SETDATAFAIL(actionName.currentTag)]: (state: CurrentState, action: AnyAction) =>
+  [clientAction.SETDATAFAIL(actionName.currentResult)]: (state: CurrentState, action: AnyAction) =>
     produce(state, (proxy: Draft<CurrentState>) => {
       proxy.data = action.e;
     }),

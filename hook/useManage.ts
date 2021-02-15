@@ -1,0 +1,143 @@
+import { useCallback, useRef, useState } from "react";
+import { useDispatch } from "react-redux";
+import debounce from "lodash/debounce";
+import { apiName } from "config/api";
+import { actionName } from "config/action";
+import { manageLength } from "config/manage";
+import { actionHandler, judgeAction, loadingAction } from "utils/action";
+import { autoRequest } from "utils/fetcher";
+import { formSerialize } from "utils/data";
+import { setDataSucess_client } from "store/reducer/client/action";
+import { useFailToast } from "./useToast";
+import { useCurrentState } from "./useBase";
+import { useOverlayOpen } from "./useOverlay";
+import { useAutoActionHandler } from "./useAuto";
+import { ApiRequestResult } from "utils/@type";
+import { BlogContentProps, UseJudgeInputType, UseManageToAddModuleType, UseResultType, UseSearchType } from "./@type";
+
+let useSearch: UseSearchType;
+
+let useResult: UseResultType;
+
+let useManageToAddModule: UseManageToAddModuleType;
+
+let useJudgeInput: UseJudgeInputType;
+
+useSearch = ({ request }) => {
+  const fail = useFailToast();
+  const dispatch = useDispatch();
+  const ref = useRef<HTMLFormElement>();
+  const search = useCallback(
+    () =>
+      actionHandler<HTMLFormElement, Promise<void>>(ref.current, (ele) => {
+        return request({ data: formSerialize(ele) })
+          .run<ApiRequestResult<BlogContentProps>>(apiName.search)
+          .then(({ code, data }) => {
+            if (code === 0) {
+              if (Array.isArray(data)) {
+                dispatch(setDataSucess_client(actionName.currentResult, data));
+              }
+            }
+            return fail("搜索结果数据错误");
+          })
+          .catch((e) => fail(`搜索出错:${e.toString()}`));
+      }),
+    []
+  );
+  return [ref, search];
+};
+
+useResult = () => {
+  const [page, setPage] = useState<number>(1);
+  const { state } = useCurrentState();
+  const result = <BlogContentProps[]>state.client[actionName.currentResult]["data"];
+  const allPage = Math.ceil(result.length / manageLength);
+  const increasePage = useCallback(() => setPage((last) => last + 1), []);
+  const decreasePage = useCallback(() => setPage((last) => last - 1), []);
+  const increaseAble = page < allPage;
+  const decreaseAble = page > 1;
+  const currentResult = result.slice(page - 1 * manageLength, page * manageLength);
+  return { currentResult, page, increaseAble, increasePage, decreaseAble, decreasePage };
+};
+
+useManageToAddModule = ({ title, body, request, className, judgeApiName }) => {
+  const open = useOverlayOpen();
+  const click = useCallback(() => open({ head: title, body: body(request)(judgeApiName), className }), []);
+  return click;
+};
+
+useJudgeInput = ({ option, judgeApiName, successClassName, failClassName, loadingClassName }) => {
+  const ref = useRef<HTMLInputElement>();
+  const fail = useRef<{ current: string }>({ current: option.fail });
+  const success = useRef<string>(option.success);
+  // 输入验证成败
+  const [bool, setBool] = useState<boolean>(false);
+  // 验证中状态
+  const [loading, setLoading] = useState<boolean>(false);
+  const judge = useCallback(
+    debounce(() => {
+      // 多次尝试的状态分离
+      const current = fail.current;
+      judgeAction<HTMLInputElement>({
+        element: ref.current,
+        judge: () => <Promise<boolean>>actionHandler<boolean, Promise<boolean>>(
+            option.regexp.test(ref.current.value),
+            () => <Promise<boolean>>actionHandler<apiName, Promise<boolean>>(
+                judgeApiName,
+                (apiname) =>
+                  autoRequest({ path: apiname, method: "post", data: { field: ref.current.value } })
+                    .run<ApiRequestResult<string>>()
+                    .then(({ code, data }) => {
+                      if (code === 0) {
+                        return true;
+                      } else {
+                        current.current = data.toString();
+                        return false;
+                      }
+                    })
+                    .catch((e) => {
+                      current.current = e.toString();
+                      return false;
+                    }),
+                () => Promise.resolve(true)
+              ),
+            () => Promise.resolve(false)
+          ),
+        successMessage: success,
+        successClassName,
+        successCallback: () => {
+          setBool(true);
+          setLoading(false);
+        },
+        failMessage: fail,
+        failClassName,
+        failCallback: () => {
+          setBool(false);
+          setLoading(false);
+        },
+      });
+    }, 800),
+    []
+  );
+  const start = useCallback(() => {
+    if (!loading) {
+      setLoading(true);
+      // 重新开始状态
+      fail.current = { current: option.fail };
+      loadingAction({ element: ref.current, loadingClassName });
+    }
+  }, [loading]);
+  const addListenerCallback = useCallback<(action: () => void) => void>(
+    (action) => actionHandler<HTMLInputElement, void>(ref.current, (ele) => ele.addEventListener("input", action)),
+    []
+  );
+  const removeListenerCallback = useCallback<(action: () => void) => void>(
+    (action) => actionHandler<HTMLInputElement, void>(ref.current, (ele) => ele.removeEventListener("input", action)),
+    []
+  );
+  useAutoActionHandler({ action: start, addListener: addListenerCallback, removeListener: removeListenerCallback });
+  useAutoActionHandler({ action: judge, addListener: addListenerCallback, removeListener: removeListenerCallback });
+  return [ref, bool];
+};
+
+export { useSearch, useResult, useManageToAddModule, useJudgeInput };

@@ -6,7 +6,7 @@ exports.getUserByUser = async ({ username, password, db }) => {
 };
 
 // 根据用户id获取用户信息
-exports.getUserById = async ({ userId, db }) => {
+exports.getUserByUserId = async ({ userId, db }) => {
   return await db.get("SELECT * FROM users WHERE users.userId = ?", userId);
 };
 
@@ -24,7 +24,7 @@ exports.getHome = async ({ db }) => {
 };
 
 // 根据userId获取个人点赞，收藏等信息
-exports.getUsersEx = async ({ userId, db }) => {
+exports.getUsersExByUserId = async ({ userId, db }) => {
   return await db.get("SELECT * FROM usersEx WHERE userId = ?", userId);
 };
 
@@ -33,13 +33,23 @@ exports.getType = async ({ db }) => {
   return await db.all("SELECT * FROM type");
 };
 
+// 根据typeId获取type数据
+exports.getTypeByTypeId = async ({ db, typeId }) => {
+  return await db.get("SELECT * FROM type WHERE typeId = ?", typeId);
+};
+
 // 获取tag数据
 exports.getTag = async ({ db }) => {
   return await db.all("SELECT * FROM tag");
 };
 
+// 根据tagId获取tag数据
+exports.getTagByTagId = async ({ db, tagId }) => {
+  return await db.get("SELECT * FROM tag WHERE tagId = ?", tagId);
+};
+
 // 根据blogId获取详细的blog数据
-exports.getBlogById = async ({ db, blogId }) => {
+exports.getBlogByBlogId = async ({ db, blogId }) => {
   const blog = await db.get("SELECT * FROM blogs LEFT JOIN users WHERE blogId = ? AND blogs.authorId = users.userId", blogId);
   const type = await db.all("SELECT * FROM type");
   const tag = await db.all("SELECT * FROM tag");
@@ -53,14 +63,11 @@ exports.getBlogCount = async ({ db }) => {
 
 // 获取主评论
 exports.getPrimaryByBlogId = async ({ db, blogId }) => {
-  return await db.all(
-    "SELECT * FROM primaryComment LEFT JOIN users WHERE primaryComment.blogId = ? AND primaryComment.userId = users.userId",
-    blogId
-  );
+  return await db.all("SELECT * FROM primaryComment LEFT JOIN users WHERE primaryComment.blogId = ? AND primaryComment.userId = users.userId", blogId);
 };
 
 // 获取子评论
-exports.getChildByBlogId = async ({ db, primaryCommentId }) => {
+exports.getChildByPrimaryId = async ({ db, primaryCommentId }) => {
   const childMessage = await db.all(
     "SELECT * FROM childComment LEFT JOIN users WHERE childComment.primaryCommentId = ? AND childComment.fromUserId = users.userId",
     primaryCommentId

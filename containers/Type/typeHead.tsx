@@ -1,12 +1,12 @@
 import useType from "hook/useType";
-import TypeHeadItem from "./typeHeadItem";
+import { WithChangeType as TypeItem } from "components/Type";
 import { flexBetween, getClass } from "utils/class";
 import { SimpleElement } from "containers/Main/@type";
 
 let TypeHead: SimpleElement;
 
 TypeHead = () => {
-  const { type } = useType();
+  const { type, currentType } = useType();
   return (
     <div className="card mx-lg-4">
       <h5 className={getClass("card-header text-info user-select-none", flexBetween)}>
@@ -19,7 +19,11 @@ TypeHead = () => {
       </h5>
       <div className="card-body">
         {type.length &&
-          type.map(({ typeId, typeContent, typeCount }) => <TypeHeadItem key={typeId} typeContent={typeContent} typeCount={typeCount} />)}
+          type.map(({ typeId, typeContent, typeCount }) => (
+            <div key={typeId} className="m-2">
+              <TypeItem typeCount={typeCount} typeContent={typeContent} className={currentType === typeContent ? "active" : ""} />
+            </div>
+          ))}
       </div>
     </div>
   );

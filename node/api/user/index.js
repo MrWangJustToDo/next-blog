@@ -1,12 +1,12 @@
 // 用户信息的操作
 const { path } = require("../../path");
-const { autoLogin, login, logout, register, getUserExById, getUserByUserId } = require("./user");
+const { autoLoginAction, loginAction, logoutAction, registerAction, getUserExByUserIdAction, getUserByUserIdAction } = require("./user");
 
 exports.userHandler = {
-  [path.autoLogin]: autoLogin,
-  [path.login]: login,
-  [path.logout]: logout,
-  [path.register]: register,
-  [path.userEx]: getUserExById,
-  [path.user]: getUserByUserId,
+  [path.login]: loginAction,
+  [path.autoLogin]: autoLoginAction,
+  [path.logout]: logoutAction,
+  [path.register]: registerAction,
+  [path.user]: getUserByUserIdAction,
+  [path.userEx]: getUserExByUserIdAction,
 };

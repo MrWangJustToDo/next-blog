@@ -28,25 +28,31 @@ module.exports.success = (res, code = 200, resData = ["success"]) => {
  * 服务器响应失败，添加时间戳
  * @param {Object} res express响应对象
  * @param {Object|Array} resData 响应数据内容
+ * @param {String} methodName 出现错误的方法名
  */
-module.exports.fail = (res, code = 404, resData = ["not found"], developMessage) => {
-  res.status(code).json(getResponse(-1, resData, developMessage));
+module.exports.fail = (res, code = 404, resData = ["not found"], methodName) => {
+  res.status(code).json(getResponse(-1, resData, methodName + "方法出现错误"));
 };
 
 /**
- * express 统一错误捕获处理函数
- * @param {Function} action 正常处理逻辑
- * @param {Function} errHandler 错误捕获处理方法
+ * express访问参数转换
+ * @param {Function} actionHandler 自定义express访问功能函数
  */
-module.exports.actionHandler = (
-  action = ({ res }) => {
-    res.end("default");
-  },
-  errHandler = () => {}
-) => {
+module.exports.actionTransform = (actionHandler) => {
   return async (req, res, next) => {
+    return await actionHandler({ req, res, next });
+  };
+};
+
+/**
+ * express 错误处理函数，必须放在actionTransform中
+ * @param {Function} actionHandler 自定义的express访问功能函数
+ * @param {Function} errHandler 访问出错时的处理函数
+ */
+module.exports.actionCatch = (actionHandler, errHandler = () => {}) => {
+  return async ({ req, res, next }) => {
     try {
-      return await action({ req, res, next });
+      return await actionHandler({ req, res, next });
     } catch (e) {
       this.log(`request error! method: ${req.method} url: ${req.originalUrl} error: ${e.toString()}`);
       errHandler({ req, res, next, e });
@@ -55,23 +61,44 @@ module.exports.actionHandler = (
 };
 
 /**
- * 带有缓存功能的请求处理函数
+ * express 缓存处理函数，必须放在actionCatch中
  * @param {Function} actionHandler 自定义的express请求处理函数
  * @param {Number} time 当前结果缓存的时长
  */
 module.exports.cacheHandler = (actionHandler, time) => {
-  return async (req, res, next) => {
+  return async ({ req, res, next }) => {
     const key = req.originalUrl;
     const cacheValue = cache.get(key);
     if (cacheValue) {
       this.log(`get response data from cache. method: ${req.method} url: ${req.originalUrl} key: ${key}`);
       this.success(res, 200, cacheValue);
     } else {
-      const value = await actionHandler(req, res, next);
+      // 缓存第一次请求后的resData，已经符合了规则
+      const value = await actionHandler({ req, res, next });
       if (value) {
         cache.set(key, value, time);
       } else {
         this.log(`request fail, so nothing to cache. method: ${req.method} url: ${req.originalUrl}`);
+      }
+    }
+  };
+};
+
+/**
+ * express 访问处理函数，必须放在actionCatch中
+ * @param {Function} actionHandler 自定义的express请求处理函数
+ * @param {Boolean} strict 验证模式，请求参数必须带有userId
+ */
+module.exports.userHandler = (actionHandler, strict) => {
+  return async ({ req, res, next }) => {
+    if (!req.user) {
+      throw new Error("未登录，拒绝访问");
+    } else {
+      if (strict) {
+        if (req.user.userId !== req.query.userId) {
+          throw new Error("登录用户与发布用户不一致");
+        }
+        return await actionHandler({ req, res, next });
       }
     }
   };

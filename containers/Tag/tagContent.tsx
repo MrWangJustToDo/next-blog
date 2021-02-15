@@ -1,5 +1,5 @@
 import LoadRender from "components/LoadRender";
-import TagContentItem from "components/BlogItem";
+import { WithReadBlogItem as TagContentItem } from "components/BlogItem";
 import { PrimaryMessage } from "components/BlogMessage";
 import useTag from "hook/useTag";
 import { apiName } from "config/api";

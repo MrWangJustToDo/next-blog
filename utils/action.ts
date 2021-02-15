@@ -1,8 +1,10 @@
-import { ActionHandlerType, JudgeActioProps, JudgeActionType } from "./@type";
+import { ActionHandlerType, JudgeActioProps, JudgeActionType, LoadingActionType, LoadingActionProps } from "./@type";
 
 let actionHandler: ActionHandlerType;
 
 let judgeAction: JudgeActionType;
+
+let loadingAction: LoadingActionType;
 
 actionHandler = (element, action, otherAction) => {
   if (element) {
@@ -14,34 +16,39 @@ actionHandler = (element, action, otherAction) => {
   }
 };
 
-judgeAction = <T extends HTMLElement>({
+judgeAction = async <T extends HTMLElement>({
   element,
   judge,
-  successClassname,
+  successClassName,
   successMessage,
-  failClassname,
+  failClassName,
   failMessage,
   successCallback,
   failCallback,
 }: JudgeActioProps<T>) => {
-  // reset element
-  actionHandler<Element, void>(element.parentElement.lastElementChild, (ele) => {
-    if (ele.localName === "span") {
-      ele.remove();
-    }
-  });
   // judge & action
-  const judgeResult = typeof judge === "function" ? judge() : judge;
+  const judgeResult = typeof judge === "function" ? await judge() : judge;
+  // reset element
+  actionHandler<HTMLCollection, void>(element.parentElement.children, (eles) => {
+    Array.from(eles).forEach((ele) => ele.localName === "span" && ele.hasAttribute("toast") && ele.remove());
+  });
   const span = document.createElement("span");
+  span.setAttribute("toast", "true");
   if (judgeResult) {
-    span.textContent = successMessage;
-    span.classList.add(successClassname);
+    span.textContent = successMessage.current;
+    const successClassNameArr = successClassName.split(" ");
+    span.classList.add(...successClassNameArr);
     if (successCallback) {
       successCallback();
     }
   } else {
-    span.textContent = failMessage;
-    span.classList.add(failClassname);
+    if (typeof failMessage.current === "object") {
+      span.textContent = failMessage.current.current;
+    } else {
+      span.textContent = failMessage.current;
+    }
+    const failClassNameArr = failClassName.split(" ");
+    span.classList.add(...failClassNameArr);
     if (failCallback) {
       failCallback();
     }
@@ -49,4 +56,15 @@ judgeAction = <T extends HTMLElement>({
   actionHandler<Element, void>(element.parentElement, (ele) => ele.appendChild(span));
 };
 
-export { actionHandler, judgeAction };
+loadingAction = <T extends HTMLElement>({ element, loadingClassName }: LoadingActionProps<T>) => {
+  actionHandler<HTMLCollection, void>(element.parentElement.children, (eles) => {
+    Array.from(eles).forEach((ele) => ele.localName === "span" && ele.hasAttribute("toast") && ele.remove());
+  });
+  const span = document.createElement("span");
+  span.setAttribute("toast", "true");
+  const loadingClassNameArr = loadingClassName.split(" ");
+  span.classList.add(...loadingClassNameArr);
+  actionHandler<T, void>(element, (ele) => ele.parentElement.append(span));
+};
+
+export { actionHandler, judgeAction, loadingAction };

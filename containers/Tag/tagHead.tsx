@@ -1,5 +1,5 @@
 import useTag from "hook/useTag";
-import TagItem from "components/Tag";
+import { WithChangeTag as TagItem } from "components/Tag";
 import { flexBetween, getClass } from "utils/class";
 import { SimpleElement } from "containers/Main/@type";
 
@@ -22,8 +22,8 @@ TagHead = () => {
       <div className="card-body d-flex">
         {tag.length &&
           tag.map(({ tagId, tagContent, tagCount }) => (
-            <div key={tagId} className={getClass("m-2 rounded", currentTag === tagContent ? style.tagActive : "")}>
-              <TagItem tagContent={tagContent} tagCount={tagCount} />
+            <div key={tagId} className="m-2">
+              <TagItem tagContent={tagContent} tagCount={tagCount} className={getClass("rounded", currentTag === tagContent ? style.tagActive : "")} />
             </div>
           ))}
       </div>

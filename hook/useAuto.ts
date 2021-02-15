@@ -42,6 +42,9 @@ useAutoActionHandler = <T>(
         console.error("timmer delayTime not set ---> useAutoActionHandler");
         delayTime = 0;
       }
+      if (rightNow) {
+        actionCallback();
+      }
       if (once) {
         const id = setTimeout(actionCallback, delayTime);
         return () => clearTimeout(id);

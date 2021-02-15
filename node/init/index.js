@@ -1,5 +1,5 @@
 // 初始化配置
-const { initConnect, generateSession, decodeURI, log, autoGetUser } = require("./init");
+const { initConnect, generateSession, decodeURI, serverLog, autoGetUser } = require("./init");
 
 exports.init = (expressApp) => {
   // 绑定数据库连接
@@ -12,7 +12,7 @@ exports.init = (expressApp) => {
   expressApp.use(generateSession);
 
   // 打印日志
-  expressApp.use(log);
+  expressApp.use(serverLog);
 
   // 自动加载登录用户信息
   expressApp.use(autoGetUser);

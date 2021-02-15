@@ -16,7 +16,8 @@ enum apiName {
   putPrimaryMessage = "putPrimaryMessage", // 发布主要评论
   putChildMessage = "putChildMessage", // 发布次要评论
   publishBlog = "publishBlog", // 发布博客信息
-  image = "image",
+  image = "image", // 获取图片
+  search = "search", // 搜索博客
 }
 
 // 需要暂存结果的路径

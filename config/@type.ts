@@ -99,18 +99,18 @@ interface AutoDispatchTockenHandler {
 export type { AutoDispatchTockenHandler, AutoDispatchTockenHandlerProps };
 
 /* user */
-interface LoginProps {
+interface InputProps {
   regexp: RegExp;
   success: string;
   fail: string;
 }
 
 interface LoginType {
-  username: LoginProps;
-  password: LoginProps;
+  username: InputProps;
+  password: InputProps;
 }
 
-export type { LoginProps, LoginType };
+export type { InputProps, LoginType };
 
 /* BlogOrigin */
 type BlogOriginProps = Array<{ name?: string; value: number }>;
@@ -118,3 +118,10 @@ type BlogOriginProps = Array<{ name?: string; value: number }>;
 type BlogStateType = Array<{ fieldName: string; name: string; value: number | BlogOriginProps }>;
 
 export type { BlogOriginProps, BlogStateType };
+
+/* manage */
+interface AddModuleType {
+  input: InputProps;
+}
+
+export type { AddModuleType };

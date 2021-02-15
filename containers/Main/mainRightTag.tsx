@@ -5,6 +5,7 @@ import { mainRightHeader } from "config/hoom";
 import { apiName } from "config/api";
 import useTag from "hook/useTag";
 import { MainRightTagType } from "./@type";
+import { TagProps } from "containers/Publish/@type";
 
 let MainRightTag: MainRightTagType;
 
@@ -15,7 +16,7 @@ MainRightTag = ({ index }) => {
     <div className="card mt-4">
       <MainRightHead icon={icon} content={content} hrefTo={hrefTo} />
       <div className="card-body">
-        <LoadRender<{ tagId: number; tagContent: string; tagCount: number }[]>
+        <LoadRender<TagProps[]>
           path={apiName.tag}
           initialData={tag}
           loaded={(data) => (

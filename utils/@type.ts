@@ -1,5 +1,6 @@
 import { AxiosRequestConfig, Method } from "axios";
 import { apiName } from "config/api";
+import { RefObject } from "react";
 
 /* class */
 type Arguments = string | string[] | (() => string)[] | (() => string) | (() => string[]);
@@ -115,16 +116,16 @@ export type { TimeToString };
 
 /* action */
 interface ActionHandlerType {
-  <T, F>(element: T | undefined, action: (ele: T) => F, otherAction?: () => Promise<void>): Promise<void> | F;
+  <T, F>(element: T | undefined, action: (ele: T) => F, otherAction?: () => F): Promise<void> | F;
 }
 
 interface JudgeActioProps<T> {
   element: T;
-  judge: boolean | (() => boolean);
-  successClassname: string;
-  successMessage: string;
-  failClassname: string;
-  failMessage: string;
+  judge: boolean | Promise<boolean> | (() => boolean) | (() => Promise<boolean>);
+  successClassName: string;
+  successMessage: RefObject<string>;
+  failClassName: string;
+  failMessage: RefObject<{ current: string }>;
   successCallback?: () => void;
   failCallback?: () => void;
 }
@@ -133,7 +134,16 @@ interface JudgeActionType {
   <T extends HTMLElement>(props: JudgeActioProps<T>): void;
 }
 
-export type { ActionHandlerType, JudgeActioProps, JudgeActionType };
+interface LoadingActionProps<T> {
+  element: T;
+  loadingClassName: string;
+}
+
+interface LoadingActionType {
+  <T extends HTMLElement>(props: LoadingActionProps<T>): void;
+}
+
+export type { ActionHandlerType, JudgeActioProps, JudgeActionType, LoadingActionProps, LoadingActionType };
 
 /* image */
 interface LoadImgProps {

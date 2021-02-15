@@ -5,7 +5,7 @@ const { typeHandler } = require("./type");
 const { userHandler } = require("./user");
 const { blogHandler } = require("./blog");
 const { messageHandler } = require("./message");
-const { testHandler } = require("./test");
+// const { testHandler } = require("./test");
 
 const allHandler = {
   ...imageHandler,
@@ -15,7 +15,7 @@ const allHandler = {
   ...userHandler,
   ...blogHandler,
   ...messageHandler,
-  ...testHandler,
+  // ...testHandler,
 };
 
 // 自动api访问响应处理

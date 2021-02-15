@@ -80,10 +80,11 @@ instance.interceptors.response.use(
     */
 
     const config = <AxiosRequestConfig & { __retryCount: number }>error.config;
-    if (config) {
+    if (config && Number.isNaN(response?.data?.code)) {
+      // 确定是网络问题执行重试
       config.__retryCount = config.__retryCount || 0;
       if (config.__retryCount >= retryCount) {
-        console.error("exceeded retry count!, reset retry count");
+        console.error("exceeded retry count!");
         return Promise.reject(response?.data?.data || "404 not found!");
       }
       config.__retryCount++;

@@ -1,7 +1,5 @@
 import { RefObject } from "react";
 
-/* loginPassword */
-
 interface ForWardRefType<T> {
   (props: { forWardRef: RefObject<T> }): JSX.Element;
 }
@@ -21,3 +19,10 @@ interface LoginCheckCodeType {
 }
 
 export type { LoginCheckCodeType };
+
+/* input */
+interface LoginInputType {
+  (props: { setState: (props: boolean) => void }): JSX.Element;
+}
+
+export type { LoginInputType };

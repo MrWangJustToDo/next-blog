@@ -1,5 +1,5 @@
 import LoadRender from "components/LoadRender";
-import TypeContentItem from "components/BlogItem";
+import { WithReadBlogItem as TypeContentItem } from "components/BlogItem";
 import { PrimaryMessage } from "components/BlogMessage";
 import useType from "hook/useType";
 import { apiName } from "config/api";

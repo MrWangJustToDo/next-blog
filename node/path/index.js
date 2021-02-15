@@ -18,6 +18,8 @@ const path = {
   tag: "/tag",
   // 博客信息
   blog: "/blog",
+  deleteBlog: "/deleteBlog",
+  publishBlog: "/publishBlog",
   primaryMessage: "/primaryMessage",
   childMessage: "/childMessage",
 
@@ -50,6 +52,7 @@ const access = {
   [path.blog]: { disable: false, token: false },
   [path.primaryMessage]: { disable: false, token: false, method: "post" },
   [path.childMessage]: { disable: false, token: false, method: "post" },
+  [path.publishBlog]: { disable: false, token: true, method: "post" },
 };
 
 exports.path = path;
