@@ -20,7 +20,7 @@ BlogCanvas = () => {
   });
   return (
     <>
-      <button className="btn btn-secondary position-relative" onClick={switchBoolState}>
+      <button type="button" className="btn btn-secondary position-relative" onClick={switchBoolState}>
         <i className="ri-smartphone-line" />
       </button>
       <canvas ref={canvasRef} className={getClass("position-absolute border rounded", style.canvasContent)} style={{ display: "none" }} />

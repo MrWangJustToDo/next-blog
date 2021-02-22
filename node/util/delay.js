@@ -39,3 +39,4 @@ const delay = (time, action, key) => {
 };
 
 exports.delay = delay;
+exports.cancel = cancel;

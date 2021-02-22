@@ -24,9 +24,9 @@ const transformObjectValueToArray = (srcObject) => {
  * @param {Array} tag 所有tag
  */
 module.exports.mergeTypeTagToBlog = (blog, type, tag) => {
-  const currentType = type.find((it) => blog.typeId === it.typeId);
-  const currentTagIds = String(blog.tagId).split("#").map(Number);
-  const currentTagArray = tag.filter((it) => currentTagIds.includes(it.tagId));
+  const currentType = type.find((it) => Number(blog.typeId) === Number(it.typeId));
+  const currentTagIds = String(blog.tagId).split(",").map(Number);
+  const currentTagArray = tag.filter((it) => currentTagIds.includes(Number(it.tagId)));
   let currentTag;
   if (currentTagArray.length > 1) {
     currentTag = mergeWith(...currentTagArray, (res, srcValue) => {

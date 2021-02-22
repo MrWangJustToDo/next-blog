@@ -21,10 +21,10 @@ PublishType = () => {
       <LoadRender<TypeProps[]>
         path={apiName.type}
         loaded={(res) => {
-          const data: DropItemProps<number>[] = res.map(({ typeContent, typeId }) => {
+          const data: DropItemProps<string>[] = res.map(({ typeContent, typeId }) => {
             return { name: typeContent, value: typeId };
           });
-          return <Drop<number> fieldName="typeId" className="form-control" placeHolder="添加分类" data={data} />;
+          return <Drop<string> fieldName="typeId" className="form-control" placeHolder="添加分类" data={data} />;
         }}
       />
     </div>

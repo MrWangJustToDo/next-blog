@@ -9,12 +9,12 @@ import { apiName } from "config/api";
 let ManageRight: SimpleElement;
 
 ManageRight = () => {
-  const request = autoRequest({ method: "post", path: apiName.search });
+  const request = autoRequest({ method: "post", path: apiName.addTag });
   const click = useManageToAddModule({
     request,
     title: "添加标签",
-    judgeApiName: apiName.search,
-    body: (request) => (judgeApiName) => <ManageAddModule request={request} judgeApiName={judgeApiName} />,
+    judgeApiName: apiName.checkTag,
+    body: (request) => (judgeApiName) => <ManageAddModule fieldname="tagContent" request={request} judgeApiName={judgeApiName} />,
   });
   return (
     <div className="col-md-4">
@@ -23,7 +23,7 @@ ManageRight = () => {
         <ManageTag />
         <div className="card-footer small">
           <button type="button" className="float-right btn btn-info btn-sm" onClick={click}>
-            新建
+            管理
           </button>
         </div>
       </div>
@@ -32,7 +32,7 @@ ManageRight = () => {
         <ManageType />
         <div className="card-footer small">
           <button type="button" className="float-right btn btn-info btn-sm">
-            新建
+            管理
           </button>
         </div>
       </div>

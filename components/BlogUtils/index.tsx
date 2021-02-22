@@ -17,11 +17,11 @@ BlogUtils = () => {
   return (
     <div ref={divRef} className={getClass("btn-group-vertical position-fixed", style.btnsPosition)} style={{ display: "none" }}>
       <BlogMenu />
-      <button ref={bottomRef} className="btn btn-info">
+      <button ref={bottomRef} type="button" className="btn btn-info">
         留言
       </button>
       <BlogCanvas />
-      <button ref={topRef} className="btn btn-secondary">
+      <button ref={topRef} type="button" className="btn btn-secondary">
         <i className="ri-arrow-up-s-line" />
       </button>
     </div>

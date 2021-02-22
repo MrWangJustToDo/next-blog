@@ -21,10 +21,10 @@ PublishTag = () => {
       <LoadRender<TagProps[]>
         path={apiName.tag}
         loaded={(res) => {
-          const data: DropItemProps<number>[] = res.map(({ tagContent, tagId }) => {
+          const data: DropItemProps<string>[] = res.map(({ tagContent, tagId }) => {
             return { name: tagContent, value: tagId };
           });
-          return <Drop<number> fieldName="tagId" className="form-control" placeHolder="添加标签" data={data} multiple />;
+          return <Drop<string> fieldName="tagId" className="form-control" placeHolder="添加标签" data={data} multiple />;
         }}
       />
     </div>

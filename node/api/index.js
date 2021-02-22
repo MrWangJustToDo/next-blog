@@ -5,7 +5,8 @@ const { typeHandler } = require("./type");
 const { userHandler } = require("./user");
 const { blogHandler } = require("./blog");
 const { messageHandler } = require("./message");
-// const { testHandler } = require("./test");
+const { testHandler } = require("./test");
+const { fail } = require("../util");
 
 const allHandler = {
   ...imageHandler,
@@ -15,7 +16,7 @@ const allHandler = {
   ...userHandler,
   ...blogHandler,
   ...messageHandler,
-  // ...testHandler,
+  ...testHandler,
 };
 
 // 自动api访问响应处理
@@ -25,7 +26,8 @@ const apiHandler = async (req, res, next) => {
     await action(req, res);
   } else {
     // 其他api访问转向next api router
-    next();
+    // next();
+    fail(res, 404, ["api路径不存在", `请求: ${req.path}`]);
   }
 };
 

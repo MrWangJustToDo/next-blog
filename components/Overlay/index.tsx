@@ -12,6 +12,7 @@ Overlay = ({ head, body, foot, closeHandler, showState, className = "" }) => {
     showClassName: "animate__fadeInDown",
     hideClassName: "animate__fadeOutDown",
   });
+  
   const bodyContent = useMemo(() => {
     if (typeof body === "function") {
       return body(closeHandler);
@@ -19,10 +20,12 @@ Overlay = ({ head, body, foot, closeHandler, showState, className = "" }) => {
       return body;
     }
   }, [body]);
+
   useEffect(() => {
     document.body.classList.add("overflow-hidden", "mr-3");
     return () => document.body.classList.remove("overflow-hidden", "mr-3");
   }, []);
+
   return (
     <div ref={ref} className={getClass("card m-auto user-select-none", className)} style={{ display: "none" }}>
       <div className={getClass("card-header", flexBetween)}>

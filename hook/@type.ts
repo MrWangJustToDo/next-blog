@@ -23,14 +23,16 @@ interface UserProps {
 }
 
 interface TypeProps {
-  typeId?: number;
+  typeId?: string;
+  typeState?: number;
   typeCount?: number;
   typeContent?: string;
 }
 
 interface TagProps {
-  tagId?: number[];
-  tagCount?: number;
+  tagId?: string[];
+  tagState?: number[];
+  tagCount?: number[];
   tagContent?: string[];
 }
 
@@ -128,13 +130,8 @@ interface UseCommendType {
 export type { UseHomeType, UseCommendType };
 
 /* useType */
-interface Type {
-  typeId: number;
-  typeContent: string;
-  typeCount: number;
-}
 interface UseTypeResult {
-  type: Type[];
+  type: TypeProps[];
   currentType: string;
   changeCurrentType: (nextTag: string) => void;
   allPage: number;
@@ -153,9 +150,10 @@ export type { UseTypeType };
 
 /* useTag */
 interface Tag {
-  tagId: number;
-  tagContent: string;
+  tagId: string;
+  tagState: number;
   tagCount: number;
+  tagContent: string;
 }
 interface UseTagResult {
   tag: Tag[];

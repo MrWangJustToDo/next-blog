@@ -21,7 +21,8 @@ export type { PublishImageModuleType };
 
 /* publishTag */
 interface TagProps {
-  tagId?: number;
+  tagId?: string;
+  tagState?: number;
   tagCount?: number;
   tagContent?: string;
 }

@@ -1,4 +1,5 @@
-const { delay } = require("./delay");
+const { apiPath } = require("../path");
+const { delay, cancel } = require("./delay");
 
 // 可缓存工具对象
 class Cache {
@@ -39,6 +40,24 @@ class Cache {
     } else {
       console.warn(`warn, not cache yet, nothing to return. key: ${key}`);
       return false;
+    }
+  }
+
+  deleteRightNow(key) {
+    if (this.store.has(key)) {
+      cancel(key);
+      this.store.delete(key);
+      console.log(`force delete data from cache, updata data from database. key: ${key}`);
+    } else {
+      console.log("retry again, use api path try to get all key");
+      const newKey = apiPath(key);
+      if (this.store.has(newKey)) {
+        cancel(newKey);
+        this.store.delete(newKey);
+        console.log(`force delete data from cache, updata data from database. key: ${newKey}`);
+      } else {
+        console.error(`error, nothing need to delete. key: ${key}`);
+      }
     }
   }
 }

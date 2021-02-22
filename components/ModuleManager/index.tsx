@@ -1,8 +1,8 @@
 import Toast from "components/Toast";
 import Replay from "components/Overlay";
+import { flexCenter, getClass } from "utils/class";
 import { useToastProps, ToastPushContext } from "hook/useToast";
 import { useOverlayProps, OverlayOpenContext } from "hook/useOverlay";
-import { flexCenter, getClass } from "utils/class";
 
 import style from "./index.module.scss";
 

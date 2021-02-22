@@ -85,7 +85,7 @@ useJudgeInput = ({ option, judgeApiName, successClassName, failClassName, loadin
             () => <Promise<boolean>>actionHandler<apiName, Promise<boolean>>(
                 judgeApiName,
                 (apiname) =>
-                  autoRequest({ path: apiname, method: "post", data: { field: ref.current.value } })
+                  autoRequest({ path: apiname, method: "post", data: { [ref.current.name]: ref.current.value } })
                     .run<ApiRequestResult<string>>()
                     .then(({ code, data }) => {
                       if (code === 0) {

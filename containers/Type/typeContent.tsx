@@ -1,13 +1,13 @@
 import LoadRender from "components/LoadRender";
-import { WithReadBlogItem as TypeContentItem } from "components/BlogItem";
 import { PrimaryMessage } from "components/BlogMessage";
+import { WithReadBlogItem as TypeContentItem } from "components/BlogItem";
 import useType from "hook/useType";
 import { apiName } from "config/api";
 import { getClass } from "utils/class";
 import { TypeContentType } from "./@type";
+import { PrimaryMessageProps } from "components/BlogMessage/@type";
 
 import style from "./index.module.scss";
-import { PrimaryMessageProps } from "components/BlogMessage/@type";
 
 let TypeContent: TypeContentType;
 

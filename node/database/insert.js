@@ -97,13 +97,13 @@ exports.insertUser = async ({ db, ip, userId, userState, username, password, nic
 };
 
 // 添加type信息
-exports.insertType = async ({ db, typeId, typeContent, typeCount }) => {
-  return await db.run("INSERT INTO type VALUES(?,?,?)", typeId, typeContent, typeCount);
+exports.insertType = async ({ db, typeId, typeState, typeContent, typeCount }) => {
+  return await db.run("INSERT INTO type VALUES(?,?,?,?)", typeId, typeState, typeContent, typeCount);
 };
 
 // 添加tag信息
-exports.insertTag = async ({ db, tagId, tagContent, tagCount }) => {
-  return await db.run("INSERT INTO tag VALUES(?,?,?)", tagId, tagContent, tagCount);
+exports.insertTag = async ({ db, tagId, tagState, tagContent, tagCount }) => {
+  return await db.run("INSERT INTO tag VALUES(?,?,?,?)", tagId, tagState, tagContent, tagCount);
 };
 
 // 添加用户扩展信息
@@ -112,19 +112,7 @@ exports.insertUserEx = async ({ db, userId, collect, assent, publish, collectIds
 };
 
 // 添加主回复
-exports.insertPrimaryComment = async ({
-  db,
-  blogId,
-  commentId,
-  userId,
-  ip,
-  content,
-  createDate,
-  modifyState,
-  modifyDate,
-  childIds,
-  childCount,
-}) => {
+exports.insertPrimaryComment = async ({ db, blogId, commentId, userId, ip, content, createDate, modifyState, modifyDate, childIds, childCount }) => {
   return await db.run(
     "INSERT INTO primaryComment VALUES(?,?,?,?,?,?,?,?,?,?)",
     blogId,
@@ -141,19 +129,7 @@ exports.insertPrimaryComment = async ({
 };
 
 // 添加子回复
-exports.insertChildComment = async ({
-  db,
-  primaryCommentId,
-  commentId,
-  fromIp,
-  fromUserId,
-  toIp,
-  toUserId,
-  content,
-  createDate,
-  modifyState,
-  modifyDate,
-}) => {
+exports.insertChildComment = async ({ db, primaryCommentId, commentId, fromIp, fromUserId, toIp, toUserId, content, createDate, modifyState, modifyDate }) => {
   return await db.run(
     "INSERT INTO childComment VALUES(?,?,?,?,?,?,?,?,?,?)",
     primaryCommentId,

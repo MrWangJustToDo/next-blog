@@ -80,7 +80,7 @@ instance.interceptors.response.use(
     */
 
     const config = <AxiosRequestConfig & { __retryCount: number }>error.config;
-    if (config && Number.isNaN(response?.data?.code)) {
+    if (config && response?.data?.code instanceof Number) {
       // 确定是网络问题执行重试
       config.__retryCount = config.__retryCount || 0;
       if (config.__retryCount >= retryCount) {

@@ -1,12 +1,13 @@
 const { access } = require("../path");
 const { fail, log, actionTransform, actionCatch } = require("../util");
+const { RequestError } = require("../util/error");
 
 // 生成token
 const generateToken = actionTransform(
   actionCatch(
     ({ req, res, next }) => {
       if (!req.session) {
-        throw new Error("session not generate!");
+        throw new RequestError("session not generate!", 500);
       }
       if (!req.session.apiToken) {
         req.session.apiToken = {};
@@ -18,48 +19,51 @@ const generateToken = actionTransform(
       }
       next();
     },
-    ({ res, e }) => fail(res, 500, ["服务器错误", e.toString()], "generateToken")
+    ({ res, e, code = 500 }) => fail(res, code, ["服务器错误", e.toString()], "generateToken")
   )
 );
 
 // api访问权限检测
 const detectionToken = actionTransform(
   actionCatch(
-    ({ req, res, next }) => {
+    ({ req, next }) => {
       if (!req.session) {
-        throw new Error("session not generate!");
+        throw new RequestError("session not generate!", 500);
       }
       const path = req.path;
       const apiToken = req.headers.apitoken;
       if (access[path]) {
+        const { disable = false, token = true, method = "get", config = {} } = access[path];
+        // 挂载config
+        req.config = config;
         // 开发环境无需验证
         if (global.dev) {
           next();
           return;
         }
-        let { disable = false, token = true, method = "get" } = access[path];
         // 当前路径无效
         if (disable) {
-          throw new Error("路径不存在");
+          throw new RequestError("路径不存在", 404);
         }
-        if (method != req.method) {
-          throw new Error(`方法不支持: ${req.method}`);
+        if (method !== req.method) {
+          throw new RequestError(`方法不支持: ${req.method}`, 400);
         }
         if (token && apiToken !== req.session.apiToken["token"]) {
-          throw new Error("token检测失败");
+          throw new RequestError("token检测失败", 401);
         }
         next();
       } else {
         // 未配置api访问检测
         log(`this api request not set yet: ${path}`);
         if (global.dev) {
+          req.config = {};
           next();
         } else {
-          throw new Error("访问路径不存在");
+          throw new RequestError("访问路径不存在", 404);
         }
       }
     },
-    ({ res, e }) => fail(res, 500, ["服务器错误", e.toString()], "detectionToken")
+    ({ res, e, code = 500 }) => fail(res, code, ["服务器错误", e.toString()], "detectionToken")
   )
 );
 

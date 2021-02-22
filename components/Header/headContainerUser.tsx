@@ -12,8 +12,8 @@ let HeadContainerUser: SimpleElement;
 
 HeadContainerUser = () => {
   const logoutCallback = useLogout();
-  const { bool, switchBoolThrottle, hideDebounceState } = useBool();
   const { username, avatar, gender, userId } = useCurrentUser();
+  const { bool, switchBoolThrottle, hideDebounceState } = useBool();
   const ref = useShowAndHideAnimate<HTMLDivElement>({
     state: bool,
     key: "admin",

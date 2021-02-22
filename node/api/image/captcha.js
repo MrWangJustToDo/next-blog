@@ -21,4 +21,5 @@ const getCaptchaAction = actionTransform(
 const getCaptchaStrAction = actionTransform(actionCatch(({ req, res }) => success(res, 200, ["获取成功", req.session.captcha])));
 
 exports.getCaptchaAction = getCaptchaAction;
+
 exports.getCaptchaStrAction = getCaptchaStrAction;

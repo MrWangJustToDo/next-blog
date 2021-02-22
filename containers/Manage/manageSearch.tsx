@@ -21,15 +21,15 @@ ManageSearch = () => {
         <LoadRender<TypeProps[]>
           path={apiName.type}
           loaded={(res) => {
-            const data: DropItemProps<number>[] = res.map(({ typeContent, typeId }) => ({ name: typeContent, value: typeId }));
-            return <Drop<number> fieldName="typeId" className="form-control m-2" placeHolder="选择分类" data={data} />;
+            const data: DropItemProps<string>[] = res.map(({ typeContent, typeId }) => ({ name: typeContent, value: typeId }));
+            return <Drop<string> fieldName="typeId" className="form-control m-2" placeHolder="选择分类" data={data} />;
           }}
         />
         <LoadRender<TagProps[]>
           path={apiName.tag}
           loaded={(res) => {
-            const data: DropItemProps<number>[] = res.map(({ tagContent, tagId }) => ({ name: tagContent, value: tagId }));
-            return <Drop<number> fieldName="tagId" className="form-control m-2" placeHolder="选择标签" data={data} multiple />;
+            const data: DropItemProps<string>[] = res.map(({ tagContent, tagId }) => ({ name: tagContent, value: tagId }));
+            return <Drop<string> fieldName="tagId" className="form-control m-2" placeHolder="选择标签" data={data} multiple />;
           }}
         />
         <Button className="btn-primary m-2" request={search} value={"搜索"} />
