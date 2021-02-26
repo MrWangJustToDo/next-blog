@@ -1,5 +1,5 @@
 const svgCaptcha = require("svg-captcha");
-const { fail, success, actionTransform, actionCatch } = require("../../util");
+const { fail, success, actionTransform, actionCatch } = require("../../utils");
 
 // 获取验证码图片
 const getCaptchaAction = actionTransform(

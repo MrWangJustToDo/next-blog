@@ -30,12 +30,6 @@ interface LoadingProps {
   placeholder?: { width?: string; height?: string; [props: string]: string };
 }
 
-interface LoadingType {
-  (props: LoadingProps): JSX.Element;
-}
-
-export type { LoadingType };
-
 /* loadingError */
 interface LoadingErrorType {
   (error: string): JSX.Element;

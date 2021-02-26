@@ -1,13 +1,15 @@
+import dynamic from "next/dynamic";
 import BlogHead from "components/BlogHead";
 import BlogContentImg from "./blogContentImg";
 import BlogContentType_Tag from "./blogContentType&Tag";
 import BlogContentBody from "./blogContentBody";
 import BlogContentLike from "./blogContentLike";
-import BlogContentMessage from "./blogContentMessage";
 import BlogContentMessagePut from "./blogContentMessagePut";
 import { BlogContentType } from "./@type";
 
 let Blog: BlogContentType;
+
+const BlogContentMessage = dynamic(() => import("./blogContentMessage"));
 
 Blog = (props) => {
   const { blogImgLink, typeContent, tagContent, blogTitle, blogContent, blogId } = props;

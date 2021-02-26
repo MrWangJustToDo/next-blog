@@ -1,6 +1,6 @@
 const { access } = require("../path");
-const { fail, log, actionTransform, actionCatch } = require("../util");
-const { RequestError } = require("../util/error");
+const { fail, log, actionTransform, actionCatch } = require("../utils");
+const { RequestError } = require("../utils/error");
 
 // 生成token
 const generateToken = actionTransform(

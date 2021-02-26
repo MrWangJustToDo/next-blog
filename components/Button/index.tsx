@@ -1,12 +1,10 @@
-import { SimpleElement } from "containers/Main/@type";
-import { useBool } from "hook/useData";
 import { useCallback } from "react";
-import { getClass } from "utils/class";
+import Loading from "components/Loading";
+import { useBool } from "hook/useData";
+import { flexCenter, getClass } from "utils/class";
 import { ButtonType } from "./@type";
 
 let Button: ButtonType;
-
-let Loading: SimpleElement;
 
 Button = ({ request, type = "button", disable = false, value = "确定", initState = true, className = "", style = {} }) => {
   const { bool, show, hide } = useBool({ init: initState });
@@ -16,7 +14,7 @@ Button = ({ request, type = "button", disable = false, value = "确定", initSta
   }, []);
   return (
     <button
-      className={getClass("btn position-relative", className)}
+      className={getClass("btn position-relative", flexCenter, className)}
       disabled={!bool || disable}
       style={style}
       onClick={requestCallback}
@@ -24,15 +22,9 @@ Button = ({ request, type = "button", disable = false, value = "确定", initSta
       type={type}
     >
       <span style={{ color: bool ? "inherit" : "transparent" }}>{value}</span>
-      {!bool && <Loading />}
+      {!bool && <Loading className="position-absolute" _style={{ width: "15px", height: "15px" }} />}
     </button>
   );
 };
-
-Loading = () => (
-  <div className="position-absolute absolute-center">
-    <div className="spinner-border spinner-border-sm" />
-  </div>
-);
 
 export default Button;

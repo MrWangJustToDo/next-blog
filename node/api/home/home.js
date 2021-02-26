@@ -1,5 +1,5 @@
 const { getHome } = require("../../database");
-const { fail, success, autoActionHandler } = require("../../util");
+const { fail, success, autoActionHandler } = require("../../utils");
 
 // 获取首页数据
 const getHomeAction = autoActionHandler({

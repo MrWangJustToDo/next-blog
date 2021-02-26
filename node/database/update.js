@@ -1,5 +1,5 @@
-const { log } = require("../util");
-const { RequestError } = require("../util/error");
+const { log } = require("../utils");
+const { RequestError } = require("../utils/error");
 
 /**
  * update操作

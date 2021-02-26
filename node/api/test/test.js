@@ -1,5 +1,5 @@
 const { insertBlog, insertUser, insertHome, insertUserEx, insertType, insertTag, insertPrimaryComment, insertChildComment } = require("../../database");
-const { success, autoActionHandler } = require("../../util");
+const { success, autoActionHandler } = require("../../utils");
 
 const test_publishBlog = autoActionHandler({
   actionHandler: async ({ res }) => {

@@ -15,7 +15,7 @@ const Layout = ({ title, container = true, children }: { title?: string; contain
       children={
         <>
           {container && <Header />}
-          <div className="position-relative" style={{ minHeight: "calc(100vh - 200px)", zIndex: 1 }}>
+          <div className="position-relative" style={{ minHeight: "calc(100vh - 150px)", zIndex: 1 }}>
             {children}
           </div>
           {container && <Footer />}

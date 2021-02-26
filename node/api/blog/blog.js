@@ -11,8 +11,8 @@ const {
   updateTableWithParam,
 } = require("../../database");
 const { path } = require("../../path");
-const { fail, success, autoActionHandler } = require("../../util");
-const { RequestError } = require("../../util/error");
+const { fail, success, autoActionHandler } = require("../../utils");
+const { RequestError } = require("../../utils/error");
 
 // 根据id获取blog
 const getBlogByBlogIdAction = autoActionHandler({

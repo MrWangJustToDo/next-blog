@@ -1,7 +1,7 @@
 const sqlite = require("sqlite");
 const sqlite3 = require("sqlite3");
 const { getUserByUserId } = require("../database");
-const { fail, log, actionTransform, actionCatch } = require("../util");
+const { fail, log, actionTransform, actionCatch } = require("../utils");
 
 // 绑定数据源
 const initConnect = actionTransform(

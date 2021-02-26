@@ -1,7 +1,7 @@
 import useSWR from "swr";
-import { autoTransformData } from "utils/data";
+import Loading from "components/Loading";
 import { autoRequest } from "utils/fetcher";
-import Loading from "./loading";
+import { autoTransformData } from "utils/data";
 import loadingError from "./loadingError";
 import { LoadRenderType } from "./@type";
 
@@ -25,7 +25,7 @@ LoadRender = ({
   const { data, error }: { data?: any; error?: any } = useSWR(path, currentFetcher, { initialData, revalidateOnMount });
   if (error) return loadError(error.toString());
   if (data) return loaded(autoTransformData(data));
-  return loading({ placeholder });
+  return loading({ _style: placeholder });
 };
 
 export default LoadRender;

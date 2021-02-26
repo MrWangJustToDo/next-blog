@@ -1,4 +1,4 @@
-const { getRandom, fail, success, actionTransform, actionCatch } = require("../../util");
+const { getRandom, fail, success, actionTransform, actionCatch } = require("../../utils");
 
 // 获取图片请求链接
 const getImagePath = (props = {}) => {

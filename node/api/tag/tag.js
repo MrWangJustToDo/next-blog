@@ -1,6 +1,6 @@
 const { getTag, getTagByTagContent, getTagCount, insertTag } = require("../../database");
-const { fail, success, autoActionHandler } = require("../../util");
-const { RequestError } = require("../../util/error");
+const { fail, success, autoActionHandler } = require("../../utils");
+const { RequestError } = require("../../utils/error");
 
 // 获取tag数据
 const getTagAction = autoActionHandler({

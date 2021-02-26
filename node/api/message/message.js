@@ -1,6 +1,6 @@
 const { getPrimaryByBlogId, getChildByPrimaryId, deletePrimaryMessageByBlogId, deleteChildMessageByPrimaryId } = require("../../database");
-const { fail, success, autoActionHandler } = require("../../util");
-const { RequestError } = require("../../util/error");
+const { fail, success, autoActionHandler } = require("../../utils");
+const { RequestError } = require("../../utils/error");
 
 // 获取主评论
 const getPrimaryMessageByBlogIdAction = autoActionHandler({

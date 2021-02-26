@@ -6,7 +6,7 @@ const { userHandler } = require("./user");
 const { blogHandler } = require("./blog");
 const { messageHandler } = require("./message");
 const { testHandler } = require("./test");
-const { fail } = require("../util");
+const { fail } = require("../utils");
 
 const allHandler = {
   ...imageHandler,

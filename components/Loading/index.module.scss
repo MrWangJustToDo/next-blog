@@ -1,6 +1,11 @@
+.default {
+  width: 25px;
+  height: 25px;
+}
+
 .sk-chase {
-  width: 40px;
-  height: 40px;
+  width: 100%;
+  height: 100%;
   position: relative;
   animation: sk-chase 2.5s infinite linear both;
 }
@@ -9,7 +14,6 @@
   width: 100%;
   height: 100%;
   position: absolute;
-  // background-color: red;
   left: 0;
   top: 0;
   animation: sk-chase-dot 2s infinite ease-in-out both;
@@ -20,8 +24,8 @@
   display: block;
   width: 25%;
   height: 25%;
-  background-color: red;
-  border-radius: 100%;
+  background-color: #17a2b8;
+  border-radius: 50%;
   animation: sk-chase-dot-before 2s infinite ease-in-out both;
 }
 

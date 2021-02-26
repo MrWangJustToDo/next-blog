@@ -1,7 +1,7 @@
 // 用户相关的请求操作
 const { getUserByUser, insertUser, getUsersExByUserId, getUserByUserId } = require("../../database");
-const { fail, success, autoActionHandler } = require("../../util");
-const { RequestError } = require("../../util/error");
+const { fail, success, autoActionHandler } = require("../../utils");
+const { RequestError } = require("../../utils/error");
 
 // 用户登录请求
 const loginAction = autoActionHandler({
@@ -37,7 +37,7 @@ const autoLoginAction = (req, res) => {
 };
 
 // 登出请求
-const logoutAction = (res) => {
+const logoutAction = (_, res) => {
   res.clearCookie("id");
   success(res, 200, ["登出成功"]);
 };

@@ -1,6 +1,6 @@
 import ArchiveHead from "./archiveHead";
 import ArchiveContent from "./archiveContent";
-import Loading from "components/LoadRender/loading";
+import Loading from "components/Loading";
 import { useArchive, useAutoLoadArchive } from "hook/useArchive";
 import { SimpleElement } from "containers/Main/@type";
 
@@ -16,7 +16,7 @@ Archive = () => {
         {Object.keys(value).map((year) => (
           <ArchiveContent key={year} year={year} blogProps={value[year]} />
         ))}
-        {canLoad && <Loading />}
+        {!canLoad && <Loading _style={{width: '30px', height: '30px'}} />}
       </div>
     </>
   );

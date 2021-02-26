@@ -215,7 +215,7 @@ useAutoLoadRandomImg = (apiName) => {
           .run<ApiRequestResult<string>>()
           .then(({ data }) => {
             if (Array.isArray(data)) {
-              throw new Error(`接口返回数据正确：${data.toString()}`);
+              throw new Error(`接口返回数据不正确：${data.toString()}`);
             } else {
               return data;
             }

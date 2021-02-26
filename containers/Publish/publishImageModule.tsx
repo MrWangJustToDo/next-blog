@@ -1,6 +1,5 @@
 import { useCallback } from "react";
-import Loading from 'components/Loading';
-// import Loading from "components/LoadRender/loading";
+import Loading from "components/Loading";
 import { useAutoLoadRandomImg } from "hook/useAuto";
 import { useShowAndHideAnimate } from "hook/useAnimate";
 import { apiName } from "config/api";
@@ -13,6 +12,7 @@ import { actionHandler } from "utils/action";
 let PublishImageModule: PublishImageModuleType;
 
 PublishImageModule = ({ closeHandler, appendHandler }) => {
+  
   const [ref, bool] = useAutoLoadRandomImg(apiName.image);
 
   useShowAndHideAnimate<HTMLImageElement>({ state: bool, forWardRef: ref, key: "imgPreview" });
@@ -25,8 +25,7 @@ PublishImageModule = ({ closeHandler, appendHandler }) => {
   return (
     <div className="container">
       <div className={getClass("position-relative", style.imgContainer)}>
-        {/* <Loading className={getClass("position-absolute", style.imgLoding)} placeholder={{ display: bool ? "none" : "block" }} /> */}
-        <Loading />
+        <Loading className={getClass("position-absolute", style.imgLoding)} _style={{ display: bool ? "none" : "block" }} />
         <img
           className={getClass("position-absolute border rounded", style.imgItem)}
           ref={ref}

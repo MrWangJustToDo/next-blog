@@ -1,16 +1,23 @@
+import { flexCenter, getClass } from "utils/class";
+import { LoadingType } from "./@type";
+
 import style from "./index.module.scss";
 
-let Loading;
+let Loading: LoadingType;
 
-Loading = () => {
+Loading = ({ _style = {}, className = "" }) => {
   return (
-    <div className={style["sk-chase"]}>
-      <div className={style["sk-chase-dot"]} />
-      <div className={style["sk-chase-dot"]} />
-      <div className={style["sk-chase-dot"]} />
-      <div className={style["sk-chase-dot"]} />
-      <div className={style["sk-chase-dot"]} />
-      <div className={style["sk-chase-dot"]} />
+    <div className={getClass("container", flexCenter, className)}>
+      <div className={style["default"]} style={_style}>
+        <div className={style["sk-chase"]}>
+          <div className={style["sk-chase-dot"]} />
+          <div className={style["sk-chase-dot"]} />
+          <div className={style["sk-chase-dot"]} />
+          <div className={style["sk-chase-dot"]} />
+          <div className={style["sk-chase-dot"]} />
+          <div className={style["sk-chase-dot"]} />
+        </div>
+      </div>
     </div>
   );
 };

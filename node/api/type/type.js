@@ -1,6 +1,6 @@
 const { getType, getTypeByTypeContent, getTypeCount, insertType } = require("../../database");
-const { fail, success, autoActionHandler } = require("../../util");
-const { RequestError } = require("../../util/error");
+const { fail, success, autoActionHandler } = require("../../utils");
+const { RequestError } = require("../../utils/error");
 
 // 获取type数据
 const getTypeAction = autoActionHandler({
