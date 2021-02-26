@@ -187,18 +187,20 @@ interface UseContentToastType {
 export type { UseToastPropsType, UseToastPushType, UseContentToastType };
 
 /* useAuto */
-interface UseAutoActionHandlerProps<T> {
+interface UseAutoActionHandlerProps<T, K> {
   action: (e?: T) => void;
   actionState?: boolean; // 当前需要执行的状态，在事件监听回调中用于判断是否还需要绑定监听，在定时器中用于判断本次action是否需要执行
   timmer?: boolean; // 是否使用定时器
   once?: boolean; // 执行一次，for timmer
   delayTime?: number; // 定时器执行时间间隔
   rightNow?: boolean; // 立即执行，for listner
-  addListener?: (props: (e?: T) => void) => void; // 添加事件监听
-  removeListener?: (props: (e?: T) => void) => void; // 移除事件监听
+  // 适应React 17 的更新
+  currentRef?: RefObject<K>;
+  addListener?: (action: (e?: T) => void, ele?: K) => void; // 添加事件监听
+  removeListener?: (action: (e?: T) => void, ele?: K) => void; // 移除事件监听
 }
 interface UseAutoActionHandlerType {
-  <T extends Event>(props: UseAutoActionHandlerProps<T>, ...deps: any[]): void;
+  <T extends Event, K>(props: UseAutoActionHandlerProps<T, K>, ...deps: any[]): void;
 }
 interface UseAutoSetHeaderHeightType {
   <T extends HTMLElement>(breakPoint?: number): { ref: RefObject<T>; height: number };

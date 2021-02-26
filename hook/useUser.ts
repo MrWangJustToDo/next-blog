@@ -79,7 +79,7 @@ useLogin = () => {
     (action) => actionHandler<HTMLFormElement, void>(ref.current, (ele) => ele.removeEventListener("submit", action)),
     []
   );
-  useAutoActionHandler<Event>({ action: loginCallback, addListener: addListenerCallback, removeListener: removeListenerCallback });
+  useAutoActionHandler<Event, void>({ action: loginCallback, addListener: addListenerCallback, removeListener: removeListenerCallback });
   return ref;
 };
 

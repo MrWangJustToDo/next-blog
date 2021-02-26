@@ -27,8 +27,8 @@ let useAutoShowAndHide: UseAutoShowAndHideType;
 let useAutoSetHeight: UseAutoSetHeightType;
 let useAutoLoadRandomImg: UseAutoLoadRandomImgType;
 
-useAutoActionHandler = <T>(
-  { action, timmer, actionState = true, once = true, delayTime, rightNow = false, addListener, removeListener }: UseAutoActionHandlerProps<T>,
+useAutoActionHandler = <T, K>(
+  { action, timmer, actionState = true, once = true, delayTime, rightNow = false, currentRef, addListener, removeListener }: UseAutoActionHandlerProps<T, K>,
   ...deps: any[]
 ) => {
   useEffect(() => {
@@ -60,8 +60,9 @@ useAutoActionHandler = <T>(
           if (rightNow) {
             action();
           }
-          addListener(action);
-          return () => removeListener(action);
+          const currentEle = currentRef?.current;
+          addListener(action, currentEle);
+          return () => removeListener(action, currentEle);
         }
       }
     }
@@ -88,14 +89,8 @@ useAutoSetHeaderHeight = <T extends HTMLElement>(breakPoint: number) => {
     ),
     [breakPoint]
   );
-  const addListenerCallback = useCallback<(action: () => void) => void>(
-    (action) => actionHandler<Window, void>(window, (ele) => ele.addEventListener("resize", action)),
-    []
-  );
-  const removeListenerCallback = useCallback<(action: () => void) => void>(
-    (action) => actionHandler<Window, void>(window, (ele) => ele.removeEventListener("resize", action)),
-    []
-  );
+  const addListenerCallback = useCallback<(action: () => void) => void>((action) => window.addEventListener("resize", action), []);
+  const removeListenerCallback = useCallback<(action: () => void) => void>((action) => window.removeEventListener("resize", action), []);
   useAutoActionHandler({
     action: setHeightCallback,
     actionState: bool,
@@ -145,14 +140,8 @@ useAutoShowAndHide = <T extends HTMLElement>(breakPoint: number) => {
     }, 400),
     [breakPoint]
   );
-  const addListenerCallback = useCallback<(action: () => void) => void>(
-    (action) => actionHandler<Window, void>(window, (ele) => ele.addEventListener("scroll", action)),
-    []
-  );
-  const removeListenerCallback = useCallback<(action: () => void) => void>(
-    (action) => actionHandler<Window, void>(window, (ele) => ele.removeEventListener("scroll", action)),
-    []
-  );
+  const addListenerCallback = useCallback<(action: () => void) => void>((action) => window.addEventListener("scroll", action), []);
+  const removeListenerCallback = useCallback<(action: () => void) => void>((action) => window.removeEventListener("scroll", action), []);
   useAutoActionHandler({
     action: autoSetValueHandler,
     rightNow: true,
@@ -183,14 +172,8 @@ useAutoSetHeight = <T extends HTMLElement>({ forWardRef, maxHeight = 9999, deps 
     ),
     [maxHeight]
   );
-  const addListenerCallback = useCallback<(action: () => void) => void>(
-    (action) => actionHandler<Window, void>(window, (ele) => ele.addEventListener("resize", action)),
-    []
-  );
-  const removeListenerCallback = useCallback<(action: () => void) => void>(
-    (action) => actionHandler<Window, void>(window, (ele) => ele.removeEventListener("resize", action)),
-    []
-  );
+  const addListenerCallback = useCallback<(action: () => void) => void>((action) => window.addEventListener("resize", action), []);
+  const removeListenerCallback = useCallback<(action: () => void) => void>((action) => window.removeEventListener("resize", action), []);
   useAutoActionHandler(
     {
       action: setHeightCallback,
@@ -211,15 +194,21 @@ useAutoLoadRandomImg = (apiName) => {
     debounce(
       () => {
         hide();
-        autoRequest({ path: apiName, token: true })
-          .run<ApiRequestResult<string>>()
-          .then(({ data }) => {
-            if (Array.isArray(data)) {
-              throw new Error(`接口返回数据不正确：${data.toString()}`);
-            } else {
-              return data;
-            }
-          })
+        const getImgUrl = () =>
+          autoRequest({ path: apiName, token: true })
+            .run<ApiRequestResult<string>>()
+            .then(({ data }) => {
+              if (Array.isArray(data)) {
+                throw new Error(`接口返回数据不正确：${data.toString()}`);
+              } else {
+                return data;
+              }
+            });
+        const url = ref.current?.src;
+        const judge = () => getImgUrl().then((newUrl) => (newUrl === url ? null : newUrl));
+        // 保证前后两次加载的图片路径不一致
+        judge()
+          .then((currentUrl) => (currentUrl !== null ? currentUrl : judge()))
           .then((url) => (actionHandler<HTMLImageElement, void>(ref.current, (ele) => (ele.src = "")), url))
           .then((url) => actionHandler<HTMLImageElement, void>(ref.current, (ele) => (ele.src = url)))
           .catch((e) => fail(`获取失败: ${e.toString()}`));

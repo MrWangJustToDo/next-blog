@@ -3,7 +3,6 @@ import throttle from "lodash/throttle";
 import { apiName } from "config/api";
 import { actionName } from "config/action";
 import { archiveLength } from "config/archive";
-import { actionHandler } from "utils/action";
 import { useCurrentState } from "./useBase";
 import { useAutoActionHandler } from "./useAuto";
 import { ArchiveProps, UseArchiveType, UseAutoLoadArchiveType } from "./@type";
@@ -13,7 +12,7 @@ let useAutoLoadArchive: UseAutoLoadArchiveType;
 
 let autoLoadArchive = (loadArchive, archiveData, needUpdate, setNeedUpdate) => {
   if (Object.keys(archiveData).length && needUpdate) {
-    loadArchive({...archiveData});
+    loadArchive({ ...archiveData });
     setNeedUpdate(false);
   }
 };
@@ -53,14 +52,8 @@ useAutoLoadArchive = ({ canLoad, loadMore, breakPoint }) => {
     }, 1000),
     []
   );
-  const addListenerCallback = useCallback<(action: () => void) => void>(
-    (action) => actionHandler<Window, void>(window, (ele) => ele.addEventListener("scroll", action)),
-    []
-  );
-  const removeListenerCallback = useCallback<(action: () => void) => void>(
-    (action) => actionHandler<Window, void>(window, (ele) => ele.removeEventListener("scroll", action)),
-    []
-  );
+  const addListenerCallback = useCallback<(action: () => void) => void>((action) => window.addEventListener("scroll", action), []);
+  const removeListenerCallback = useCallback<(action: () => void) => void>((action) => window.removeEventListener("scroll", action), []);
   useAutoActionHandler({
     action: loadMoreCallback,
     actionState: canLoad,
