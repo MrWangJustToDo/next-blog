@@ -1,4 +1,5 @@
 import { apiName } from "config/api";
+import { TagProps } from "containers/Publish/@type";
 import { AutoRequestType } from "utils/@type";
 
 /* manageAddModule */
@@ -13,3 +14,10 @@ interface ManageAddModuleType {
 }
 
 export type { ManageAddModuleType };
+
+/* manageDeleteTagItem */
+interface ManageDeleteTagItemType {
+  (props: TagProps): JSX.Element;
+}
+
+export type { ManageDeleteTagItemType };

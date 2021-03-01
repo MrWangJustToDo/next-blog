@@ -24,6 +24,7 @@ Drop = <T extends ValueType>({ data = [], className = "", placeHolder = "请选�
         name={fieldName}
         style={{ display: "none" }}
         value={multiple ? indexArr.map((idx) => String(data[idx].value)).toString() : indexArr.length ? data[indexArr[0]].value : ""}
+        data-show={bool}
       />
       <div>
         {indexArr.length ? (

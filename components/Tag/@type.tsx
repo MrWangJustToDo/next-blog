@@ -1,6 +1,6 @@
 /* index */
 interface TagType {
-  (props: { tagContent: string; tagCount: number; className?: string }): JSX.Element;
+  (props: { tagContent: string; tagCount: number; className?: string; hoverAble?: boolean }): JSX.Element;
 }
 
 export type { TagType };

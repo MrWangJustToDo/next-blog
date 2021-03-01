@@ -15,12 +15,12 @@ BlogCanvas = () => {
     key: "blogMenu",
     state: bool,
     forWardRef: canvasRef,
-    showClassName: "animate__backInRight",
-    hideClassName: "animate__backOutRight",
+    showClassName: "animate__fadeIn",
+    hideClassName: "animate__fadeOut",
   });
   return (
     <>
-      <button type="button" className="btn btn-secondary position-relative" onClick={switchBoolState}>
+      <button type="button" className="btn btn-secondary" onClick={switchBoolState} data-show={bool}>
         <i className="ri-smartphone-line" />
       </button>
       <canvas ref={canvasRef} className={getClass("position-absolute border rounded", style.canvasContent)} style={{ display: "none" }} />

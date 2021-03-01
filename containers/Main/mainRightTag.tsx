@@ -17,7 +17,8 @@ MainRightTag = ({ index }) => {
       <MainRightHead icon={icon} content={content} hrefTo={hrefTo} />
       <div className="card-body">
         <LoadRender<TagProps[]>
-          path={apiName.tag}
+          needUpdate
+          apiPath={apiName.tag}
           initialData={tag}
           loaded={(data) => (
             <>

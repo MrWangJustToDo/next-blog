@@ -16,7 +16,7 @@ Type = () => {
       <TypeHead />
       <div className="card mx-lg-4 mt-4">
         <LoadRender<BlogContentProps[]>
-          path={apiName.home}
+          apiPath={apiName.home}
           initialData={blogs}
           loaded={(data) => {
             return (

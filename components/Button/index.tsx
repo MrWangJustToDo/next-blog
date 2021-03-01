@@ -20,6 +20,7 @@ Button = ({ request, type = "button", disable = false, value = "确定", initSta
       onClick={requestCallback}
       title={bool ? value : "loading"}
       type={type}
+      data-enable={bool}
     >
       <span style={{ color: bool ? "inherit" : "transparent" }}>{value}</span>
       {!bool && <Loading className="position-absolute" _style={{ width: "15px", height: "15px" }} />}

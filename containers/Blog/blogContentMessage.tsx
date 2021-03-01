@@ -12,7 +12,7 @@ BlogContentMessage = ({ blogId }) => {
       <div className="card">
         <h5 className="card-header small">留言区</h5>
         <LoadRender<PrimaryMessageProps[]>
-          token={true}
+          token
           method="post"
           requestData={{ blogId }}
           path={apiName.primaryMessage}

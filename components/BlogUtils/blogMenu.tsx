@@ -19,7 +19,7 @@ BlogMenu = () => {
   });
   return (
     <>
-      <button type="button" className="btn btn-info" onClick={switchBoolThrottle}>
+      <button type="button" className="btn btn-info" onClick={switchBoolThrottle} data-show={bool && seted}>
         目录
       </button>
       <div ref={ref} className={getClass("position-absolute mb-2 py-1 border rounded", style.menuContent)} style={{ display: "none" }}>

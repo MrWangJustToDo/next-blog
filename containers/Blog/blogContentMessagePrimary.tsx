@@ -24,6 +24,7 @@ BlogContentPrimaryMessageWithReplay = ({ messages, replay }) => {
         {currentMessage.map((item) => (
           <PrimaryMessage key={item.commentId} {...item} replayHandler={replay}>
             <LoadRender<ChildMessageProps[]>
+              token
               path={apiName.childMessage}
               method="post"
               requestData={{ primaryCommentId: item.commentId }}

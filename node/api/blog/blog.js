@@ -170,6 +170,7 @@ const updateBlogByBlogIdAction = autoActionHandler({
     // 进行更新
     const { blogId, ...resProps } = newProps;
     await updateTableWithParam({ db: global.db, table: "blogs", param: { set: { ...resProps }, where: { blogId: { value: blogId } } } });
+    // await updateTableWithParam({ db: global.db, table: "home", param: {set: {}} });
     success(res, 200, ["更新成功", `更新blog成功, id: ${blogId}`]);
   },
   errHandler: ({ res, e, code = 500 }) => fail(res, code, ["更新失败", e.toString()], "updateBlogByBlogIdAction"),

@@ -3,10 +3,6 @@
   overflow: hidden;
   transition-property: background;
   transition-duration: 0.2s;
-  cursor: pointer;
-  &:hover {
-    background-color: #ccc;
-  }
 
   &__left {
     position: relative;
@@ -37,5 +33,12 @@
 
   &__right {
     padding-left: 14px;
+  }
+}
+
+.hoverItem {
+  cursor: pointer;
+  &:hover {
+    background-color: #ccc;
   }
 }

@@ -22,7 +22,7 @@ BlogContentReplayModuleWithImag = ({ request, closeHandler, imgRef }) => {
         </label>
         <img ref={imgRef} className="col-4 col-md-3 border rounded" height="38" alt="验证码" />
         <input ref={input2} className="col-4 col-md-3 form-control" id="putcheck" />
-        <Button className="btn-sm btn-primary" request={submit} disable={!canSubmit} value={"新留言"} />
+        <Button className="btn-sm btn-primary" request={submit} disable={!canSubmit} value="新留言" />
       </div>
     </>
   );

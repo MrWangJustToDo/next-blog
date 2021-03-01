@@ -18,7 +18,8 @@ MainRightType = ({ index }) => {
       <div className="card-body">
         <div className="list-group">
           <LoadRender<TypeProps[]>
-            path={apiName.type}
+            needUpdate
+            apiPath={apiName.type}
             initialData={type}
             loaded={(data) => (
               <>
