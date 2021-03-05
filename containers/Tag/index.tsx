@@ -17,6 +17,7 @@ Tag = () => {
       <div className="card mx-lg-4 mt-4">
         <LoadRender<BlogContentProps[]>
           needUpdate
+          needinitialData
           apiPath={apiName.home}
           initialData={blogs}
           loaded={(data) => {

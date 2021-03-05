@@ -11,6 +11,7 @@ ManageTag = () => {
     <div className="card-body">
       <LoadRender<TagProps[]>
         needUpdate
+        needinitialData
         apiPath={apiName.tag}
         loaded={(data) => {
           return (

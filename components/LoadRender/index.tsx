@@ -24,13 +24,14 @@ LoadRender = ({
   placeholder,
   loading = Loading,
   needUpdate = false,
+  needinitialData = false,
   loadError = loadingError,
   revalidateOnMount = true,
 }) => {
   if (!path && !apiPath) return null;
   const currentPath = apiPath ? apiPath : path;
   const currentFetcher = fetcher ? fetcher : autoRequest({ method, data: requestData, token, query }).run;
-  const { initialData: currentInitialData, dispatch } = getCurrentInitialData({ initialData, apiPath });
+  const { initialData: currentInitialData, dispatch } = getCurrentInitialData({ initialData, apiPath, needinitialData });
   const { data, error }: { data?: any; error?: any } = useSWR(currentPath, currentFetcher, { initialData: currentInitialData, revalidateOnMount });
   if (error) return loadError(error.toString());
   if (data) {
@@ -44,10 +45,10 @@ LoadRender = ({
   return loading({ _style: placeholder });
 };
 
-getCurrentInitialData = ({ initialData, apiPath }) => {
+getCurrentInitialData = ({ initialData, apiPath, needinitialData }) => {
   const { state, dispatch } = useCurrentState();
   if (initialData) return { initialData, dispatch };
-  if (apiPath) return { initialData: state.server[apiPath]["data"], dispatch };
+  if (apiPath && needinitialData) return { initialData: state.server[apiPath]["data"], dispatch };
   return { dispatch };
 };
 

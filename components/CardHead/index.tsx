@@ -6,7 +6,7 @@ let CardHead: CardHeadType;
 
 CardHead = ({ icon, content, hrefTo }) => {
   return (
-    <div className={getClass(flexBetween, "card-header small")} style={{ borderBottom: "3px solid rgb(23, 162, 184)" }}>
+    <div className={getClass(flexBetween, "card-header small")} style={{ borderBottom: "3px solid rgb(23, 162, 184)", backgroundColor: "#f4f6f8" }}>
       <div className={getClass(flexCenter)}>
         <i className={getClass(icon)}></i>
         <div className="ml-1">{content}</div>

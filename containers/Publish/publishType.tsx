@@ -19,6 +19,7 @@ PublishType = () => {
         </span>
       </div>
       <LoadRender<TypeProps[]>
+        needinitialData
         apiPath={apiName.type}
         loaded={(res) => {
           const data: DropItemProps<string>[] = res.map(({ typeContent, typeId }) => {

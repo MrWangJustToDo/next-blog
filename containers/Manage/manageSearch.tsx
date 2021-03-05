@@ -20,6 +20,7 @@ ManageSearch = () => {
         <input type="text" className="form-control m-2" placeholder="标题" name="title" />
         <LoadRender<TypeProps[]>
           needUpdate
+          needinitialData
           apiPath={apiName.type}
           loaded={(res) => {
             const data: DropItemProps<string>[] = res.map(({ typeContent, typeId }) => ({ name: typeContent, value: typeId }));
@@ -28,6 +29,7 @@ ManageSearch = () => {
         />
         <LoadRender<TagProps[]>
           needUpdate
+          needinitialData
           apiPath={apiName.tag}
           loaded={(res) => {
             const data: DropItemProps<string>[] = res.map(({ tagContent, tagId }) => ({ name: tagContent, value: tagId }));

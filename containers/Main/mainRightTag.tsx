@@ -18,6 +18,7 @@ MainRightTag = ({ index }) => {
       <div className="card-body">
         <LoadRender<TagProps[]>
           needUpdate
+          needinitialData
           apiPath={apiName.tag}
           initialData={tag}
           loaded={(data) => (

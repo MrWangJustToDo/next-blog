@@ -11,6 +11,7 @@ ManageType = () => {
     <div className="card-body">
       <LoadRender<TypeProps[]>
         needUpdate
+        needinitialData
         apiPath={apiName.type}
         loaded={(data) => {
           return (

@@ -19,7 +19,9 @@ ManageRight = () => {
   return (
     <div className="col-md-4">
       <div className="card mt-4 mt-md-0">
-        <div className="card-header small">标签</div>
+        <div className="card-header" style={{ backgroundColor: "#f4f6f8" }}>
+          标签
+        </div>
         <ManageTag />
         <div className="card-footer small">
           <button type="button" className="float-right btn btn-info btn-sm" onClick={click}>
@@ -28,7 +30,9 @@ ManageRight = () => {
         </div>
       </div>
       <div className="card mt-4">
-        <div className="card-header small">分类</div>
+        <div className="card-header" style={{ backgroundColor: "#f4f6f8" }}>
+          分类
+        </div>
         <ManageType />
         <div className="card-footer small">
           <button type="button" className="float-right btn btn-info btn-sm">

@@ -13,6 +13,7 @@ interface LoadRenderProps<T> {
   requestData?: object;
   initialData?: T;
   needUpdate?: boolean;
+  needinitialData?: boolean;
   fetcher?: (...args: any) => any;
   loaded: (props: T) => JSX.Element;
   loading?: (props: LoadingProps) => JSX.Element;
@@ -27,6 +28,7 @@ interface LoadRenderType {
 
 interface GetCurrentInitialDataProps<T> {
   initialData?: T;
+  needinitialData?: boolean;
   apiPath?: apiName;
 }
 

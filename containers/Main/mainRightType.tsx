@@ -19,6 +19,7 @@ MainRightType = ({ index }) => {
         <div className="list-group">
           <LoadRender<TypeProps[]>
             needUpdate
+            needinitialData
             apiPath={apiName.type}
             initialData={type}
             loaded={(data) => (

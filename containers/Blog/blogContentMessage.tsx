@@ -15,7 +15,7 @@ BlogContentMessage = ({ blogId }) => {
           token
           method="post"
           requestData={{ blogId }}
-          path={apiName.primaryMessage}
+          apiPath={apiName.primaryMessage}
           loaded={(data) => <BlogContentPrimaryMessage messages={data} />}
         />
       </div>

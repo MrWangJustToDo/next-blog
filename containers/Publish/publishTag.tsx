@@ -19,6 +19,7 @@ PublishTag = () => {
         </span>
       </div>
       <LoadRender<TagProps[]>
+        needinitialData
         apiPath={apiName.tag}
         loaded={(res) => {
           const data: DropItemProps<string>[] = res.map(({ tagContent, tagId }) => {

@@ -22,8 +22,8 @@ TagContent = ({ blogs }) => {
           </div>
           <div className={getClass("col-lg-4 border-left py-2", style.autoHide)}>
             <LoadRender<PrimaryMessageProps[]>
-              path={apiName.primaryMessage}
               method="post"
+              apiPath={apiName.primaryMessage}
               requestData={{ blogId: props.blogId }}
               loaded={(data) => (
                 <>
