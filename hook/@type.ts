@@ -428,5 +428,23 @@ interface UseJudgeInputProps {
 interface UseJudgeInputType {
   (props: UseJudgeInputProps): [RefObject<HTMLInputElement>, boolean];
 }
+interface UseManageToDeleteModuleProps {
+  title: string;
+  item: JSX.Element;
+  request: AutoRequestType;
+  successCallback: () => void;
+  body: (request: AutoRequestType) => (item: JSX.Element) => (successCallback: () => void) => (close: () => void) => JSX.Element;
+}
+interface UseManageToDeleteModuleType {
+  (props: UseManageToDeleteModuleProps): () => void;
+}
+interface UseDeleteRequestProps {
+  request: AutoRequestType;
+  successCallback?: () => void;
+  close: () => void;
+}
+interface UseDeleteRequestType {
+  (props: UseDeleteRequestProps): () => Promise<void>;
+}
 
-export type { UseSearchType, UseResultType, UseManageToAddModuleType, UseJudgeInputType };
+export type { UseSearchType, UseResultType, UseManageToAddModuleType, UseJudgeInputType, UseManageToDeleteModuleType, UseDeleteRequestType };

@@ -16,7 +16,7 @@ Archive = () => {
         {Object.keys(value).map((year) => (
           <ArchiveContent key={year} year={year} blogProps={value[year]} />
         ))}
-        {!canLoad && <Loading _style={{width: '30px', height: '30px'}} />}
+        {canLoad && <Loading _style={{width: '30px', height: '30px'}} />}
       </div>
     </>
   );

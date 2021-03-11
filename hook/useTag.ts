@@ -5,8 +5,12 @@ import { pageContentLength } from "config/type&tag";
 import { useCurrentState } from "./useBase";
 import { setDataSucess_client } from "store/reducer/client/action";
 import { UseTagType } from "./@type";
+import { getDataSucess_Server } from "store/reducer/server/action";
+import { TagProps } from "containers/Publish/@type";
 
 let useTag: UseTagType;
+
+let useDeleteTag;
 
 let autoChangeTag = (tag, currentTag, changeCurrentTag) => {
   useEffect(() => {
@@ -53,4 +57,21 @@ useTag = (blogs) => {
   };
 };
 
-export default useTag;
+useDeleteTag = (currentTagId) => {
+  const { state, dispatch } = useCurrentState();
+  // 所有tag
+  const tag = state.server[apiName.tag]["data"];
+  const action = useCallback(() => {
+    dispatch(
+      getDataSucess_Server(
+        apiName.tag,
+        (tag as TagProps[]).filter(({ tagId }) => tagId !== currentTagId)
+      )
+    );
+    dispatch(setDataSucess_client(actionName.currentTag, ""));
+    dispatch(setDataSucess_client(actionName.currentTagPage, 0));
+  }, []);
+  return action;
+};
+
+export { useTag, useDeleteTag };

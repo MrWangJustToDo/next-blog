@@ -36,26 +36,24 @@ interface GetCurrentInitialDataType {
   <T>(props: GetCurrentInitialDataProps<T>): { initialData?: T; dispatch: (props: AnyAction) => void };
 }
 
-/* withUpdateStore */
-interface WithUpdateStoreProps<T> {
+interface AutoUpdateStateProps<T> {
   dispatch: (props: AnyAction) => void;
   needUpdate?: boolean;
   apiPath?: apiName;
-  currentState?: T;
-  data: T;
-  children: JSX.Element;
+  initialData?: T;
+  currentData: T;
 }
 
-interface WithUpdateStoreType {
-  <T>(props: WithUpdateStoreProps<T>): JSX.Element;
+interface AutoUpdateStateType {
+  <T>(props: AutoUpdateStateProps<T>): void;
 }
 
-export type { LoadRenderType, GetCurrentInitialDataType, WithUpdateStoreType };
+export type { LoadRenderProps, LoadRenderType, GetCurrentInitialDataType, AutoUpdateStateType };
 
 /* loading */
 interface LoadingProps {
   className?: string;
-  placeholder?: { width?: string; height?: string; [props: string]: string };
+  _style?: { width?: string; height?: string; [props: string]: string };
 }
 
 /* loadingError */

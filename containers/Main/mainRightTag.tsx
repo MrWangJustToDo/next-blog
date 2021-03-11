@@ -3,7 +3,7 @@ import MainRightHead from "components/CardHead";
 import MainRightTagItem from "./mainRightTagItem";
 import { mainRightHeader } from "config/hoom";
 import { apiName } from "config/api";
-import useTag from "hook/useTag";
+import { useTag } from "hook/useTag";
 import { MainRightTagType } from "./@type";
 import { TagProps } from "containers/Publish/@type";
 

@@ -24,8 +24,7 @@ let useLogout: UseLogoutType;
 
 // 未登录时尝试自动登录
 useAutoLogin = () => {
-  const { state, dispatch } = useCurrentState();
-  const user = state.client[actionName.currentUser]["data"] as UserProps;
+  const { dispatch } = useCurrentState();
   const autoLoginCallback = useCallback(
     () =>
       autoRequest({ token: true })
@@ -40,7 +39,7 @@ useAutoLogin = () => {
         .catch(() => dispatch(setDataFail_client(actionName.currentUser, {}))),
     []
   );
-  useAutoActionHandler({ actionState: !!!user.userId, timmer: true, once: false, rightNow: true, delayTime: 1000 * 60 * 10, action: autoLoginCallback });
+  useAutoActionHandler({ timmer: true, once: false, rightNow: true, delayTime: 1000 * 60 * 10, action: autoLoginCallback });
 };
 
 // 获取当前登录对象

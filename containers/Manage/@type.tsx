@@ -21,3 +21,17 @@ interface ManageDeleteTagItemType {
 }
 
 export type { ManageDeleteTagItemType };
+
+/* manageDeleteModule */
+interface ManageDeleteModuleProps {
+  request: AutoRequestType;
+  item: JSX.Element;
+  close: () => void;
+  successCallback: () => void;
+}
+
+interface ManageDeleteModuleType {
+  (props: ManageDeleteModuleProps): JSX.Element;
+}
+
+export type { ManageDeleteModuleType };

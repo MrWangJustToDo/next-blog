@@ -8,12 +8,20 @@ import { actionHandler, judgeAction, loadingAction } from "utils/action";
 import { autoRequest } from "utils/fetcher";
 import { formSerialize } from "utils/data";
 import { setDataSucess_client } from "store/reducer/client/action";
-import { useFailToast } from "./useToast";
+import { useFailToast, useSucessToast } from "./useToast";
 import { useCurrentState } from "./useBase";
 import { useOverlayOpen } from "./useOverlay";
 import { useAutoActionHandler } from "./useAuto";
 import { ApiRequestResult } from "utils/@type";
-import { BlogContentProps, UseJudgeInputType, UseManageToAddModuleType, UseResultType, UseSearchType } from "./@type";
+import {
+  BlogContentProps,
+  UseDeleteRequestType,
+  UseJudgeInputType,
+  UseManageToAddModuleType,
+  UseManageToDeleteModuleType,
+  UseResultType,
+  UseSearchType,
+} from "./@type";
 
 let useSearch: UseSearchType;
 
@@ -22,6 +30,10 @@ let useResult: UseResultType;
 let useManageToAddModule: UseManageToAddModuleType;
 
 let useJudgeInput: UseJudgeInputType;
+
+let useManageToDeleteModule: UseManageToDeleteModuleType;
+
+let useDeleteRequest: UseDeleteRequestType;
 
 useSearch = ({ request }) => {
   const fail = useFailToast();
@@ -140,4 +152,34 @@ useJudgeInput = ({ option, judgeApiName, successClassName, failClassName, loadin
   return [ref, bool];
 };
 
-export { useSearch, useResult, useManageToAddModule, useJudgeInput };
+useManageToDeleteModule = ({ title, body, request, item, successCallback }) => {
+  const open = useOverlayOpen();
+  const click = useCallback(() => open({ head: title, body: body(request)(item)(successCallback) }), [successCallback]);
+  return click;
+};
+
+useDeleteRequest = ({ request, close, successCallback }) => {
+  const fail = useFailToast();
+  const success = useSucessToast();
+  const doRequest = useCallback(
+    () =>
+      request
+        .run<ApiRequestResult<string>>()
+        .then(({ code, data }) => {
+          if (code === 0) {
+            if (successCallback) {
+              successCallback();
+            }
+            close();
+            return success("删除成功");
+          } else {
+            return fail(`删除失败${data}`);
+          }
+        })
+        .catch((e) => fail(`删除出错：${e.toString()}`)),
+    [close, successCallback]
+  );
+  return doRequest;
+};
+
+export { useSearch, useResult, useManageToAddModule, useJudgeInput, useManageToDeleteModule, useDeleteRequest };

@@ -1,4 +1,4 @@
-import useTag from "hook/useTag";
+import { useTag } from "hook/useTag";
 import { WithChangeTag as TagItem } from "components/Tag";
 import { flexBetween, getClass } from "utils/class";
 import { SimpleElement } from "containers/Main/@type";

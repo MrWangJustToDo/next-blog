@@ -1,5 +1,5 @@
-import useTag from "hook/useTag";
 import { useCallback } from "react";
+import { useTag } from "hook/useTag";
 import { flexCenter, getClass } from "utils/class";
 import { TagType } from "./@type";
 

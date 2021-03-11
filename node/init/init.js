@@ -22,7 +22,7 @@ const initConnect = actionTransform(
 // 生成默认session对象
 const generateSession = actionTransform(
   actionCatch(
-    async ({ req, next }) => {
+    ({ req, next }) => {
       // 使用登录用户的state进行默认session初始化
       if (!req.session.views) {
         req.session.views = {};
