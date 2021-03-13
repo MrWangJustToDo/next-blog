@@ -178,7 +178,7 @@ usePublish = ({ request, id }) => {
         },
         () => fail("form元素不存在...")
       ),
-    [success, fail, userId]
+    [userId]
   );
   return [ref, submit];
 };

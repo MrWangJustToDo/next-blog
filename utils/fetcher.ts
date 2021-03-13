@@ -6,9 +6,9 @@ import { getToken } from "./token";
 import { TreeNode } from "./node";
 import { instance } from "./request";
 import { getRelativeApiPath, transformStringUrl } from "./path";
-import { AutoRequestType, NeedCacheType, QueryProps } from "./@type";
+import { CreateRequestType, AutoRequestType, NeedCacheType, QueryProps } from "./@type";
 
-let autoRequest: AutoRequestType;
+let autoRequest: CreateRequestType;
 
 let needCache: NeedCacheType;
 
@@ -18,7 +18,7 @@ needCache = (path) => path.startsWith("http") || cacheApi[path];
 
 autoRequest = (props = {}) => {
   const { method, path, query, data, token } = props;
-  const autoRequest: AutoRequestType = (props) => {
+  const nextRequest: AutoRequestType = (props) => {
     const newMethod = props.method ? props.method : method;
     const newPath = props.path ? props.path : path;
     const newQuery = assign(query, props.query);
@@ -26,7 +26,7 @@ autoRequest = (props = {}) => {
     const newToken = props.token ? props.token : token;
     return autoRequest({ method: newMethod, path: newPath, query: newQuery, data: newData, token: newToken });
   };
-  autoRequest.run = <T>(currentPath?: string, currentQuery?: QueryProps) => {
+  nextRequest.run = <T>(currentPath?: string, currentQuery?: QueryProps) => {
     const targetPath = currentPath ? currentPath : path;
     if (!targetPath) {
       throw new Error("request path should not undefined!!");
@@ -53,7 +53,7 @@ autoRequest = (props = {}) => {
       return requestPromise.then((res) => res.data);
     }
   };
-  return autoRequest;
+  return nextRequest;
 };
 
 export { autoRequest };

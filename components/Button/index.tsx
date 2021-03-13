@@ -11,7 +11,7 @@ Button = ({ request, type = "button", disable = false, value = "确定", initSta
   const requestCallback = useCallback(() => {
     hide();
     request().then(show).catch(show);
-  }, []);
+  }, [request]);
   return (
     <button
       className={getClass("btn position-relative", flexCenter, className)}

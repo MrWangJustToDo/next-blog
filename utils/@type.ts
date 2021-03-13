@@ -78,11 +78,14 @@ interface NeedCacheType {
   (path: string | apiName): boolean;
 }
 interface AutoRequestType {
-  run?: <T>(path?: string, query?: QueryProps) => Promise<T>;
+  run: <T>(path?: string, query?: QueryProps) => Promise<T>;
+  (props?: RequestProps): AutoRequestType;
+}
+interface CreateRequestType {
   (props?: RequestProps): AutoRequestType;
 }
 
-export type { AutoRequestType, ApiRequestResult, NeedCacheType };
+export type { CreateRequestType, AutoRequestType, ApiRequestResult, NeedCacheType };
 
 /* path */
 interface QueryProps {
