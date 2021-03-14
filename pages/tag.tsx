@@ -25,17 +25,18 @@ export default Tag;
 // 加载tag页面数据
 export const getServerSideProps = wrapper.getServerSideProps(
   autoDispatchTockenHandler(async ({ store, req, res, ...etc }) => {
+    // action
+    store.dispatch(getDataAction_Server(apiName.tag));
+    // end the saga
+    store.dispatch(END);
+    // wait saga end
+    await store.sagaTask.toPromise();
     if (!req.session[apiName.tag]) {
-      // action
-      store.dispatch(getDataAction_Server(apiName.tag));
-      // end the saga
-      store.dispatch(END);
-      // wait saga end
-      await store.sagaTask.toPromise();
       req.session[apiName.tag] = store.getState().server[apiName.tag];
     }
     // 将session中的数据加载到store中
     if (!isEqual(store.getState().server[apiName.tag]["data"], req.session[apiName.tag]["data"])) {
+      req.session[apiName.tag] = store.getState().server[apiName.tag];
       store.dispatch(getDataSucess_Server(apiName.tag, req.session[apiName.tag]["data"]));
     }
   })

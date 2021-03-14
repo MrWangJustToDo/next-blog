@@ -56,7 +56,7 @@ const autoGetUser = actionTransform(
       // 从签名cookie中找出该用户的信息并挂在req对象上以供后续的中间件访问
       if (req.signedCookies.id) {
         // 从session中找登录信息
-        if (req.session && req.session.userCache) {
+        if (req.session.userCache) {
           req.user = req.session.userCache;
         }
         if (!req.user) {
@@ -64,9 +64,7 @@ const autoGetUser = actionTransform(
             userId: req.signedCookies.id,
             db: global.db,
           });
-          if (req.session) {
-            req.session.userCache = req.user;
-          }
+          req.session.userCache = req.user;
         }
       } else {
         req.session.userCache = null;

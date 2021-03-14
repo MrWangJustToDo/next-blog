@@ -16,10 +16,14 @@ initState = { data: [] };
 
 reducer = (state: CurrentState = initState, action: AnyAction) => {
   if (action.type === HYDRATE) {
-    if (state.data.length) {
-      return { ...action.payload.server[apiName.home], ...state };
-    } else {
+    if (state.data.length === 0) {
       return { ...action.payload.server[apiName.home] };
+    } else {
+      if (state.data.length < action.payload.server[apiName.home]["data"].length) {
+        return { ...state, ...action.payload.server[apiName.home] };
+      } else {
+        return { ...action.payload.server[apiName.home], ...state };
+      }
     }
   }
   let actionReducer = actionReducerMap[action.type];

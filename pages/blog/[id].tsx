@@ -34,19 +34,21 @@ export const getServerSideProps = wrapper.getServerSideProps(
     const {
       params: { id },
     } = etc;
+    store.dispatch(setDataSucess_client(actionName.currentBlogId, id));
+    // 加载数据并且存储在session中
+    store.dispatch(getDataAction_Server(apiName.blog));
+    // end the saga
+    store.dispatch(END);
+    // wait saga end
+    await store.sagaTask.toPromise();
     if (!req.session[apiName.blog] || !req.session[apiName.blog]["data"] || !req.session[apiName.blog]["data"][id]) {
-      // 加载数据并且存储在session中
-      store.dispatch(getDataAction_Server(apiName.blog));
-      // end the saga
-      store.dispatch(END);
-      // wait saga end
-      await store.sagaTask.toPromise();
       req.session[apiName.blog] = store.getState().server[apiName.blog];
     }
     // 修改当前博客标识,同步不即时
-    store.dispatch(setDataSucess_client(actionName.currentBlogId, id));
+    // store.dispatch(setDataSucess_client(actionName.currentBlogId, id));
     // 将session中的数据加载到store中
     if (!isEqual(store.getState().server[apiName.blog]["data"][id], req.session[apiName.blog]["data"][id])) {
+      req.session[apiName.blog] = store.getState().server[apiName.blog];
       store.dispatch(getDataSucess_Server(apiName.blog, req.session[apiName.blog]["data"][id], { id }));
     }
     return { props: req.session[apiName.blog]["data"][id] };

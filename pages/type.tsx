@@ -25,17 +25,18 @@ export default Type;
 // 加载type页面数据
 export const getServerSideProps = wrapper.getServerSideProps(
   autoDispatchTockenHandler(async ({ store, req, res, ...etc }) => {
+    // action
+    store.dispatch(getDataAction_Server(apiName.type));
+    // end the saga
+    store.dispatch(END);
+    // wait saga end
+    await store.sagaTask.toPromise();
     if (!req.session[apiName.type]) {
-      // action
-      store.dispatch(getDataAction_Server(apiName.type));
-      // end the saga
-      store.dispatch(END);
-      // wait saga end
-      await store.sagaTask.toPromise();
       req.session[apiName.type] = store.getState().server[apiName.type];
     }
     // 将session中的数据加载到store中
     if (!isEqual(store.getState().server[apiName.type]["data"], req.session[apiName.type]["data"])) {
+      req.session[apiName.type] = store.getState().server[apiName.type];
       store.dispatch(getDataSucess_Server(apiName.type, req.session[apiName.type]["data"]));
     }
   })

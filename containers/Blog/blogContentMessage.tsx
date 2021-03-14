@@ -14,6 +14,7 @@ BlogContentMessage = ({ blogId }) => {
         <LoadRender<PrimaryMessageProps[]>
           token
           method="post"
+          query={{ blogId }}
           requestData={{ blogId }}
           apiPath={apiName.primaryMessage}
           loaded={(data) => <BlogContentPrimaryMessage messages={data} />}

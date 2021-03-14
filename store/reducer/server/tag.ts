@@ -17,6 +17,9 @@ initState = { data: [] };
 reducer = (state: CurrentState = initState, action: AnyAction) => {
   if (action.type === HYDRATE) {
     if (state.data.length) {
+      if (state.data.length < action.payload.server[apiName.tag]["data"].length) {
+        return { ...state, ...action.payload.server[apiName.tag] };
+      }
       return { ...action.payload.server[apiName.tag], ...state };
     } else {
       return { ...action.payload.server[apiName.tag] };

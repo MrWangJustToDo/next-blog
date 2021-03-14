@@ -27,6 +27,7 @@ BlogContentPrimaryMessageWithReplay = ({ messages, replay }) => {
               token
               method="post"
               apiPath={apiName.childMessage}
+              query={{ primaryCommentId: String(item.commentId) }}
               requestData={{ primaryCommentId: item.commentId }}
               loaded={(data) => <BlogContentChildMessage messages={data} />}
             />

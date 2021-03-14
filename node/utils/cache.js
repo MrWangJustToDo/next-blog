@@ -43,7 +43,7 @@ class Cache {
     }
   }
 
-  deleteRightNow(key) {
+  deleteRightNow = (key) => {
     if (this.store.has(key)) {
       cancel(key);
       this.store.delete(key);

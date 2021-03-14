@@ -27,17 +27,18 @@ export default Archive;
 
 export const getServerSideProps = wrapper.getServerSideProps(
   autoDispatchTockenHandler(async ({ store, req, res, ...etc }) => {
+    // action
+    store.dispatch(getDataAction_Server(apiName.home));
+    // end the saga
+    store.dispatch(END);
+    // wait saga end
+    await store.sagaTask.toPromise();
     if (!req.session[apiName.home]) {
-      // action
-      store.dispatch(getDataAction_Server(apiName.home));
-      // end the saga
-      store.dispatch(END);
-      // wait saga end
-      await store.sagaTask.toPromise();
       req.session[apiName.home] = store.getState().server[apiName.home];
     }
     // 将session中的数据加载到store中
     if (!isEqual(store.getState().server[apiName.home]["data"], req.session[apiName.home]["data"])) {
+      req.session[apiName.home] = store.getState().server[apiName.home];
       store.dispatch(getDataSucess_Server(apiName.home, req.session[apiName.home]["data"]));
     }
     // 当前页面需要的数据{'2020': [...], '2021': [....]}

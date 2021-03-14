@@ -57,8 +57,8 @@ const publishBlogAction = autoActionHandler({
     const blogAssentCount = 0;
     const blogCollectCount = 0;
     const blogReadCount = 0;
-    blogPriseState = Number(blogPriseState === "on");
-    blogCommentState = Number(blogCommentState === "on");
+    const blogPriseStateNum = Number(blogPriseState === "on");
+    const blogCommentStateNum = Number(blogCommentState === "on");
     // 增加blog
     await insertBlog({
       db: global.db,
@@ -76,8 +76,8 @@ const publishBlogAction = autoActionHandler({
       blogAssentCount,
       blogCollectCount,
       blogReadCount,
-      blogPriseState,
-      blogCommentState,
+      blogPriseState: blogPriseStateNum,
+      blogCommentState: blogCommentStateNum,
       typeId,
       tagId,
     });
