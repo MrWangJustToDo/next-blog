@@ -36,7 +36,7 @@ LoadRender = <T extends {}>({
   const currentPath = apiPath ? apiPath : path;
   const currentFetcher = fetcher ? fetcher : autoRequest({ method, data: requestData, token, query }).run;
   const { initialData: currentInitialData, dispatch } = getCurrentInitialData({ initialData, apiPath, needinitialData });
-  const { data, error }: { data?: any; error?: any } = useSWR(currentPath, currentFetcher, { initialData: currentInitialData, revalidateOnMount });
+  const { data, error }: { data?: any; error?: any } = useSWR([currentPath, query], currentFetcher, { initialData: currentInitialData, revalidateOnMount });
   const currentData = data ? autoTransformData(data) : null;
   autoUpdateState<T>({ needUpdate, initialData: currentInitialData, apiPath, currentData, dispatch });
   if (error) return loadError(error.toString());

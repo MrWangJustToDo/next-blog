@@ -13,6 +13,7 @@ let TypeContent: TypeContentType;
 
 TypeContent = ({ blogs }) => {
   const { currentPageBlogs } = useType(blogs);
+  console.log(currentPageBlogs);
   return (
     <ul className="p-0">
       {currentPageBlogs.map((props) => (
@@ -24,6 +25,7 @@ TypeContent = ({ blogs }) => {
             <LoadRender<PrimaryMessageProps[]>
               method="post"
               apiPath={apiName.primaryMessage}
+              query={{ blogId: props.blogId }}
               requestData={{ blogId: props.blogId }}
               loaded={(data) => (
                 <>
